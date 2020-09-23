@@ -2,7 +2,7 @@
 <v-app-bar
       app
       color="primary"
-      absolute
+      fixed
     >
       <div class="d-flex align-center">
         <p>Hi</p>
