@@ -47,7 +47,7 @@
                     <v-text-field v-model="editedItem.kategori" label="Kategori"></v-text-field>
                   </v-col>
                   <v-col cols="18" sm="10" md="6">
-                    <v-text-field v-model="editedItem.partnumber2" label="PartNumber 1"></v-text-field>
+                    <v-text-field v-model="editedItem.partnumber1" label="PartNumber 1"></v-text-field>
                   </v-col>
                   <v-col cols="18" sm="10" md="6">
                     <v-text-field v-model="editedItem.partnumber2" label="PartNumber 2"></v-text-field>
@@ -56,13 +56,13 @@
                     <v-text-field v-model="editedItem.kendaraan" label="Kendaraan"></v-text-field>
                   </v-col>
                   <v-col cols="18" sm="10" md="6">
-                    <v-text-field v-model="editedItem.kodesuplier" label="Kode Suplier"></v-text-field>
+                    <v-text-field v-model="editedItem.kd_suplier" label="Kode Suplier"></v-text-field>
                   </v-col>
                   <v-col cols="18" sm="10" md="6">
                     <v-text-field v-model="editedItem.dimensi" label="Dimensi"></v-text-field>
                   </v-col>
                   <v-col cols="18" sm="10" md="6">
-                   <v-switch v-model="BarangSwitchAktif" color="primary" label=" Aktif "></v-switch>
+                   <v-switch v-model="editedItem.aktif" color="primary" true-value="Aktif" false-value="tidak" label=" Aktif "></v-switch>
                   </v-col>
                 </v-row>
               </v-container>
@@ -77,7 +77,7 @@
         </v-dialog>
       </v-toolbar>
     </template>
-    <template v-slot:item.aksi="{ item }">
+    <template v-slot:[`item.aksi`]="{ item }">
       <v-icon
         small
         class="mr-2"
@@ -93,15 +93,15 @@
       </v-icon>
     </template>
     <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
+      <p>Tidak ada Data barang</p>
     </template>
   </v-data-table>
 </template>
 <script>
+import api from "@/axios/http";
   export default {
     data: () => ({
       dialog: false,
-      BarangSwitchAktif: ['✓'],
       headers: [
         {
           text: 'Kode',
@@ -112,6 +112,11 @@
         { text: 'Merk', value: 'merk' },
         { text: 'PartNumber 1', value: 'partnumber1' },
         { text: 'PartNumber 2', value: 'partnumber2' },
+        { text: 'Kategori', value: 'kategori' },
+        { text: 'Kendaraan', value: 'kendaraan' },
+        { text: 'Kode Suplier', value: 'kd_suplier' },
+        { text: 'Dimensi', value: 'dimensi' },
+        { text: 'Aktif', value: 'aktif' },
         { text: 'Aksi', value: 'aksi', sortable: false },
       ],
       barang: [],
@@ -120,15 +125,25 @@
         kode: '',
         nama: 0,
         merk: 0,
+        kategori: 0,
         partnumber1: 0,
         partnumber2: 0,
+        kendaraan: '0',
+        kd_suplier: '0',
+        dimensi: '0',
+        aktif: '',
       },
       defaultItem: {
         kode: '',
         nama: 0,
         merk: 0,
+        kategori: 0,
         partnumber1: 0,
         partnumber2: 0,
+        kendaraan: '0',
+        kd_suplier: '0',
+        dimensi: '0',
+        aktif: 'tidak',
       },
     }),
 
@@ -143,85 +158,59 @@
         val || this.close()
       },
     },
-
-    created () {
-      this.initialize()
+     mounted() {
+      this.getBarang()
     },
 
     methods: {
-      initialize () {
-        this.barang = [
-          {
-            kode: '01/000001',
-            nama: 'LAMP ASSY TURN SIGNAL SH',
-            merk: 'HINO',
-            partnumber1: '81510 E0010',
-            partnumber2: '-',
+      getBarang() {
+        api.get('/barang').then(
+          result => {
+            console.log(result.data)
+            this.barang = result.data
           },
-          {
-            kode: '01/000002',
-            nama: 'LAMP ASSY TURN SIGNAL LH',
-            merk: 'HINO',
-            partnumber1: '81520 E0010',
-            partnumber2: '-',
-          },
-          {
-            kode: '01/000003',
-            nama: 'LAMP ASSY, RR COMBINATION LH',
-            merk: 'HINO',
-            partnumber1: '81530 E0010',
-            partnumber2: '-',
-          },
-          {
-            kode: '01/000004',
-            nama: 'LAMP ASSY, RR COMBINATION LH',
-            merk: 'HINO',
-            partnumber1: '81540 E0010',
-            partnumber2: '-',
-          },
-          {
-            kode: '01/000005',
-            nama: 'HEAD LAMP ASSY RH',
-            merk: 'HINO',
-            partnumber1: '81550 E0010',
-            partnumber2: '-',
-          },
-          {
-            kode: '01/000008',
-            nama: 'HEAD LAMP ASSY LH',
-            merk: 'HINO',
-            partnumber1: '81560 E0010',
-            partnumber2: '-',
-          },
-          {
-            kode: '01/000007',
-            nama: 'TANK ASSY RESERVE',
-            merk: 'HINO',
-            partnumber1: '81570 E0010',
-            partnumber2: '-',
-          },
-          {
-            kode: '01/000008',
-            nama: 'SWITCH LIGHT',
-            merk: 'HINO',
-            partnumber1: '81580 E0010',
-            partnumber2: '-',
-          },
-          {
-            kode: '01/000009',
-            nama: 'SWITCH ASSY, W/S',
-            merk: 'HINO',
-            partnumber1: '81590 E0010',
-            partnumber2: '-',
-          },
-          {
-            kode: '01/000010',
-            nama: 'WASHER TRUST',
-            merk: 'HINO',
-            partnumber1: '81600 E0010',
-            partnumber2: '-',
-          },
-        ]
+          error => {
+            console.error(error)
+          }
+        )
+      },
+      TambahkanBarang() {
+        api.post('/barang',
+          { kode: this.editedItem.kode,
+            nama: this.editedItem.nama,
+            merk: this.editedItem.merk,
+            kategori: this.editedItem.kategori,
+            partnumber1: this.editedItem.partnumber1,
+            partnumber2: this.editedItem.partnumber2,
+            kendaraan: this.editedItem.kendaraan,
+            kd_suplier: this.editedItem.kd_suplier,
+            dimensi: this.editedItem.dimensi,
+            aktif: this.editedItem.aktif
+          }
+        ).then((res) => {
+          this.kode = ''
+          this.nama = ''
+          this.merk = ''
+          this.kategori = ''
+          this.partnumber1 = ''
+          this.partnumber2 = ''
+          this.kendaraan = ''
+          this.kd_suplier = ''
+          this.dimensi = ''
+          this.aktif = ''
+          console.log(res)
+        }).catch((err) => {
+          console.log(err)
+        })
+      },
+      HapusBarang(barang, index) {
+        api.delete('/barang/'+ barang.id
+        ).then((res) => {
+          this.barang.splice(index, 1)
+          console.log(res)
+        }).catch((err) => {
+          console.log(err)
+        })
       },
 
       editItem (item) {
@@ -232,7 +221,10 @@
 
       deleteItem (item) {
         const index = this.barang.indexOf(item)
-        confirm('Anda Yakin Menghapus Barang ini?') && this.barang.splice(index, 1)
+        var hapus = confirm('Anda Yakin Menghapus Barang ini?')
+        if (hapus) {
+        this.HapusBarang(item, index)
+      }
       },
 
       close () {
@@ -248,6 +240,7 @@
           Object.assign(this.barang[this.editedIndex], this.editedItem)
         } else {
           this.barang.push(this.editedItem)
+          this.TambahkanBarang(this.editedItem)
         }
         this.close()
       },
