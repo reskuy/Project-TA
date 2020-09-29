@@ -10,9 +10,14 @@ npm install
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compiles and hot-reloads for development Client
 ```
 npm run serve
+```
+### Compiles and hot-reloads for development Server
+```
+go to path server
+npm start
 ```
 
 ### Compiles and minifies for production
