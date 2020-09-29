@@ -89,10 +89,10 @@
           },
           {
             icon: 'mdi-truck-fast',
-            title: 'Suplier',
+            title: 'Supplier',
             items: [
-              { icon: 'mdi-view-list', title: 'Daftar Suplier', link: '/Suplier' },
-              { icon: 'mdi-plus-box', title: 'Suplier', link: '/InputSuplier' },
+              { icon: 'mdi-view-list', title: 'Daftar Supplier', link: '/Supplier' },
+              { icon: 'mdi-plus-box', title: 'Supplier', link: '/InputSupplier' },
             ],
           },
           {
