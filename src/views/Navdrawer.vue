@@ -66,6 +66,7 @@
       </v-navigation-drawer>
 </template>
 <script>
+
   export default {
     data () {
       return {
@@ -89,10 +90,10 @@
           },
           {
             icon: 'mdi-truck-fast',
-            title: 'Supplier',
+            title: 'Suplier',
             items: [
-              { icon: 'mdi-view-list', title: 'Daftar Supplier', link: '/Supplier' },
-              { icon: 'mdi-plus-box', title: 'Supplier', link: '/InputSupplier' },
+              { icon: 'mdi-view-list', title: 'Daftar Suplier', link: '/Suplier' },
+              { icon: 'mdi-plus-box', title: 'Suplier', link: '/InputSuplier' },
             ],
           },
           {
@@ -103,6 +104,14 @@
               { icon: 'mdi-plus-box', title: 'Gudang', link: '/InputGudang' },
             ],
           },
+          {
+            icon: 'mdi-account',
+            title: 'User',
+            items: [
+              { icon: 'mdi-account-box', title: 'Daftar User', link: '/User' },
+              { icon: 'mdi-account-key', title: 'Hak Akses', link: '/HakAkses' },
+            ],
+          },
         ],
         permanent: true,
         miniVariant: true,
@@ -110,4 +119,5 @@
       }
     },
   }
+
 </script>
