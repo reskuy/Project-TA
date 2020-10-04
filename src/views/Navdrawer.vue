@@ -103,6 +103,14 @@
               { icon: 'mdi-plus-box', title: 'Gudang', link: '/InputGudang' },
             ],
           },
+          {
+            icon: 'mdi-account',
+            title: 'User',
+            items: [
+              { icon: 'mdi-account-box', title: 'Daftar User', link: '/User' },
+              { icon: 'mdi-account-key', title: 'Hak Akses', link: '/HakAkses' },
+            ],
+          },
         ],
         permanent: true,
         miniVariant: true,
