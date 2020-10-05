@@ -92,7 +92,7 @@
             icon: 'mdi-truck-fast',
             title: 'Suplier',
             items: [
-              { icon: 'mdi-view-list', title: 'Daftar Suplier', link: '/Suplier' },
+              { icon: 'mdi-view-list', title: 'Daftar Suplier', link: '/Supplier' },
               { icon: 'mdi-plus-box', title: 'Suplier', link: '/InputSuplier' },
             ],
           },
@@ -110,6 +110,13 @@
             items: [
               { icon: 'mdi-account-box', title: 'Daftar User', link: '/User' },
               { icon: 'mdi-account-key', title: 'Hak Akses', link: '/HakAkses' },
+            ],
+          },
+          {
+            icon: 'mdi-account',
+            title: 'Purchase Order',
+            items: [
+              { icon: 'mdi-account-box', title: 'Purchase Order', link: '/PurchaseOrder' },
             ],
           },
         ],
