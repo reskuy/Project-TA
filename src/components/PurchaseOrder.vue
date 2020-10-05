@@ -1,5 +1,6 @@
 <template>
   <v-data-table
+  dense
     :headers="headers"
     :items="gudang"
     sort-by="kode"
@@ -22,7 +23,8 @@
           <v-spacer></v-spacer>
             <v-dialog
               v-model="dialog"
-              max-width="700px">
+              max-width="1200px"
+              >
                 
                 <template v-slot:activator="{ on, additem }">
                   <v-btn
@@ -31,53 +33,146 @@
                     class="mb-2"
                     v-bind="additem"
                     v-on="on">
-                    Tambahkan Gudang
+                    Tambahkan Purchase Order
                   </v-btn>
                 </template>
 
           <v-card>
-              <v-card-title>
-                <span class="headline">{{ formTitle }}</span>
-              </v-card-title>
+                   <v-toolbar
+      color="primary"
+      dark
+      flat
+    >           <span class="headline">{{ formTitle }}</span>
+                   </v-toolbar>
 
               <v-card-text>
                 <v-container>
                   <v-row>
                     <v-col cols="18" sm="10" md="6">
                       <v-text-field
-                        v-model="editedItem.kode" 
-                        label="Kode">
+                        v-model="editedItem.kd_nota" 
+                        label="Kode Nota">
                       </v-text-field>
                     </v-col>
 
                   <v-col cols="18" sm="10" md="6">
+                   <v-menu
+        v-model="menu2"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        transition="scale-transition"
+        offset-y
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="editedItem.tanggalan"
+            label="Tanggal"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="editedItem.tanggalan"
+          @input="menu2 = false"
+        ></v-date-picker>
+      </v-menu>
+                  </v-col>
+
+                  <v-col cols="18" sm="10" md="6">
                     <v-text-field 
-                      v-model="editedItem.nama" 
-                      label="Nama">
+                      v-model="editedItem.nm_supplier" 
+                      label="Supplier">
                     </v-text-field>
                   </v-col>
 
                   <v-col cols="18" sm="10" md="6">
                     <v-text-field 
-                      v-model="editedItem.alamat" 
-                      label="Alamat">
+                      v-model="editedItem.billfrom" 
+                      label="Bill From" required>
                     </v-text-field>
                   </v-col>
 
                   <v-col cols="18" sm="10" md="6">
                     <v-text-field 
-                      v-model="editedItem.kota" 
-                      label="Kota" required>
+                      v-model="editedItem.sellfrom" 
+                      label="Sell From">
                     </v-text-field>
                   </v-col>
 
                   <v-col cols="18" sm="10" md="6">
                     <v-text-field 
-                      v-model="editedItem.memo" 
-                      label="Memo">
+                      v-model="editedItem.payment_term" 
+                      label="Payment Term">
                     </v-text-field>
                   </v-col>
 
+                  <v-col cols="18" sm="10" md="6">
+                    <v-text-field 
+                      v-model="editedItem.matauang" 
+                      label="Mata Uang">
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="18" sm="10" md="6">
+                    <v-text-field 
+                      v-model="editedItem.kurs" 
+                      label="Kurs">
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="18" sm="10" md="6">
+                    <v-menu
+        v-model="menu_tanggal2"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        transition="scale-transition"
+        offset-y
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="editedItem.tgl_kirim"
+            label="Tanggal Kirim"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="editedItem.tgl_kirim"
+          @input="menu_tanggal2 = false"
+        ></v-date-picker>
+      </v-menu>
+                  </v-col>
+
+                  <v-col cols="18" sm="10" md="6">
+                    <v-text-field 
+                      v-model="editedItem.refrensi" 
+                      label="Refrensi">
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="18" sm="10" md="6">
+                    <v-text-field 
+                      v-model="editedItem.nomor_wo" 
+                      label="Nomor WO">
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="18" sm="10" md="6">
+                    <v-text-field 
+                      v-model="editedItem.nomor_rangka" 
+                      label="Nomor Rangka">
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="18" sm="10" md="6">
+                  <v-btn color="success" text @click="loadpartorder">Load Part Order</v-btn>
+                  </v-col>
                   <v-col cols="18" sm="10" md="6">
                     <v-switch 
                       v-model="GudangSwitchAktif" 
@@ -89,6 +184,27 @@
               </v-container>
             </v-card-text>
 
+            <v-card>
+    <v-tabs
+      v-model="tab"
+      background-color="primary"
+      dark
+    >
+      <v-tab>
+        Items
+      </v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="tab">
+      <v-tab-item
+      >
+        <v-card flat>
+          <v-card-text></v-card-text>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
+  </v-card>
+
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="error" text @click="close">Batal</v-btn>
@@ -99,7 +215,7 @@
       </v-toolbar>
     </template>
 
-    <template v-slot:[`item.action`]= "{ item }">
+    <template v-slot:[`item.aksi`]= "{ item }">
       <v-icon
         small
         class="mr-2"
@@ -119,10 +235,10 @@
  
     </v-data-table>
 </template>
-
 <script>
   export default {
     data: () => ({
+        tanggal: new Date().toISOString().substr(0, 10),
       dialog: false,
       GudangSwitchAktif: ['✓'],
       headers: [
@@ -131,7 +247,7 @@
           align: 'start',
           value: 'kd_nota',
         },
-        { text: 'Tanggal', value: 'tanggal' },
+        { text: 'Tanggal', value: 'tanggalan'},
         { text: 'Nama Supplier', value: 'nm_supplier' },
         { text: 'Tanggal Kirim', value: 'tgl_kirim' },
         { text: 'Status', value: 'status' },
@@ -152,24 +268,54 @@
       gudang: [],
       editedIndex: -1,
       editedItem: {
-        kode: '',
-        nama: '',
-        alamat: '',
-        kota: '',
-        memo: '',
+        kd_nota: '',
+        tanggal: '',
+        nm_supplier: '',
+        tgl_kirim: '',
+        status: '',
+        total: '',
+        diskon: '',
+        dpp: '',
+        ppn: '',
+        total_bayar: '',
+        keterangan: '',
+        referensi: '',
+        nomor_rangka: '',
+        nomor_polisi: '',
+        nomor_wo: '',
+        matauang: 'Rupiah',
+        kurs: '1.00',
+        payment_term: '',
+        apply: '',
+        dibuat_tgl: ''
       },
       defaultItem: {
-        kode: '',
-        nama: '',
-        alamat: '',
-        kota: '',
-        memo: '',
+        kd_nota: '',
+        tanggal: '',
+        nm_supplier: '',
+        tgl_kirim: '',
+        status: '',
+        total: '',
+        diskon: '',
+        dpp: '',
+        ppn: '',
+        total_bayar: '',
+        keterangan: '',
+        referensi: '',
+        nomor_rangka: '',
+        nomor_polisi: '',
+        nomor_wo: '',
+        apply: '',
+        matauang: 'Rupiah',
+        kurs: '1.00',
+        payment_term: '',
+        dibuat_tgl: ''
       },
     }),
 
     computed: {
       formTitle () {
-        return this.editedIndex === -1 ? 'Tambahkan Gudang' : 'Edit Gudang'
+        return this.editedIndex === -1 ? 'Purchase Order' : 'Edit Purchase Order'
       },
     },
 
