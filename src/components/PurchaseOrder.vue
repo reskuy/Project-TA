@@ -48,16 +48,16 @@
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <v-col cols="18" sm="10" md="6">
-                      <v-text-field
+                    <v-col cols="14"  md="6">
+                      <v-text-field outlined dense
                         v-model="editedItem.kd_nota" 
                         label="Kode Nota">
                       </v-text-field>
                     </v-col>
 
-                  <v-col cols="18" sm="10" md="6">
+                  <v-col cols="14"  md="2">
                    <v-menu
-        v-model="menu2"
+        v-model="menu_tanggal1"
         :close-on-content-click="false"
         :nudge-right="40"
         transition="scale-transition"
@@ -65,7 +65,7 @@
         min-width="290px"
       >
         <template v-slot:activator="{ on, attrs }">
-          <v-text-field
+          <v-text-field outlined dense
             v-model="editedItem.tanggalan"
             label="Tanggal"
             prepend-icon="mdi-calendar"
@@ -75,55 +75,14 @@
           ></v-text-field>
         </template>
         <v-date-picker
+        locale="id"
           v-model="editedItem.tanggalan"
-          @input="menu2 = false"
+          @input="menu_tanggal1 = false"
         ></v-date-picker>
       </v-menu>
                   </v-col>
 
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field 
-                      v-model="editedItem.nm_supplier" 
-                      label="Supplier">
-                    </v-text-field>
-                  </v-col>
-
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field 
-                      v-model="editedItem.billfrom" 
-                      label="Bill From" required>
-                    </v-text-field>
-                  </v-col>
-
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field 
-                      v-model="editedItem.sellfrom" 
-                      label="Sell From">
-                    </v-text-field>
-                  </v-col>
-
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field 
-                      v-model="editedItem.payment_term" 
-                      label="Payment Term">
-                    </v-text-field>
-                  </v-col>
-
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field 
-                      v-model="editedItem.matauang" 
-                      label="Mata Uang">
-                    </v-text-field>
-                  </v-col>
-
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field 
-                      v-model="editedItem.kurs" 
-                      label="Kurs">
-                    </v-text-field>
-                  </v-col>
-
-                  <v-col cols="18" sm="10" md="6">
+                  <v-col cols="14"  md="2">
                     <v-menu
         v-model="menu_tanggal2"
         :close-on-content-click="false"
@@ -133,7 +92,7 @@
         min-width="290px"
       >
         <template v-slot:activator="{ on, attrs }">
-          <v-text-field
+          <v-text-field outlined dense
             v-model="editedItem.tgl_kirim"
             label="Tanggal Kirim"
             prepend-icon="mdi-calendar"
@@ -143,37 +102,89 @@
           ></v-text-field>
         </template>
         <v-date-picker
+        locale="id"
+          :min="tanggal"
           v-model="editedItem.tgl_kirim"
           @input="menu_tanggal2 = false"
         ></v-date-picker>
       </v-menu>
                   </v-col>
 
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field 
+                  <v-col cols="14"  md="2">
+                    <v-text-field outlined dense
+                      v-model="editedItem.kurs" 
+                      label="Kurs">
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="14"  md="6">
+                    <v-combobox
+                     v-model="editedItem.nm_supplier"
+                      :items="nama_supplier"
+                       label="Supplier"
+                       outlined
+                        dense
+                    ></v-combobox>
+                  </v-col>
+
+                  <v-col cols="14"  md="6">
+                    <v-text-field outlined dense
+                      v-model="editedItem.billfrom" 
+                      label="Bill From" required>
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="14"  md="6">
+                    <v-text-field outlined dense
+                      v-model="editedItem.sellfrom" 
+                      label="Sell From">
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="14"  md="6">
+                    <v-text-field outlined dense
+                      v-model="editedItem.payment_term" 
+                      label="Payment Term">
+                    </v-text-field>
+                  </v-col>
+
+                  
+
+                  <v-col cols="14"  md="6">
+         <v-combobox
+          v-model="editedItem.matauang"
+          :items="matauang"
+          label="Mata uang"
+          outlined
+          dense
+        ></v-combobox>
+                  </v-col>
+
+                  <v-col cols="14"  md="6">
+                    <v-text-field outlined dense
                       v-model="editedItem.refrensi" 
                       label="Refrensi">
                     </v-text-field>
                   </v-col>
 
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field 
+                  <v-col cols="14"  md="6">
+                    <v-text-field outlined dense
                       v-model="editedItem.nomor_wo" 
                       label="Nomor WO">
                     </v-text-field>
                   </v-col>
 
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field 
+                  <v-col cols="14"  md="6">
+                    <v-text-field outlined dense
                       v-model="editedItem.nomor_rangka" 
                       label="Nomor Rangka">
                     </v-text-field>
                   </v-col>
 
-                  <v-col cols="18" sm="10" md="6">
-                  <v-btn color="success" text @click="loadpartorder">Load Part Order</v-btn>
+                  <v-col cols="14"  md="6">
+                  <v-btn color="success" text >Load Part Order</v-btn>
                   </v-col>
-                  <v-col cols="18" sm="10" md="6">
+                  <v-col cols="14"  md="6">
                     <v-switch 
                       v-model="GudangSwitchAktif" 
                       color="primary" 
@@ -184,22 +195,22 @@
               </v-container>
             </v-card-text>
 
-            <v-card>
+  <v-card>
     <v-tabs
-      v-model="tab"
       background-color="primary"
       dark
     >
-      <v-tab>
-        Items
+      <v-tab
+      >
+        tab1
       </v-tab>
     </v-tabs>
 
-    <v-tabs-items v-model="tab">
+    <v-tabs-items>
       <v-tab-item
       >
         <v-card flat>
-          <v-card-text></v-card-text>
+          <v-card-text>teb1</v-card-text>
         </v-card>
       </v-tab-item>
     </v-tabs-items>
@@ -240,6 +251,18 @@
     data: () => ({
         tanggal: new Date().toISOString().substr(0, 10),
       dialog: false,
+      menu_tanggal1: false,
+      menu_tanggal2: false,
+      nama_supplier: [
+          'reski',
+          'endhy',
+        ],
+
+      matauang: [
+          'Rupiah',
+          'Dollar',
+        ],
+
       GudangSwitchAktif: ['✓'],
       headers: [
         {
@@ -266,10 +289,11 @@
         { text: 'Aksi', value: 'aksi', sortable: false },
       ],
       gudang: [],
+      item: [],
       editedIndex: -1,
       editedItem: {
         kd_nota: '',
-        tanggal: '',
+        tanggalan: '',
         nm_supplier: '',
         tgl_kirim: '',
         status: '',
@@ -291,7 +315,7 @@
       },
       defaultItem: {
         kd_nota: '',
-        tanggal: '',
+        tanggalan: '',
         nm_supplier: '',
         tgl_kirim: '',
         status: '',
@@ -328,6 +352,7 @@
     created () {
       this.initialize()
     },
+    
 
     methods: {
       initialize () {
@@ -339,7 +364,6 @@
           },
         ]
       },
-
       editItem (item) {
         this.editedIndex = this.gudang.indexOf(item)
         this.editedItem = Object.assign({}, item)

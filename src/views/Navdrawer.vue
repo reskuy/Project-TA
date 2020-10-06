@@ -70,6 +70,7 @@
   export default {
     data () {
       return {
+        active: false,
         drawer: true,
         items: [
           {
