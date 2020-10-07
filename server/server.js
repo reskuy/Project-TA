@@ -1,20 +1,20 @@
-var express = require('express')
+var express = require("express");
 
-var bodyParser = require('body-parser')
+var bodyParser = require("body-parser");
 
-var tasks = require('./router/barang')
-var cors = require('cors')
+var tasks = require("./router/barang");
+var cors = require("cors");
 
-var port = 3000
+var port = process.env.PORT || 3000;
 
-var app = express()
-app.use(cors())
+var app = express();
+app.use(cors());
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/api', tasks)
+app.use("/api", tasks);
 
-app.listen(port, function() {
-  console.log('Server started on port ' + port)
-})
+app.listen(port, function () {
+  console.log("Server started on port " + port);
+});
