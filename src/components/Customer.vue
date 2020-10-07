@@ -185,7 +185,6 @@ export default {
       { text: "Fax", value: "fax" },
       { text: "Email", value: "email" },
       { text: "Contact Person", value: "cp" },
-
       { text: "Sales Person", value: "sales" },
       { text: "Group Pelanggan", value: "groupPelanggan" },
       { text: "Aktif", value: "aktif" },
@@ -239,23 +238,19 @@ export default {
       asuransi: "",
     },
   }),
-
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "Add New Customer" : "Edit Customer";
     },
   },
-
   watch: {
     dialog(val) {
       val || this.close();
     },
   },
-
   created() {
     this.initialize();
   },
-
   methods: {
     initialize() {
       this.item = [
@@ -317,19 +312,16 @@ export default {
         },
       ];
     },
-
     editItem(item) {
       this.editedIndex = this.item.indexOf(item);
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
-
     deleteItem(item) {
       const index = this.item.indexOf(item);
       confirm("Are you sure you want to delete this item?") &&
         this.item.splice(index, 1);
     },
-
     close() {
       this.dialog = false;
       this.$nextTick(() => {
@@ -337,7 +329,6 @@ export default {
         this.editedIndex = -1;
       });
     },
-
     save() {
       if (this.editedIndex > -1) {
         Object.assign(this.item[this.editedIndex], this.editedItem);

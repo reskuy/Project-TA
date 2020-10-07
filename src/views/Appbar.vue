@@ -5,7 +5,7 @@
       fixed
     >
       <div class="d-flex align-center">
-        <p>Hi</p>
+        <p style="margin: 0; color: white;">Hi</p>
       </div>
 
       <v-spacer></v-spacer>
@@ -14,13 +14,13 @@
         href="#"
         text
       >
-        <v-icon>mdi-bell-outline</v-icon>
+        <v-icon style="color: white;">mdi-bell-outline</v-icon>
       </v-btn>
       <v-btn
         href="#"
         text
       >
-        <v-icon>mdi-alert-circle-outline</v-icon>
+        <v-icon style="color: white;">mdi-alert-circle-outline</v-icon>
       </v-btn>
     </v-app-bar>
 </template>
