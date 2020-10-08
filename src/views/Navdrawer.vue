@@ -46,19 +46,23 @@
             <v-list-item-title v-text="item.title"></v-list-item-title>
           </v-list-item-content>
         </template>
-
         <v-list-item
           v-for="subItem in item.items"
           :key="subItem.title"
           link
           :to="subItem.link"
         >
-          <v-list-item-content>
+          <v-list-item-content >
           <v-list-item-icon>
           <v-icon>{{subItem.icon}}</v-icon>
-            <v-list-item-title v-text="subItem.title"></v-list-item-title>
-            </v-list-item-icon>
+          </v-list-item-icon>
+            
           </v-list-item-content>
+           <v-list-item-title v-text="subItem.title"></v-list-item-title>
+           <v-list-item-icon >
+          <v-icon dense>{{subItem.icon}}</v-icon>
+            </v-list-item-icon>
+         
         </v-list-item>
       </v-list-group>
 
@@ -74,50 +78,22 @@
         drawer: true,
         items: [
           {
-            icon: 'mdi-package-variant-closed',
-            title: 'Barang',
+            icon: 'mdi-webpack',
+            title: 'Master Data',
             items: [
-              { icon: 'mdi-view-list',title: 'Daftar Barang', link: '/Barang' },
-              { icon: 'mdi-plus-box', title: 'Input Barang', link: '/InputBarang'},
+              { icon: 'mdi-package-variant-closed',title: 'Barang', link: '/Barang' },
+              { icon: 'mdi-account-group', title: 'Pelanggan', link: '/Pelanggan' },
+              { icon: 'mdi-truck-fast', title: 'Supplier', link: '/Supplier' },
+              { icon: 'mdi-warehouse', title: 'Gudang', link: '/Gudang' },
+              { icon: 'mdi-account-box', title: 'User', link: '/User' },
+              { icon: 'mdi-account-key', title: 'Hak Akses User', link: '/HakAkses' },
             ],
           },
           {
-            icon: 'mdi-account-group',
-            title: 'Pelanggan',
-            items: [
-              { icon: 'mdi-view-list', title: 'Daftar Pelanggan', link: '/Pelanggan' },
-              { icon: 'mdi-plus-box', title: 'Pelanggan', link: '/InputPelanggan' },
-            ],
-          },
-          {
-            icon: 'mdi-truck-fast',
-            title: 'Suplier',
-            items: [
-              { icon: 'mdi-view-list', title: 'Daftar Suplier', link: '/Supplier' },
-              { icon: 'mdi-plus-box', title: 'Suplier', link: '/InputSuplier' },
-            ],
-          },
-          {
-            icon: 'mdi-warehouse',
-            title: 'Gudang',
-            items: [
-              { icon: 'mdi-view-list', title: 'Daftar Gudang', link: '/Gudang' },
-              { icon: 'mdi-plus-box', title: 'Gudang', link: '/InputGudang' },
-            ],
-          },
-          {
-            icon: 'mdi-account',
-            title: 'User',
-            items: [
-              { icon: 'mdi-account-box', title: 'Daftar User', link: '/User' },
-              { icon: 'mdi-account-key', title: 'Hak Akses', link: '/HakAkses' },
-            ],
-          },
-          {
-            icon: 'mdi-account',
+            icon: 'mdi-cart-check',
             title: 'Purchase Order',
             items: [
-              { icon: 'mdi-account-box', title: 'Purchase Order', link: '/PurchaseOrder' },
+              { icon: 'mdi-view-list', title: 'Purchase Order', link: '/PurchaseOrder' },
             ],
           },
         ],

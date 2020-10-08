@@ -38,12 +38,12 @@
                 </template>
 
           <v-card>
-                   <v-toolbar
+                   <v-app-bar
       color="primary"
       dark
-      flat
+      dense 
     >           <span class="headline">{{ formTitle }}</span>
-                   </v-toolbar>
+                   </v-app-bar>
 
               <v-card-text>
                 <v-container>
@@ -82,7 +82,7 @@
       </v-menu>
                   </v-col>
 
-                  <v-col cols="14"  md="2">
+                  <v-col cols="14"  md="3">
                     <v-menu
         v-model="menu_tanggal2"
         :close-on-content-click="false"
@@ -110,7 +110,7 @@
       </v-menu>
                   </v-col>
 
-                  <v-col cols="14"  md="2">
+                  <v-col cols="14"  md="1">
                     <v-text-field outlined dense
                       v-model="editedItem.kurs" 
                       label="Kurs">
@@ -191,31 +191,16 @@
                       label=" Aktif">
                     </v-switch>
                   </v-col>
+                  <v-col cols="12">
+                   <v-card>
+                 <ItemsPurchaseOrder/>
+                  </v-card>
+                  </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
-
-  <v-card>
-    <v-tabs
-      background-color="primary"
-      dark
-    >
-      <v-tab
-      >
-        tab1
-      </v-tab>
-    </v-tabs>
-
-    <v-tabs-items>
-      <v-tab-item
-      >
-        <v-card flat>
-          <v-card-text>teb1</v-card-text>
-        </v-card>
-      </v-tab-item>
-    </v-tabs-items>
-  </v-card>
-
+   
+ 
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="error" text @click="close">Batal</v-btn>
@@ -224,6 +209,15 @@
           </v-card>
         </v-dialog>
       </v-toolbar>
+    </template>
+
+<template v-slot:[`item.apply`]>
+      <v-checkbox 
+      dense
+      small
+      class="mr-2"
+      ></v-checkbox>
+
     </template>
 
     <template v-slot:[`item.aksi`]= "{ item }">
@@ -247,15 +241,21 @@
     </v-data-table>
 </template>
 <script>
+import ItemsPurchaseOrder from '@/views/purchase_order/items'
   export default {
+    components: {
+      ItemsPurchaseOrder
+    },
     data: () => ({
         tanggal: new Date().toISOString().substr(0, 10),
       dialog: false,
+      tab:true,
       menu_tanggal1: false,
       menu_tanggal2: false,
       nama_supplier: [
           'reski',
           'endhy',
+          'bayu',
         ],
 
       matauang: [
@@ -311,7 +311,7 @@
         kurs: '1.00',
         payment_term: '',
         apply: '',
-        dibuat_tgl: ''
+        dibuat_tgl: '',
       },
       defaultItem: {
         kd_nota: '',
