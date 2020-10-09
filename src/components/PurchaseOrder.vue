@@ -33,7 +33,7 @@
                     class="mb-2"
                     v-bind="additem"
                     v-on="on">
-                    Tambahkan Purchase Order
+                    Add Purchase Order
                   </v-btn>
                 </template>
 
@@ -167,19 +167,83 @@
                     </v-text-field>
                   </v-col>
 
-                  <v-col cols="14"  md="6">
+                  <v-col cols="12"  md="5">
                     <v-text-field outlined dense
                       v-model="editedItem.nomor_wo" 
                       label="Nomor WO">
                     </v-text-field>
                   </v-col>
+                  <v-col cols="2"  md="1">
+                    <v-dialog
+          v-model="dialog2"
+          max-width="1200px"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+         
+              dark
+              class="mb-2"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>mdi-dots-horizontal</v-icon>
+            </v-btn>
+          </template>
+          <v-card>
+             <v-app-bar
+      color="primary"
+      dark
+      dense 
+    >           <span class="headline">Work Order</span>
+                   </v-app-bar>
+            <v-card-text>
+              <v-container>
+                <v-card-title>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title>
+    <v-data-table
+      :headers="headers"
+      :items="desserts"
+      :search="search"
+    ></v-data-table>
+              </v-container>
+            </v-card-text>
 
-                  <v-col cols="14"  md="6">
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="close"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="save"
+              >
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+                  </v-col>
+
+                  <v-col cols="12"  md="6">
                     <v-text-field outlined dense
                       v-model="editedItem.nomor_rangka" 
                       label="Nomor Rangka">
                     </v-text-field>
                   </v-col>
+
+            
 
                   <v-col cols="14"  md="6">
                   <v-btn color="success" text >Load Part Order</v-btn>
@@ -211,10 +275,11 @@
       </v-toolbar>
     </template>
 
-<template v-slot:[`item.apply`]>
+<template v-slot:[`item.apply`] = "{ item }">
       <v-checkbox 
       dense
       small
+      @click="apply(item)"
       class="mr-2"
       ></v-checkbox>
 
@@ -235,7 +300,7 @@
 
     </template>
     <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
+      <v-btn color="primary" @click="initialize">Load Data</v-btn>
     </template>
  
     </v-data-table>
@@ -249,6 +314,7 @@ import ItemsPurchaseOrder from '@/views/purchase_order/items'
     data: () => ({
         tanggal: new Date().toISOString().substr(0, 10),
       dialog: false,
+      dialog2:false,
       tab:true,
       menu_tanggal1: false,
       menu_tanggal2: false,
@@ -310,7 +376,7 @@ import ItemsPurchaseOrder from '@/views/purchase_order/items'
         matauang: 'Rupiah',
         kurs: '1.00',
         payment_term: '',
-        apply: '',
+        apply: true,
         dibuat_tgl: '',
       },
       defaultItem: {
@@ -329,7 +395,7 @@ import ItemsPurchaseOrder from '@/views/purchase_order/items'
         nomor_rangka: '',
         nomor_polisi: '',
         nomor_wo: '',
-        apply: '',
+        apply: true,
         matauang: 'Rupiah',
         kurs: '1.00',
         payment_term: '',
@@ -350,7 +416,8 @@ import ItemsPurchaseOrder from '@/views/purchase_order/items'
     },
 
     created () {
-      this.initialize()
+      this.initialize(),
+      setInterval(this.getNow, 1000)
     },
     
 
@@ -372,7 +439,7 @@ import ItemsPurchaseOrder from '@/views/purchase_order/items'
 
       deleteItem (item) {
         const index = this.gudang.indexOf(item)
-        confirm('Anda Yakin Menghapus Gudang ini?') && this.gudang.splice(index, 1)
+        confirm('Anda Yakin Menghapus ini?') && this.gudang.splice(index, 1)
       },
 
       close () {
@@ -391,6 +458,12 @@ import ItemsPurchaseOrder from '@/views/purchase_order/items'
         }
         this.close()
       },
+      getNow: function(){
+        let today = new Date() 
+        let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        this.editedItem.dibuat_tgl = date
+
+      }
     },
   }
 </script>
