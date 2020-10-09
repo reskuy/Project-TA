@@ -170,7 +170,9 @@
                   <v-col cols="12"  md="5">
                     <v-text-field outlined dense
                       v-model="editedItem.nomor_wo" 
-                      label="Nomor WO">
+                      label="Nomor WO"
+                      
+                      >
                     </v-text-field>
                   </v-col>
                   <v-col cols="2"  md="1">
@@ -206,10 +208,15 @@
         single-line
         hide-details
       ></v-text-field>
+      <p>{{ selected }}</p>
     </v-card-title>
     <v-data-table
-      :headers="headers"
-      :items="desserts"
+    v-model="selected"
+    :single-select="singleSelect"
+    item-key="kd_wo"
+    show-select
+      :headers="headerswo"
+      :items="itemspo"
       :search="search"
     ></v-data-table>
               </v-container>
@@ -316,6 +323,7 @@ import ItemsPurchaseOrder from '@/views/purchase_order/items'
       dialog: false,
       dialog2:false,
       tab:true,
+      search: '',
       menu_tanggal1: false,
       menu_tanggal2: false,
       nama_supplier: [
@@ -354,8 +362,25 @@ import ItemsPurchaseOrder from '@/views/purchase_order/items'
         { text: 'Dibuat Tanggal', value: 'dibuat_tgl' },
         { text: 'Aksi', value: 'aksi', sortable: false },
       ],
+
+      singleSelect: true,
+      selected: [],
+      headerswo: [
+        {
+          text: 'Kode WO',
+          align: 'start',
+          value: 'kd_wo',
+        },
+        { text: 'Tanggal', value: 'tanggal'},
+        { text: 'Nama Pelanggan', value: 'nm_pelanggan' },
+        { text: 'Nomor Rangka', value: 'no_rangka' },
+        { text: 'Nomor Polisi', value: 'no_pol' },
+        { text: 'Nomor Mesin', value: 'no_mesin' },
+        { text: 'Keterangan', value: 'keterangan' },
+        { text: 'Aksi', value: 'aksi', sortable: false },
+      ],
       gudang: [],
-      item: [],
+      itemspo: [],
       editedIndex: -1,
       editedItem: {
         kd_nota: '',
@@ -429,6 +454,26 @@ import ItemsPurchaseOrder from '@/views/purchase_order/items'
             tanggal:'06/06/2020',
             nm_supplier:'Leonardo Gordfrans'
           },
+        ],
+        this.itemspo = [
+          {
+            kd_wo: '1',
+            tanggal: '2',
+            nm_pelanggan: 'jajank',
+            no_rangka: '1',
+            no_pol : '1',
+            no_mesin: '1',
+            keterangan: '2'
+          },
+          {
+            kd_wo: '2',
+            tanggal: '2',
+            nm_pelanggan: 'ujank',
+            no_rangka: '1',
+            no_pol : '1',
+            no_mesin: '1',
+            keterangan: '2'
+          }
         ]
       },
       editItem (item) {

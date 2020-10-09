@@ -51,8 +51,8 @@
       ></v-text-field>
     </v-card-title>
     <v-data-table
-      :headers="headers"
-      :items="desserts"
+      :headers="headersitems"
+      :items="itemslist"
       :search="search"
     ></v-data-table>
               </v-container>
@@ -141,7 +141,24 @@
         { text: 'Sub Total', value: 'subtotal' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
+      headersitems: [
+        {
+          text: 'Kode',
+          align: 'start',
+          sortable: false,
+          value: 'kode',
+        },
+        { text: 'Nama', value: 'nama' },
+        { text: 'Kategori', value: 'kategori' },
+        { text: 'SubKategori', value: 'subkategori' },
+        { text: 'merk', value: 'merk' },
+        { text: 'PartNumber1', value: 'partnumber1' },
+        { text: 'PartNumber2', value: 'partnumber2' },
+        { text: 'Memo', value: 'memo' },
+        { text: 'Actions', value: 'actions', sortable: false },
+      ],
       itemspo: [],
+      itemslist: [],
       editedIndex: -1,
       editedItem: {
         gudang: null,
@@ -190,7 +207,21 @@
     methods: {
       initialize () {
         this.itemspo = [
-         
+          {
+        gudang: 'null',
+        barang: 'null',
+        nama: 'null',
+        partnumber1: 'null',
+        merk: 'a',
+        keterangan: 'null',
+        kendaraan: 'null',
+        eta: 'null',
+        jumlah: 'null',
+        satuan: 'null',
+        harga:'null',
+        diskon: 'null',
+        subtotal: 'null'
+          }
         ]
       },
 
