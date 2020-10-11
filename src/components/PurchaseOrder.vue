@@ -1,5 +1,6 @@
 <template>
   <v-data-table
+  dense
     :headers="headers"
     :items="gudang"
     sort-by="kode"
@@ -22,7 +23,8 @@
           <v-spacer></v-spacer>
             <v-dialog
               v-model="dialog"
-              max-width="700px">
+              max-width="1200px"
+              >
                 
                 <template v-slot:activator="{ on, additem }">
                   <v-btn
@@ -31,64 +33,238 @@
                     class="mb-2"
                     v-bind="additem"
                     v-on="on">
-                    Tambahkan Gudang
+                    Add Purchase Order
                   </v-btn>
                 </template>
 
           <v-card>
-              <v-card-title>
-                <span class="headline">{{ formTitle }}</span>
-              </v-card-title>
+                   <v-app-bar
+      color="primary"
+      dark
+      dense 
+    >           <span class="headline">{{ formTitle }}</span>
+                   </v-app-bar>
 
               <v-card-text>
                 <v-container>
                   <v-row>
-                    <v-col cols="18" sm="10" md="6">
-                      <v-text-field
-                        v-model="editedItem.kode" 
-                        label="Kode">
+                    <v-col cols="14"  md="6">
+                      <v-text-field outlined dense
+                        v-model="editedItem.kd_nota" 
+                        label="Kode Nota">
                       </v-text-field>
                     </v-col>
 
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field 
-                      v-model="editedItem.nama" 
-                      label="Nama">
+                  <v-col cols="14"  md="2">
+                   <v-menu
+        v-model="menu_tanggal1"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        transition="scale-transition"
+        offset-y
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field outlined dense
+            v-model="editedItem.tanggalan"
+            label="Tanggal"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+        locale="id"
+          v-model="editedItem.tanggalan"
+          @input="menu_tanggal1 = false"
+        ></v-date-picker>
+      </v-menu>
+                  </v-col>
+
+                  <v-col cols="14"  md="3">
+                    <v-menu
+        v-model="menu_tanggal2"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        transition="scale-transition"
+        offset-y
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field outlined dense
+            v-model="editedItem.tgl_kirim"
+            label="Tanggal Kirim"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+        locale="id"
+          :min="tanggal"
+          v-model="editedItem.tgl_kirim"
+          @input="menu_tanggal2 = false"
+        ></v-date-picker>
+      </v-menu>
+                  </v-col>
+
+                  <v-col cols="14"  md="1">
+                    <v-text-field outlined dense
+                      v-model="editedItem.kurs" 
+                      label="Kurs">
                     </v-text-field>
                   </v-col>
 
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field 
-                      v-model="editedItem.alamat" 
-                      label="Alamat">
+                  <v-col cols="14"  md="6">
+                    <v-combobox
+                     v-model="editedItem.nm_supplier"
+                      :items="nama_supplier"
+                       label="Supplier"
+                       outlined
+                        dense
+                    ></v-combobox>
+                  </v-col>
+
+                  <v-col cols="14"  md="6">
+                    <v-text-field outlined dense
+                      v-model="editedItem.billfrom" 
+                      label="Bill From" required>
                     </v-text-field>
                   </v-col>
 
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field 
-                      v-model="editedItem.kota" 
-                      label="Kota" required>
+                  <v-col cols="14"  md="6">
+                    <v-text-field outlined dense
+                      v-model="editedItem.sellfrom" 
+                      label="Sell From">
                     </v-text-field>
                   </v-col>
 
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field 
-                      v-model="editedItem.memo" 
-                      label="Memo">
+                  <v-col cols="14"  md="6">
+                    <v-text-field outlined dense
+                      v-model="editedItem.payment_term" 
+                      label="Payment Term">
                     </v-text-field>
                   </v-col>
 
-                  <v-col cols="18" sm="10" md="6">
+                  
+
+                  <v-col cols="14"  md="6">
+         <v-combobox
+          v-model="editedItem.matauang"
+          :items="matauang"
+          label="Mata uang"
+          outlined
+          dense
+        ></v-combobox>
+                  </v-col>
+
+                  <v-col cols="14"  md="6">
+                    <v-text-field outlined dense
+                      v-model="editedItem.refrensi" 
+                      label="Refrensi">
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="12"  md="5">
+                    <v-text-field outlined dense
+                      v-model="editedItem.nomor_wo" 
+                      label="Nomor WO">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="2"  md="1">
+                    <v-dialog
+          v-model="dialog2"
+          max-width="1200px"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+         
+              dark
+              class="mb-2"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>mdi-dots-horizontal</v-icon>
+            </v-btn>
+          </template>
+          <v-card>
+             <v-app-bar
+      color="primary"
+      dark
+      dense 
+    >           <span class="headline">Work Order</span>
+                   </v-app-bar>
+            <v-card-text>
+              <v-container>
+                <v-card-title>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title>
+    <v-data-table
+      :headers="headers"
+      :items="desserts"
+      :search="search"
+    ></v-data-table>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="close"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="save"
+              >
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+                  </v-col>
+
+                  <v-col cols="12"  md="6">
+                    <v-text-field outlined dense
+                      v-model="editedItem.nomor_rangka" 
+                      label="Nomor Rangka">
+                    </v-text-field>
+                  </v-col>
+
+            
+
+                  <v-col cols="14"  md="6">
+                  <v-btn color="success" text >Load Part Order</v-btn>
+                  </v-col>
+                  <v-col cols="14"  md="6">
                     <v-switch 
                       v-model="GudangSwitchAktif" 
                       color="primary" 
                       label=" Aktif">
                     </v-switch>
                   </v-col>
+                  <v-col cols="12">
+                   <v-card>
+                 <ItemsPurchaseOrder/>
+                  </v-card>
+                  </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
-
+   
+ 
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="error" text @click="close">Batal</v-btn>
@@ -99,7 +275,17 @@
       </v-toolbar>
     </template>
 
-    <template v-slot:[`item.action`]= "{ item }">
+<template v-slot:[`item.apply`] = "{ item }">
+      <v-checkbox 
+      dense
+      small
+      @click="apply(item)"
+      class="mr-2"
+      ></v-checkbox>
+
+    </template>
+
+    <template v-slot:[`item.aksi`]= "{ item }">
       <v-icon
         small
         class="mr-2"
@@ -114,16 +300,35 @@
 
     </template>
     <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
+      <v-btn color="primary" @click="initialize">Load Data</v-btn>
     </template>
  
     </v-data-table>
 </template>
-
 <script>
+import ItemsPurchaseOrder from '@/views/purchase_order/items'
   export default {
+    components: {
+      ItemsPurchaseOrder
+    },
     data: () => ({
+        tanggal: new Date().toISOString().substr(0, 10),
       dialog: false,
+      dialog2:false,
+      tab:true,
+      menu_tanggal1: false,
+      menu_tanggal2: false,
+      nama_supplier: [
+          'reski',
+          'endhy',
+          'bayu',
+        ],
+
+      matauang: [
+          'Rupiah',
+          'Dollar',
+        ],
+
       GudangSwitchAktif: ['✓'],
       headers: [
         {
@@ -131,7 +336,7 @@
           align: 'start',
           value: 'kd_nota',
         },
-        { text: 'Tanggal', value: 'tanggal' },
+        { text: 'Tanggal', value: 'tanggalan'},
         { text: 'Nama Supplier', value: 'nm_supplier' },
         { text: 'Tanggal Kirim', value: 'tgl_kirim' },
         { text: 'Status', value: 'status' },
@@ -150,26 +355,57 @@
         { text: 'Aksi', value: 'aksi', sortable: false },
       ],
       gudang: [],
+      item: [],
       editedIndex: -1,
       editedItem: {
-        kode: '',
-        nama: '',
-        alamat: '',
-        kota: '',
-        memo: '',
+        kd_nota: '',
+        tanggalan: '',
+        nm_supplier: '',
+        tgl_kirim: '',
+        status: '',
+        total: '',
+        diskon: '',
+        dpp: '',
+        ppn: '',
+        total_bayar: '',
+        keterangan: '',
+        referensi: '',
+        nomor_rangka: '',
+        nomor_polisi: '',
+        nomor_wo: '',
+        matauang: 'Rupiah',
+        kurs: '1.00',
+        payment_term: '',
+        apply: true,
+        dibuat_tgl: '',
       },
       defaultItem: {
-        kode: '',
-        nama: '',
-        alamat: '',
-        kota: '',
-        memo: '',
+        kd_nota: '',
+        tanggalan: '',
+        nm_supplier: '',
+        tgl_kirim: '',
+        status: '',
+        total: '',
+        diskon: '',
+        dpp: '',
+        ppn: '',
+        total_bayar: '',
+        keterangan: '',
+        referensi: '',
+        nomor_rangka: '',
+        nomor_polisi: '',
+        nomor_wo: '',
+        apply: true,
+        matauang: 'Rupiah',
+        kurs: '1.00',
+        payment_term: '',
+        dibuat_tgl: ''
       },
     }),
 
     computed: {
       formTitle () {
-        return this.editedIndex === -1 ? 'Tambahkan Gudang' : 'Edit Gudang'
+        return this.editedIndex === -1 ? 'Purchase Order' : 'Edit Purchase Order'
       },
     },
 
@@ -180,8 +416,10 @@
     },
 
     created () {
-      this.initialize()
+      this.initialize(),
+      setInterval(this.getNow, 1000)
     },
+    
 
     methods: {
       initialize () {
@@ -193,7 +431,6 @@
           },
         ]
       },
-
       editItem (item) {
         this.editedIndex = this.gudang.indexOf(item)
         this.editedItem = Object.assign({}, item)
@@ -202,7 +439,7 @@
 
       deleteItem (item) {
         const index = this.gudang.indexOf(item)
-        confirm('Anda Yakin Menghapus Gudang ini?') && this.gudang.splice(index, 1)
+        confirm('Anda Yakin Menghapus ini?') && this.gudang.splice(index, 1)
       },
 
       close () {
@@ -221,6 +458,12 @@
         }
         this.close()
       },
+      getNow: function(){
+        let today = new Date() 
+        let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        this.editedItem.dibuat_tgl = date
+
+      }
     },
   }
 </script>

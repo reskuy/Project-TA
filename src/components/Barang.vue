@@ -4,6 +4,8 @@
     :items="barang"
     sort-by="kode"
     class="elevation-1"
+    loading="loadingtrue"
+    loading-text="Mohon Tunggu"
   >
     <template v-slot:top>
       <v-toolbar flat color="white">
@@ -246,7 +248,7 @@ import api from "@/axios/http";
 
   export default {
     data: () => ({
-      
+      loadingtrue:false,
       dialog: false,
       dialog1 : false,
       dialog2 : false,

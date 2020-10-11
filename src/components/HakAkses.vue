@@ -71,7 +71,7 @@
       </v-dialog>
     </v-toolbar>
   </template>
-  <template v-slot:item.aksi="{ item }">
+  <template v-slot:[`item.aksi`]="{ item }">
     <v-icon
     small
     class="mr-2"
