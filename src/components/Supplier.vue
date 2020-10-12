@@ -104,6 +104,7 @@
   </v-data-table>
 </template>
 <script>
+import api from '@/axios/http'
   export default {
     data: () => ({
       dialog: false,
@@ -171,43 +172,79 @@
       },
     },
 
-    created () {
-      this.initialize()
+    mounted () {
+      this.getSupplier()
     },
 
     methods: {
-      initialize () {
-        this.supplier = [
-          {
-            kode: '0101/0001',
-            nama: 'CHAKRA JAWARA',
-            badanhukum: 'PT',
-            alamat: 'Jln. Jaka Karsa',
-            kota: 'Jakarta',
-            negara: 'INDONESIA',
-            contactperson: '05320',
-            aktif: '',
-            kreditlimit: '2000000',
-            lamakredit: '1 Tahun',
-            npwp: '209348582',
-            nppkp: '402921282',
+      getSupplier() {
+        api.get('/supplier').then(
+          result => {
+            console.log(result.data)
+            this.supplier = result.data
           },
-          {
-            kode: '0101/0002',
-            nama: 'KOBEXINDO',
-            badanhukum: 'PT',
-            alamat: 'Jln. P Sunandar',
-            kota: 'Samarinda',
-            negara: 'INDONESIA',
-            contactperson: '07640',
-            aktif: '',
-            kreditlimit: '1000000',
-            lamakredit: '1 Tahun',
-            npwp: '329423487',
-            nppkp: '389427394',
-          },
-          
-        ]
+          error => {
+            console.error(error)
+          }
+        )
+      },
+      TambahkanSupplier() {
+        api.post('/supplier',
+          { kode: this.editedItem.kode,
+            nama: this.editedItem.nama,
+            merk: this.editedItem.merk,
+            kategori: this.editedItem.kategori,
+            partnumber1: this.editedItem.partnumber1,
+            partnumber2: this.editedItem.partnumber2,
+            kendaraan: this.editedItem.kendaraan,
+            kd_suplier: this.editedItem.kd_suplier,
+            dimensi: this.editedItem.dimensi,
+            aktif: this.editedItem.aktif
+          }
+        ).then((res) => {
+          this.kode = ''
+          this.nama = ''
+          this.merk = ''
+          this.kategori = ''
+          this.partnumber1 = ''
+          this.partnumber2 = ''
+          this.kendaraan = ''
+          this.kd_suplier = ''
+          this.dimensi = ''
+          this.aktif = ''
+          console.log(res)
+        }).catch((err) => {
+          console.log(err)
+        })
+      },
+      HapusSupplier(supplier, index) {
+        api.delete('/supplier/'+ supplier.id
+        ).then((res) => {
+          this.supplier.splice(index, 1)
+          console.log(res)
+        }).catch((err) => {
+          console.log(err)
+        })
+      },
+      UpdateSupplier(barang) {
+        api.put('/api/supplier/' + barang.id,
+          { kode: this.editedItem.kode,
+            nama: this.editedItem.nama,
+            merk: this.editedItem.merk,
+            kategori: this.editedItem.kategori,
+            partnumber1: this.editedItem.partnumber1,
+            partnumber2: this.editedItem.partnumber2,
+            kendaraan: this.editedItem.kendaraan,
+            kd_suplier: this.editedItem.kd_suplier,
+            dimensi: this.editedItem.dimensi,
+            aktif: this.editedItem.aktif
+          }
+        ).then((res) => {
+          this.kode = ''
+          console.log(res)
+        }).catch((err) => {
+          console.log(err)
+        })
       },
 
       editItem (item) {
@@ -218,7 +255,10 @@
 
       deleteItem (item) {
         const index = this.supplier.indexOf(item)
-        confirm('Anda Yakin Menghapus Supplier ini?') && this.supplier.splice(index, 1)
+        var hapus = confirm('Anda Yakin Menghapus Barang ini?')
+        if (hapus) {
+        this.HapusSupplier(item, index)
+      }
       },
 
       close () {
@@ -234,6 +274,7 @@
           Object.assign(this.supplier[this.editedIndex], this.editedItem)
         } else {
           this.supplier.push(this.editedItem)
+          this.TambahkanSupplier(this.editedItem)
         }
         this.close()
       },

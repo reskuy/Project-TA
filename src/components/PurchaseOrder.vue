@@ -1,7 +1,7 @@
 <template>
   <v-data-table
   dense
-    :headers="headers"
+    :headers="selectedHeaders"
     :items="gudang"
     sort-by="kode"
     class="elevation-1"
@@ -21,6 +21,29 @@
         <v-toolbar-title>List Purchase Order</v-toolbar-title>
 
           <v-spacer></v-spacer>
+          <v-col>
+          <v-select
+      max-width="200"
+      v-model="valueHeaders"
+      :items="headers"
+      label="Pilih Group"
+      multiple
+      class="mb-0"
+      return-object
+    >
+      <template v-slot:selection="{ item, index }">
+        <v-chip v-if="index === 0">
+          <span>{{ item.text }}</span>
+        </v-chip>
+        <span
+          v-if="index === 1"
+          class="grey--text caption"
+        >(+{{ valueHeaders.length - 1 }} lainnya)</span>
+      </template>
+    </v-select>
+    </v-col>
+
+
             <v-dialog
               v-model="dialog"
               max-width="1200px"
@@ -47,7 +70,7 @@
 
               <v-card-text>
                 <v-container>
-                  <v-row>
+                  <v-row dense>
                     <v-col cols="14"  md="6">
                       <v-text-field outlined dense
                         v-model="editedItem.kd_nota" 
@@ -120,11 +143,14 @@
                   <v-col cols="14"  md="6">
                     <v-combobox
                      v-model="editedItem.nm_supplier"
-                      :items="nama_supplier"
+                      :items="data_supplier"
+                      item-text="nama"
+                      
                        label="Supplier"
                        outlined
                         dense
                     ></v-combobox>
+                    {{editedItem.nm_supplier}}
                   </v-col>
 
                   <v-col cols="14"  md="6">
@@ -166,14 +192,15 @@
                       label="Refrensi">
                     </v-text-field>
                   </v-col>
-
                   <v-col cols="12"  md="5">
-                    <v-text-field outlined dense
-                      v-model="editedItem.nomor_wo" 
-                      label="Nomor WO"
+        
+                    <v-text-field
+                     v-model="editedItem.nomor_wo"
                       
-                      >
-                    </v-text-field>
+                       label="Nomor WO"
+                       outlined
+                        dense
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="2"  md="1">
                     <v-dialog
@@ -208,7 +235,6 @@
         single-line
         hide-details
       ></v-text-field>
-      <p>{{ selected }}</p>
     </v-card-title>
     <v-data-table
     v-model="selected"
@@ -249,24 +275,55 @@
                       label="Nomor Rangka">
                     </v-text-field>
                   </v-col>
-
+                 
+{{selected}}
             
 
                   <v-col cols="14"  md="6">
                   <v-btn color="success" text >Load Part Order</v-btn>
                   </v-col>
                   <v-col cols="14"  md="6">
-                    <v-switch 
-                      v-model="GudangSwitchAktif" 
-                      color="primary" 
-                      label=" Aktif">
-                    </v-switch>
+                    
                   </v-col>
                   <v-col cols="12">
                    <v-card>
                  <ItemsPurchaseOrder/>
                   </v-card>
                   </v-col>
+                  <v-col cols="12"  md="8">
+                    <v-text-field 
+                     v-model="editedItem.nomor_wo"
+                       label="Keterangan"
+                       outlined
+                        dense
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6" md="4">
+                    <v-text-field
+                     v-model="editedItem.nomor_wo"
+                      
+                       label="Keterangan"
+                       outlined
+                        dense
+                    ></v-text-field></v-col>
+
+                     <v-col cols="5" md="2" offset-md="8">
+                    <v-text-field
+                     v-model="editedItem.nomor_wo"
+                      
+                       label="Keterangan"
+                       outlined
+                        dense
+                    ></v-text-field></v-col>
+                  <v-col cols="5" md="2" offset-md="0">
+                    <v-text-field
+                     v-model="editedItem.nomor_wo"
+                      
+                       label="Keterangan"
+                       outlined
+                        dense
+                    ></v-text-field></v-col>
+                  
                 </v-row>
               </v-container>
             </v-card-text>
@@ -313,6 +370,7 @@
     </v-data-table>
 </template>
 <script>
+import api from '@/axios/http'
 import ItemsPurchaseOrder from '@/views/purchase_order/items'
   export default {
     components: {
@@ -326,12 +384,10 @@ import ItemsPurchaseOrder from '@/views/purchase_order/items'
       search: '',
       menu_tanggal1: false,
       menu_tanggal2: false,
-      nama_supplier: [
-          'reski',
-          'endhy',
-          'bayu',
-        ],
+      data_supplier: [],
 
+      valueHeaders: [],
+      selectedHeaders: [],
       matauang: [
           'Rupiah',
           'Dollar',
@@ -365,6 +421,7 @@ import ItemsPurchaseOrder from '@/views/purchase_order/items'
 
       singleSelect: true,
       selected: [],
+
       headerswo: [
         {
           text: 'Kode WO',
@@ -383,6 +440,7 @@ import ItemsPurchaseOrder from '@/views/purchase_order/items'
       itemspo: [],
       editedIndex: -1,
       editedItem: {
+        kd_wo: '',
         kd_nota: '',
         tanggalan: '',
         nm_supplier: '',
@@ -438,26 +496,80 @@ import ItemsPurchaseOrder from '@/views/purchase_order/items'
       dialog (val) {
         val || this.close()
       },
+      valueHeaders(val) {
+      this.selectedHeaders = val;
+    },
     },
 
     created () {
       this.initialize(),
+      this.selectedHeaders = this.headers,
       setInterval(this.getNow, 1000)
     },
-    
+    mounted() {
+      this.getSupplier()
+    },
 
     methods: {
+      getSupplier() {
+        api.get('/supplier').then(
+          result => {
+            console.log(result.data)
+            this.data_supplier = result.data
+          },
+          error => {
+            console.error(error)
+          }
+        )
+      },
       initialize () {
         this.gudang = [
           {
             kd_nota:'0101/PO/2006/000055',
-            tanggal:'06/06/2020',
-            nm_supplier:'Leonardo Gordfrans'
+            tanggalan:'06/06/2020',
+            nm_supplier:'LeonardoGordfrans',
+            total: '1.500.000.00',
+            diskon: '0.00',
+            dpp: '1.500.000.00',
+            ppn: '0.00',
+            total_bayar: '1.500.000.00',
+            keterangan: 'UP.OM',
+            referensi: '0101/OP/2006/000030',
+            nomor_polisi: 'KT5555DX',
+            nomor_wo: '0101/WO/2003/000140'
+          },
+          {
+            kd_nota:'0101/PO/2006/000055',
+            tanggalan:'06/06/2020',
+            nm_supplier:'Contoh2',
+            total: '1.500.000.00',
+            diskon: '0.00',
+            dpp: '1.500.000.00',
+            ppn: '0.00',
+            total_bayar: '1.500.000.00',
+            keterangan: 'UP.OM',
+            referensi: '0101/OP/2006/000030',
+            nomor_polisi: 'KT5555DX',
+            nomor_wo: '0101/WO/2003/000140'
+          },
+          {
+            kd_nota:'0101/PO/2006/000055',
+            tanggalan:'06/06/2020',
+            nm_supplier:'Contoh3',
+            total: '1.500.000.00',
+            diskon: '0.00',
+            dpp: '1.500.000.00',
+            ppn: '0.00',
+            total_bayar: '1.500.000.00',
+            keterangan: 'UP.OM',
+            referensi: '0101/OP/2006/000030',
+            nomor_polisi: 'KT5555DX',
+            nomor_wo: '0101/WO/2003/000140'
           },
         ],
         this.itemspo = [
           {
-            kd_wo: '1',
+            kd_wo: '0101/WO/2003/000650',
             tanggal: '2',
             nm_pelanggan: 'jajank',
             no_rangka: '1',
@@ -466,14 +578,14 @@ import ItemsPurchaseOrder from '@/views/purchase_order/items'
             keterangan: '2'
           },
           {
-            kd_wo: '2',
+            kd_wo: '0101/WO/2003/000190',
             tanggal: '2',
             nm_pelanggan: 'ujank',
             no_rangka: '1',
             no_pol : '1',
             no_mesin: '1',
             keterangan: '2'
-          }
+          },
         ]
       },
       editItem (item) {
@@ -507,7 +619,7 @@ import ItemsPurchaseOrder from '@/views/purchase_order/items'
         let today = new Date() 
         let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
         this.editedItem.dibuat_tgl = date
-
+        this.editedItem.tanggalan = date
       }
     },
   }

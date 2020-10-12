@@ -38,7 +38,6 @@
       dense 
     >           <span class="headline">{{ formTitle }}</span>
                    </v-app-bar>
-
             <v-card-text>
               <v-container>
                 <v-card-title>
@@ -118,6 +117,8 @@
 <script>
   export default {
     data: () => ({
+      search: '',
+      selected: '',
       dialog: false,
       dialogDelete: false,
       headers: [
@@ -177,11 +178,19 @@
 
       },
       defaultItem: {
-        name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0,
+       gudang: null,
+        barang: null,
+        nama: null,
+        partnumber1: null,
+        merk: null,
+        keterangan: null,
+        kendaraan: null,
+        eta: null,
+        jumlah: null,
+        satuan: null,
+        harga:null,
+        diskon: null,
+        subtotal: null
       },
     }),
 
@@ -205,6 +214,7 @@
     },
 
     methods: {
+      
       initialize () {
         this.itemspo = [
           {

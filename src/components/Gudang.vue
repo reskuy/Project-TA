@@ -121,6 +121,7 @@
 </template>
 
 <script>
+import api from '@/axios/http'
   export default {
     data: () => ({
       dialog: false,
@@ -167,21 +168,79 @@
       },
     },
 
-    created () {
-      this.initialize()
+    mounted() {
+      this.getGudang()
     },
 
     methods: {
-      initialize () {
-        this.gudang = [
-          {
-            kode: '0101/0001',
-            nama: 'GUDANG UTAMA',
-            alamat: 'JL. BUNG TOMO',
-            kota: 'SAMARINDA',
-            memo: '-',
+      getGudang() {
+        api.get('/gudang').then(
+          result => {
+            console.log(result.data)
+            this.gudang = result.data
           },
-        ]
+          error => {
+            console.error(error)
+          }
+        )
+      },
+      TambahkanGudang() {
+        api.post('/gudang',
+          { kode: this.editedItem.kode,
+            nama: this.editedItem.nama,
+            merk: this.editedItem.merk,
+            kategori: this.editedItem.kategori,
+            partnumber1: this.editedItem.partnumber1,
+            partnumber2: this.editedItem.partnumber2,
+            kendaraan: this.editedItem.kendaraan,
+            kd_suplier: this.editedItem.kd_suplier,
+            dimensi: this.editedItem.dimensi,
+            aktif: this.editedItem.aktif
+          }
+        ).then((res) => {
+          this.kode = ''
+          this.nama = ''
+          this.merk = ''
+          this.kategori = ''
+          this.partnumber1 = ''
+          this.partnumber2 = ''
+          this.kendaraan = ''
+          this.kd_suplier = ''
+          this.dimensi = ''
+          this.aktif = ''
+          console.log(res)
+        }).catch((err) => {
+          console.log(err)
+        })
+      },
+      HapusGudang(gudang, index) {
+        api.delete('/gudang/'+ gudang.id
+        ).then((res) => {
+          this.gudang.splice(index, 1)
+          console.log(res)
+        }).catch((err) => {
+          console.log(err)
+        })
+      },
+      UpdateGudang(barang) {
+        api.put('/api/gudang/' + barang.id,
+          { kode: this.editedItem.kode,
+            nama: this.editedItem.nama,
+            merk: this.editedItem.merk,
+            kategori: this.editedItem.kategori,
+            partnumber1: this.editedItem.partnumber1,
+            partnumber2: this.editedItem.partnumber2,
+            kendaraan: this.editedItem.kendaraan,
+            kd_suplier: this.editedItem.kd_suplier,
+            dimensi: this.editedItem.dimensi,
+            aktif: this.editedItem.aktif
+          }
+        ).then((res) => {
+          this.kode = ''
+          console.log(res)
+        }).catch((err) => {
+          console.log(err)
+        })
       },
 
       editItem (item) {
@@ -192,7 +251,10 @@
 
       deleteItem (item) {
         const index = this.gudang.indexOf(item)
-        confirm('Anda Yakin Menghapus Gudang ini?') && this.gudang.splice(index, 1)
+        var hapus = confirm('Anda Yakin Menghapus Barang ini?')
+        if (hapus) {
+        this.HapusGudang(item, index)
+      }
       },
 
       close () {
@@ -208,6 +270,7 @@
           Object.assign(this.gudang[this.editedIndex], this.editedItem)
         } else {
           this.gudang.push(this.editedItem)
+          this.TambahkanGudang(this.editedItem)
         }
         this.close()
       },
