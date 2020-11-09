@@ -1,435 +1,651 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="barang"
-    sort-by="kode"
-    class="elevation-1"
-    loading="loadingtrue"
-    loading-text="Mohon Tunggu"
-  >
-    <template v-slot:top>
-      <v-toolbar flat color="white">
-        <v-toolbar-title>Barang</v-toolbar-title>
-        <v-divider
-          class="mx-6"
-          inset
-          vertical
-        ></v-divider>    
-        <v-toolbar-title>Daftar Barang</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" max-width="600px">
-          <template v-slot:activator="{ on, additem }">
-            <v-btn
-              color="primary"
-              dark
-              class="mb-2"
-              v-bind="additem"
-              v-on="on"
-            >Tambahkan Barang</v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>               
-            <v-row>
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field v-model="editedItem.kode" label="Kode" :rules="rules"></v-text-field>
-                  </v-col>
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field v-model="editedItem.nama" label="Nama" :rules="rules"></v-text-field>
-                  </v-col>
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field v-model="editedItem.merk" label="Merk" :rules="rules"></v-text-field>
-                  </v-col>
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field v-model="editedItem.kategori" label="Kategori" :rules="rules"></v-text-field>
-                  </v-col>
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field v-model="editedItem.partnumber1" label="PartNumber 1" :rules="rules"></v-text-field>
-                  </v-col>
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field v-model="editedItem.partnumber2" label="PartNumber 2" :rules="rules"></v-text-field>
-                  </v-col>
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field v-model="editedItem.kendaraan" label="Kendaraan" :rules="rules"></v-text-field>
-                  </v-col>
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field v-model="editedItem.kd_suplier" label="Kode Suplier" :rules="rules"></v-text-field>
-                  </v-col>
-                  <v-col cols="18" sm="10" md="6">
-                    <v-text-field v-model="editedItem.dimensi" label="Dimensi" :rules="rules"></v-text-field>
-                  </v-col>
-                  <v-col cols="18" sm="10" md="6">
-                   <v-switch v-model="editedItem.aktif" color="primary" true-value="Aktif" false-value="tidak" label=" Aktif "></v-switch>
-                  </v-col>
-                </v-row>
-
-
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-col>
-  <div class="my-1">
- <v-btn color="primary"
- @click.stop="dialog1=true"
->Harga</v-btn>
-  </div>
-  <v-dialog v-model="dialog1" >
-     <v-card>
-    <v-card-title>
-      <v-col cols="12" sm="9">
-      Harga 
-      </v-col>
-      <v-col cols="12" sm="3">
-        
-      <v-text-field 
-        v-model="search1"
-        append-icon="mdi-magnify"
-        label="Search"
-        hide-details
-        clearable
-      ></v-text-field>     
-
-      </v-col>
-    </v-card-title>
-        <v-col>
-    <v-data-table
-    :headers="headers1"
-    :items="rasio"
-    sort-by="rasio"
-    class="elevation-1"
-  >
-    <template v-slot:top>
-      <v-toolbar flat color="white">
-        <v-toolbar-title><v-btn>satuan</v-btn></v-toolbar-title>
-        <v-divider
-          class="mx-6"
-          inset
-          vertical
-        ></v-divider> 
-        <v-toolbar-title><v-btn>harga jual</v-btn></v-toolbar-title> 
-         <v-divider
-          class="mx-6"
-          inset
-          vertical
-        ></v-divider>   
-        <v-toolbar-title><v-btn>harga beli</v-btn></v-toolbar-title> 
-        
-        <v-spacer></v-spacer>
-        <v-dialog v-model="dialog3" max-width="500px">
-          <template v-slot:activator="{ on, additem }">
-            <v-btn
-              color="primary"
-              dark
-              class="mb-2"
-              v-bind="additem"
-              v-on="on"
-            >Tambahkan Barang</v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6">
-                    <v-text-field v-model="editedItem.rasiokode" label="Rasio"></v-text-field>
-                  </v-col>
-                   <v-col cols="12" sm="6">
-                    <v-text-field v-model="editedItem.namaharga" label="Nama"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-text-field v-model="editedItem.hargajual" label="Harga Jual"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-text-field v-model="editedItem.hargabeli" label="Harga Beli"></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">Batal</v-btn>
-              <v-btn color="blue darken-1" text @click="save">Simpan</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-    </template>
-    <template v-slot:[`item.action`]= "{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
-        mdi-delete
-      </v-icon>
-    </template>
-    <template v-slot:no-data>
-      <v-btn color="primary">Reset</v-btn>
-    </template>
-  </v-data-table>
-        </v-col>
-    <v-col>
-
-    <v-data-table class="elevation-1"
-      
-      
-    ></v-data-table>
-    </v-col>
-    <v-col>
-    <v-data-table class="elevation-1"
-      
-    ></v-data-table>
-    </v-col>
-     </v-card>
-</v-dialog>
   
-</v-col >
- 
-<v-col >
-  <div class="my-1">
- <v-btn color="primary"
- @click.stop="dialog2=true"
- >Stock</v-btn>
-  </div>
-  <v-dialog v-model="dialog2">
-  <v-data-table
-    
-  >
-    
-  </v-data-table>
-  </v-dialog>
-</v-col >
+        <v-col cols="12" md="12">
+          <v-toolbar
+            flat
+            dark
+            dense
+            color='primary'
+            class="elevation-1"
+            >
+            <v-toolbar-title 
+              dark
+            >
+              <v-icon>mdi-cart</v-icon>
+             Barang
+            </v-toolbar-title>
+            <v-divider
+              class="mx-4"
+              inset
+              vertical
+            >
+            </v-divider>
+            <v-spacer></v-spacer>
+      <v-dialog
+              v-model="dialog"
+              max-width="1200px"
+            >
 
-              <v-btn color="error"  @click="close">Batal</v-btn>
-              <v-btn color="primary"  @click="save">Simpan</v-btn>
-              
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                dark
+                small
+                rounded
+                color="primary"
+                class="mb-2"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+            </template>
+
+            <v-card>
+              <v-toolbar
+                dark
+                dense
+                color= 'primary'
+                class="elevation-1"
+              >
+              <v-toolbar-title dark>
+                <v-icon>mdi-cart-plus</v-icon>
+              </v-toolbar-title>
+              <span class="headline">{{ formTitle }}</span>
+            </v-toolbar>
+            
+           <v-card-text>
+                <v-container>
+                  <v-row dense>
+                    <v-col cols="14"  md="6">
+                      <v-text-field outlined dense
+                        v-model="editedItem.kode"
+                        label="Kode">
+                      </v-text-field>
+                    </v-col>
+
+                  <v-col cols="14"  md="6">
+                   <v-text-field outlined dense
+                     v-model="editedItem.kdsupplier"
+                      label="Supplier" required>
+                    </v-text-field>
+
+                  </v-col>
+                  <v-col cols="14"  md="6">
+                    <v-text-field outlined dense
+                     v-model="editedItem.nama"
+                      label="Nama" required>
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="14"  md="6">
+                    <v-text-field outlined dense
+                      v-model="editedItem.merk"
+                      label="Merk">
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="14"  md="6">
+                    <v-text-field outlined dense
+                      v-model="editedItem.kategori"
+                      label="Kategori">
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="14"  md="6">
+                    <v-text-field outlined dense
+                       v-model="editedItem.partnumber1"
+                      label="Partnumber1">
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12"  md="6">
+        
+                    <v-text-field
+                     
+                      v-model="editedItem.kendaraan"
+                       label="Kendaraan"
+                       outlined
+                        dense
+                    ></v-text-field>
+                  </v-col>
+                  
+
+                  <v-col cols="12"  md="6">
+                    <v-text-field outlined dense
+                      v-model="editedItem.partnumber2"
+                      label="Partnumber2">
+                    </v-text-field>
+                  </v-col>     
+
+                  <v-col cols="12"  md="6">
+                    <v-text-field outlined dense
+                      v-model="editedItem.dimensi"
+                      label="Dimensi">
+                    </v-text-field>
+                  </v-col> 
+
+                  <v-col cols="12"  md="6">
+                    <v-text-field outlined dense
+                      v-model="editedItem.gudang"
+                      label="Gudang">
+                    </v-text-field>
+                  </v-col>   
+
+                  <v-col cols="12"  md="6">
+                    <v-text-field outlined dense
+                      v-model="editedItem.memo"
+                      label="Memo">
+                    </v-text-field>
+                  </v-col>     
+
+                  <v-col cols="12"  md="6">
+                    <v-text-field outlined dense
+                      v-model="editedItem.aktif"
+                      label="Aktif">
+                    </v-text-field>
+                  </v-col>     
+
+                  <v-col cols="12"  md="3">
+                    <v-text-field outlined dense
+                      v-model="editedItem.stokmin"
+                      label="Stok Minimum">
+                    </v-text-field>
+                  </v-col>   
+
+                  <v-col cols="12"  md="9">
+                    
+                  </v-col>   
+
+                  <v-col cols="12"  md="3">
+                    <v-text-field outlined dense
+                      v-model="editedItem.stokmaks"
+                      label="Stok Maksimum">
+                    </v-text-field>
+                  </v-col>         
+
+                  
+                  <v-col cols="14"  md="6">
+                  <v-btn color="success" text >Load Part Order</v-btn>
+                  </v-col>
+                  <v-col cols="14"  md="6">
+                    
+                  </v-col>
+                  <v-col cols="12">
+                   <v-card>
+                 <!-- <ItemsPurchaseOrder/> -->
+                  </v-card>
+                  </v-col>
+                  <v-col cols="12"  md="8">
+                    <v-text-field 
+                    
+                       label="Keterangan"
+                       outlined
+                        dense
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6" md="4">
+                    <v-text-field
+                     
+                      
+                       label="Keterangan"
+                       outlined
+                        dense
+                    ></v-text-field></v-col>
+
+                     <v-col cols="5" md="2" offset-md="8">
+                    <v-text-field
+                     
+                      
+                       label="Keterangan"
+                       outlined
+                        dense
+                    ></v-text-field></v-col>
+                  <v-col cols="5" md="2" offset-md="0">
+                    <v-text-field
+                     
+                      
+                       label="Keterangan"
+                       outlined
+                        dense
+                    ></v-text-field></v-col>
+                  
+                </v-row>
+              </v-container>
+            </v-card-text>
+   
+ 
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="error" text @click="close">Batal</v-btn>
+              <v-btn color="success" text @click="save">Simpan</v-btn>
             </v-card-actions>
           </v-card>
-        </v-dialog>
+
+            </v-dialog>
       </v-toolbar>
-    </template>
-    <template v-slot:[`item.aksi`]= "{ item }">
-      <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-        small
-        @click="deleteItem(item)"
-      >
-        mdi-delete
-      </v-icon>
-    </template>
-    <template v-slot:no-data>
-      <v-btn color="primary" @click="initialize">Reset</v-btn>
-    </template>
-  </v-data-table>
+
+            <div id="app">
+                <ejs-grid 
+                :dataSource="data"
+            height="200%"
+            width="100%"
+            :allowReordering = true
+            :editSettings='editSettings'
+            :selectionSettings='selectionOptions'
+            :allowGrouping='true'
+            :groupSettings='groupSettings'
+            :allowSorting='true'
+            :allowMultiSorting='true'
+            :allowFiltering='true'
+            :filterSettings='filterOptions'
+            :allowResizing='true'
+            :allowPaging='true'
+            :pageSettings='pageSettings'
+            :toolbar='toolbarOptions'
+            :commandClick="commandClick"
+                >
+                <e-columns>
+                <e-column field="Commands" headerText="Action" width="150" :commands="commands">
+                    <div class="btn-group">
+                              <button type="button" class="btn btn-default" (click)='prediemRowEdit($event)'>
+                                <i class="fa fa-pencil"></i></button>
+                              <button type="button" class="btn btn-default" (click)='prediemRowDelete($event)'>
+                                <i class="fa fa-trash"></i></button>
+                            </div>
+                </e-column>
+                    <e-column 
+                      :filter='filter'
+                      fieldText=''
+                      field='kode' 
+                      headerText='Kode' 
+                      textAlign='Left'
+                      width=180
+                      >
+                    </e-column>
+
+                      <e-column
+                  
+                      field='nama'
+                      headerText='Tanggal'
+                      width=150
+                      >
+                    </e-column>
+                    <!-- <ejs-datepicker field='tgl' headerText='Tanggal' width='150' id="datepicker" locale='id' ></ejs-datepicker> -->
+                    
+
+                    <e-column
+                      :filter='filter'
+                      field='merk'  
+                      headerText='Merk' 
+                      width=170
+                      >
+                    </e-column>
+
+                    <e-column
+                      field='kategori'
+                      headerText='Referensi'
+                      width=170
+                      >
+                    </e-column>
+
+                    <e-column
+                      field='total'
+                      headerText='Total'
+                      textAlign='Right'
+                      :format="{format:'C2', currency:'IDR' }"
+                      width=160
+                      >
+                    </e-column>
+
+                    <e-column
+                      field='partnumber1'
+                      headerText='partnumber1'
+                      textAlign='Right'
+                      format='C2'
+                      width=160
+                      >
+                    </e-column>
+
+                    <e-column
+                      field='partnumber2'
+                      headerText='partnumber2'
+                      textAlign='Right'
+                      width=160
+                      >
+                    </e-column>
+
+                    <e-column
+                      field='kendaraan'
+                      headerText='Kendaraan'
+                      textAlign='Right'
+                      width=160
+                      >
+                    </e-column>
+
+                    <e-column
+                      field='kdsupplier'
+                      headerText='Kode Supplier'
+                      textAlign='Right'
+                      width=160
+                      >
+                    </e-column>
+
+                    <e-column
+                      field='dimensi'
+                      headerText='Dimensi'
+                      textAlign='Right'
+                      width=160
+                      >
+                    </e-column>
+
+                  <e-column
+                    :filter='filter'
+                    field='aktif'
+                    headerText='Aktif'
+                    textAlign='Left'
+                    width=160
+                  >
+                  </e-column>
+
+                  <e-column
+                    :filter='filter'
+                    field='gudang'
+                    headerText='Gudang'
+                    textAlign='Left'
+                    width=160
+                  >
+                  </e-column>
+
+                  <e-column
+                    :filter='filter'
+                    field='stokmin'
+                    headerText='Stok Minimal'
+                    textAlign='Left'
+                    width=160
+                  >
+                  </e-column>
+
+                  <e-column
+                    :filter='filter'
+                    field='stokmaks'
+                    headerText='Stok Maksimal'
+                    textAlign='Left'
+                    width=160
+                  >
+                  </e-column>
+
+                </e-columns>
+                
+              </ejs-grid>
+            </div>
+        </v-col>
+ 
 </template>
 <script>
+import Vue from "vue";
 import api from "@/axios/http";
-
-  export default {
-    data: () => ({
-      loadingtrue:false,
-      dialog: false,
-      dialog1 : false,
-      dialog2 : false,
-      dialog3 : false,
-      headers: [
-        {
-          text: 'Kode',
-          align: 'start',
-          value: 'kode',
+import { DatePickerPlugin } from "@syncfusion/ej2-vue-calendars"
+import { GridPlugin, Toolbar, Page, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder } from "@syncfusion/ej2-vue-grids";
+import { loadCldr,L10n, setCulture, setCurrencyCode } from '@syncfusion/ej2-base';
+loadCldr(require('../cldr/id/currencies.json'),                 
+        require('../cldr/id/numbers.json'),  
+        require('../cldr/supplemental/numberingSystems.json'),
+        require('../cldr/id/timeZoneNames.json'),
+        require('../cldr/supplemental/weekData.json'),
+        require('../cldr/id/ca-gregorian.json'));  
+setCulture('id');
+setCurrencyCode('IDR');
+//import ItemsPurchaseOrder from '@/views/purchase_order/items'
+L10n.load({
+    'id': {
+       'datepicker': { placeholder: 'Tanggal', today: 'Hari ini' },
+        'grid': {
+          'Add': 'Tambahkan',
+          'Delete': 'Hapus',
+          'Cancel': 'Batal',
+          'Search': 'Pencarian',
+            'EmptyRecord': 'Record Kosong',
+            'GroupDropArea': 'Drag Data ke sini untuk Grouping',
+            'UnGroup': 'Klik di sini untuk memisahkan grup',
+            'EmptyDataSourceError': 'DataSource tidak boleh kosong pada pemuatan pertama, karena kolom dari dataSource di kisi kolom Buat Otomatis',
+            'Item': 'Item',
+            'Items': 'Item'
         },
-        { text: 'Nama', value: 'nama' },
-        { text: 'Merk', value: 'merk' },
-        { text: 'PartNumber 1', value: 'partnumber1' },
-        { text: 'PartNumber 2', value: 'partnumber2' },
-        { text: 'Kategori', value: 'kategori' },
-        { text: 'Kendaraan', value: 'kendaraan' },
-        { text: 'Kode Suplier', value: 'kd_suplier' },
-        { text: 'Dimensi', value: 'dimensi' },
-        { text: 'Aktif', value: 'aktif' },
-        { text: 'Aksi', value: 'aksi', sortable: false },
-      ],
-      headers1: [
-        {
-          text: 'Rasio',
-          align: 'start',
-          value: 'rasiokode',
-        },
-        { text: 'Nama', value: 'nama' },
-     
-        { text: 'Action', value: 'action', sortable: false },
-      ],
-      rules: [
-        value => !!value || 'Required.',
-        value => (value && value.length >= 1) || '',
-      ],
-
-      barang: [],
-      editedIndex: -1,
-      editedItem: {
-        kode: null,
-        nama: null,
-        merk: null,
-        kategori: null,
-        partnumber1: null,
-        partnumber2: null,
-        kendaraan: null,
-        kd_suplier: null,
-        dimensi: null,
-        aktif: null,
-      },
-      defaultItem: {
-        kode: null,
-        nama: null,
-        merk: null,
-        kategori: null,
-        partnumber1: null,
-        partnumber2: null,
-        kendaraan: null,
-        kd_suplier: null,
-        dimensi: null,
-        aktif: 'Tidak',
-      },
-    }),
-
-    computed: {
-      formTitle () {
-        return this.editedIndex === -1 ? 'Tambahkan Barang' : 'Edit Barang'
-      },
-    },
-
-    watch: {
-      dialog (val) {
-        val || this.close()
-      },
-    },
-     mounted() {
-      this.getBarang()
-    },
-
-    methods: {
-      getBarang() {
-        api.get('/barang').then(
-          result => {
-            console.log(result.data)
-            this.barang = result.data
-          },
-          error => {
-            console.error(error)
-          }
-        )
-      },
-      TambahkanBarang() {
-        api.post('/barang',
-          { kode: this.editedItem.kode,
-            nama: this.editedItem.nama,
-            merk: this.editedItem.merk,
-            kategori: this.editedItem.kategori,
-            partnumber1: this.editedItem.partnumber1,
-            partnumber2: this.editedItem.partnumber2,
-            kendaraan: this.editedItem.kendaraan,
-            kd_suplier: this.editedItem.kd_suplier,
-            dimensi: this.editedItem.dimensi,
-            aktif: this.editedItem.aktif
-          }
-        ).then((res) => {
-          this.kode = ''
-          this.nama = ''
-          this.merk = ''
-          this.kategori = ''
-          this.partnumber1 = ''
-          this.partnumber2 = ''
-          this.kendaraan = ''
-          this.kd_suplier = ''
-          this.dimensi = ''
-          this.aktif = ''
-          console.log(res)
-        }).catch((err) => {
-          console.log(err)
-        })
-      },
-      HapusBarang(barang, index) {
-        api.delete('/barang/'+ barang.id
-        ).then((res) => {
-          this.barang.splice(index, 1)
-          console.log(res)
-        }).catch((err) => {
-          console.log(err)
-        })
-      },
-      UpdateBarang(barang) {
-        api.put('/api/task/' + barang.id,
-          { kode: this.editedItem.kode,
-            nama: this.editedItem.nama,
-            merk: this.editedItem.merk,
-            kategori: this.editedItem.kategori,
-            partnumber1: this.editedItem.partnumber1,
-            partnumber2: this.editedItem.partnumber2,
-            kendaraan: this.editedItem.kendaraan,
-            kd_suplier: this.editedItem.kd_suplier,
-            dimensi: this.editedItem.dimensi,
-            aktif: this.editedItem.aktif
-          }
-        ).then((res) => {
-          this.kode = ''
-          console.log(res)
-        }).catch((err) => {
-          console.log(err)
-        })
-      },
-
-      editItem (item) {
-        this.editedIndex = this.barang.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-
-      deleteItem (item) {
-        const index = this.barang.indexOf(item)
-        var hapus = confirm('Anda Yakin Menghapus Barang ini?')
-        if (hapus) {
-        this.HapusBarang(item, index)
-      }
-      },
-
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.barang[this.editedIndex], this.editedItem)
-        } else {
-          this.barang.push(this.editedItem)
-          this.TambahkanBarang(this.editedItem)
+        'pager':{
+            'currentPageInfo': '{0} dari {1} halaman',
+            'totalItemsInfo': '({0} items)',
+            'firstPageTooltip': 'Ke halaman pertama',
+            'lastPageTooltip': 'Ke halaman terakhir',
+            'nextPageTooltip': 'Ke halaman selanjutnya',
+            'previousPageTooltip': 'Kembali ke halaman terakhir',
+            'nextPagerTooltip': 'Ke pager berikutnya',
+            'previousPagerTooltip': 'Ke halaman sebelumnya'
         }
-        this.close()
-      },
+    }
+});
+
+Vue.use(DatePickerPlugin);
+Vue.use(GridPlugin);
+
+export default {
+  components: {
+   //   ItemsPurchaseOrder
     },
-  }
+  data() {
+    return {
+            editedIndex: -1,
+            editedItem: {
+            kode: "",
+            nama: "",
+            merk: "",
+            kategori: "",
+            partnumber1: "",
+            partnumber2: "",
+            kendaraan: "",
+            kdsupplier: "",
+            dimensi: "",
+            aktif: "",
+            gudang: "",
+            memo: "",
+            stokmin: "",
+            stokmaks: ""
+        },
+        defaultItem: {
+            kode: "",
+            nama: "",
+            merk: "",
+            kategori: "",
+            partnumber1: "",
+            partnumber2: "",
+            kendaraan: "",
+            kdsupplier: "",
+            dimensi: "",
+            aktif: "",
+            gudang: "",
+            memo: "",
+            stokmin: "",
+            stokmaks: ""
+        },
+        dialog: false,
+        dataStateChange: false,
+        token : localStorage.getItem('token'),
+        data: [],
+        commands: [
+        {  buttonOption: { cssClass: 'e-flat Edit', iconCss: 'e-edit e-icons' } },
+        { buttonOption: { cssClass: 'e-flat Delete', iconCss: 'e-delete e-icons' } },
+        ],
+      groupSettings: { allowReordering: true },
+      selectionOptions: { type: 'Multiple' },
+      toolbarOptions: ['Search', 'Add', 'Edit', 'Delete', 'Update', 'Cancel'],
+      pageSettings: {pageSizes: ['5','10','All']},
+      filterOptions: { type: 'Menu' },
+      filter: { type : 'CheckBox' },
+      editSettings: { showDeleteConfirmDialog: true, allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Normal'},
+      
+       
+      footerSum: function () {
+        return  { template : Vue.component('SumTemplate', {
+            template: `<span>Sum: {{data.Sum}}</span>`,
+            data () {return { data: {}};}
+            })
+          }
+      },
+      footerMax: function () {
+        return  { template : Vue.component('MaxTemplate', {
+            template: `<span>Max: {{data.Max}}</span>`,
+            data () {return { data: {}};}
+            })
+          }
+      }
+    };
+  },
+  provide: {
+    grid: [Page, Toolbar, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder]
+  },
+  mounted() {
+    this.getData()
+  },
+  watch: {
+     dialog(val){
+       val || this.close();
+     },
+   },
+   computed: {
+        formTitle(){
+            return this.editedIndex === -1 ? "Tambah Barang" : "Edit Gudang";
+        }
+   },
+  methods: {
+    save(){
+            if(this.formTitle === "Tambah Barang"){
+                this.TambahData()
+            }else{
+                this.UpdateData()
+            }
+            this.close()
+            
+        },
+    TambahData(){
+            api.post('/barang?token='+this.token, {
+            kode: this.editedItem.kode,
+            nama: this.editedItem.nama,
+            merk: this.editedItem.merk,
+            kategori: this.editedItem.kategori,
+            partnumber1: this.editedItem.partnumber1,
+            partnumber2: this.editedItem.partnumber2,
+            kendaraan: this.editedItem.kendaraan,
+            kdsupplier: this.editedItem.kdsupplier,
+            dimensi: this.editedItem.dimensi,
+            aktif: this.editedItem.aktif,
+            gudang: this.editedItem.gudang,
+            memo: this.editedItem.memo,
+            stokmin: this.editedItem.stokmin,
+            stokmaks: this.editedItem.stokmaks
+        })
+        .then((res) => {
+            this.nama = ''
+            this.merk = ''
+            this.kategori=''
+            this.partnumber1=''
+            this.partnumber2=''
+            this.kendaraan=''
+            this.ksupplier=''
+            this.dimensi=''
+            this.aktif=''
+            this.gudang=''
+            this.memo=''
+            this.stokmin=''
+            this.stokmaks=''
+            console.log(res)
+            this.close()
+            this.getData()
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+        },
+        UpdateData(){
+        api.put('/barang/' + this.editedItem.id +'?token='+this.token, {
+            kode: this.editedItem.kode,
+            nama: this.editedItem.nama,
+            merk: this.editedItem.merk,
+            kategori: this.editedItem.kategori,
+            partnumber1: this.editedItem.partnumber1,
+            partnumber2: this.editedItem.partnumber2,
+            kendaraan: this.editedItem.kendaraan,
+            kdsupplier: this.editedItem.kdsupplier,
+            dimensi: this.editedItem.dimensi,
+            aktif: this.editedItem.aktif,
+            gudang: this.editedItem.gudang,
+            memo: this.editedItem.memo,
+            stokmin: this.editedItem.stokmin,
+            stokmaks: this.editedItem.stokmaks
+        })
+        .then((res)=>{
+            this.nama = ''
+            this.merk = ''
+            this.kategori=''
+            this.partnumber1=''
+            this.partnumber2=''
+            this.kendaraan=''
+            this.ksupplier=''
+            this.dimensi=''
+            this.aktif=''
+            this.gudang=''
+            this.memo=''
+            this.stokmin=''
+            this.stokmaks=''
+            console.log(res)
+            this.close()
+            this.getData()
+        })
+        .catch((err)=> {
+            console.log(err)
+        })
+        },
+
+        close() {
+        this.dialog = false;
+        this.editedItem = this.defaultItem
+        this.editedIndex = -1
+        },
+        commandClick: function(args) {
+        if (args.target.classList.contains("custombutton")) {
+            let data = JSON.stringify(args.rowData)
+            console.log(data)
+        } else if (args.target.classList.contains("Delete")) {
+            var r = confirm("Yakin Hapus Data?");
+            if (r == true) {
+                api.delete('/gudangs/'+args.rowData.id+'?token='+this.token)
+                .then((res)=> {
+                    // this.item.splice(index, 1)
+                    console.log(res)
+                    this.getData()
+                })
+                .catch((err)=> {
+                    console.log(err)
+                })
+            } 
+        } else if (args.target.classList.contains('Edit')) {
+            let data = args
+            this.editedIndex = 1;
+            console.log(data)
+            this.editedItem = data.rowData
+            this.dialog = true
+        }},
+
+        actionComplete(args) {
+        console.log(args)
+    },
+        getData(){
+            api.get('/barang?token='+this.token).then(
+        res=>{
+            console.log(res)
+            this.data = res.data
+        },
+        err => {
+            console.log(err)
+        })},
+  },
+}
 </script>
+

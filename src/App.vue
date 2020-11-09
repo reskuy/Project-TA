@@ -22,3 +22,6 @@ export default {
   }),
 };
 </script>
+<style>
+@import url(https://cdn.syncfusion.com/ej2/material.css);
+</style>
