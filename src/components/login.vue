@@ -12,42 +12,8 @@
       </v-col>
 
       <v-col cols="12" class="mb-2">
-        <!-- <v-card class="mx-auto" max-width="600" outlined>
-          <v-list-item three-line>
-            <v-list-item-content>
-              <div class="overline mb-4">Login Form</div>
-              <v-form ref="form" @submit.prevent="submit">
-                <v-text-field label="E-mail" v-model="email" required></v-text-field>
-
-                <v-text-field
-                  v-model="password"
-                  :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                  :type="show1 ? 'text' : 'password'"
-                  label="Password"
-                  hint="At least 8 characters"
-                  counter
-                  @click:append="show1 = !show1"
-                ></v-text-field>
-
-                <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
-
-                <v-btn color="success" type="submit" @click.prevent="login">Log-in</v-btn>
-                <v-col md-12 class="mt-2">
-                  <p>
-                    Belum Punya Akun?
-                    <router-link to="register">Klik disini</router-link>
-                  </p>
-                </v-col>
-              </v-form>
-            </v-list-item-content>
-          </v-list-item>
-        </v-card> -->
-
         <div class="login">
           <form action="" class="form">
-            <div class="form-group">
-              <input type="text" placeholder="Email1" class="form-control" v-model="email1">
-            </div>
             <div class="form-group">
               <input type="text" placeholder="Email" class="form-control" v-model="credentials.email">
             </div>

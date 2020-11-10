@@ -138,10 +138,13 @@
                   </v-col>     
 
                   <v-col cols="12"  md="6">
-                    <v-text-field outlined dense
+                    <v-switch outlined dense
                       v-model="editedItem.aktif"
-                      label="Aktif">
-                    </v-text-field>
+                      label="Aktif"
+                      true-value="True"
+                      false-value="False"
+                      >
+                    </v-switch>
                   </v-col>     
 
                   <v-col cols="12"  md="3">
@@ -226,7 +229,7 @@
             <div id="app">
                 <ejs-grid 
                 :dataSource="data"
-            height="200%"
+            height="300"
             width="100%"
             :allowReordering = true
             :editSettings='editSettings'
@@ -240,11 +243,10 @@
             :allowResizing='true'
             :allowPaging='true'
             :pageSettings='pageSettings'
-            :toolbar='toolbarOptions'
             :commandClick="commandClick"
                 >
                 <e-columns>
-                <e-column field="Commands" headerText="Action" width="150" :commands="commands">
+                <e-column field="Commands" headerText="🔧" width="105" :commands="commands">
                     <div class="btn-group">
                               <button type="button" class="btn btn-default" (click)='prediemRowEdit($event)'>
                                 <i class="fa fa-pencil"></i></button>
@@ -258,15 +260,15 @@
                       field='kode' 
                       headerText='Kode' 
                       textAlign='Left'
-                      width=180
+                      width=120
                       >
                     </e-column>
 
                       <e-column
                   
                       field='nama'
-                      headerText='Tanggal'
-                      width=150
+                      headerText='Nama'
+                      width=250
                       >
                     </e-column>
                     <!-- <ejs-datepicker field='tgl' headerText='Tanggal' width='150' id="datepicker" locale='id' ></ejs-datepicker> -->
@@ -276,39 +278,29 @@
                       :filter='filter'
                       field='merk'  
                       headerText='Merk' 
-                      width=170
+                      width=140
                       >
                     </e-column>
 
                     <e-column
                       field='kategori'
-                      headerText='Referensi'
+                      headerText='Kategori'
                       width=170
                       >
                     </e-column>
 
                     <e-column
-                      field='total'
-                      headerText='Total'
-                      textAlign='Right'
-                      :format="{format:'C2', currency:'IDR' }"
-                      width=160
-                      >
-                    </e-column>
-
-                    <e-column
                       field='partnumber1'
-                      headerText='partnumber1'
-                      textAlign='Right'
-                      format='C2'
+                      headerText='Part Number 1'
+                      textAlign='Left'
                       width=160
                       >
                     </e-column>
 
                     <e-column
                       field='partnumber2'
-                      headerText='partnumber2'
-                      textAlign='Right'
+                      headerText='Part Number 2'
+                      textAlign='Left'
                       width=160
                       >
                     </e-column>
@@ -316,23 +308,23 @@
                     <e-column
                       field='kendaraan'
                       headerText='Kendaraan'
-                      textAlign='Right'
-                      width=160
+                      textAlign='Left'
+                      width=140
                       >
                     </e-column>
 
                     <e-column
                       field='kdsupplier'
                       headerText='Kode Supplier'
-                      textAlign='Right'
-                      width=160
+                      textAlign='Left'
+                      width=130
                       >
                     </e-column>
 
                     <e-column
                       field='dimensi'
                       headerText='Dimensi'
-                      textAlign='Right'
+                      textAlign='Left'
                       width=160
                       >
                     </e-column>
@@ -384,7 +376,7 @@
 import Vue from "vue";
 import api from "@/axios/http";
 import { DatePickerPlugin } from "@syncfusion/ej2-vue-calendars"
-import { GridPlugin, Toolbar, Page, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder } from "@syncfusion/ej2-vue-grids";
+import { GridPlugin, Page, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder } from "@syncfusion/ej2-vue-grids";
 import { loadCldr,L10n, setCulture, setCurrencyCode } from '@syncfusion/ej2-base';
 loadCldr(require('../cldr/id/currencies.json'),                 
         require('../cldr/id/numbers.json'),  
@@ -475,11 +467,10 @@ export default {
         ],
       groupSettings: { allowReordering: true },
       selectionOptions: { type: 'Multiple' },
-      toolbarOptions: ['Search', 'Add', 'Edit', 'Delete', 'Update', 'Cancel'],
       pageSettings: {pageSizes: ['5','10','All']},
       filterOptions: { type: 'Menu' },
       filter: { type : 'CheckBox' },
-      editSettings: { showDeleteConfirmDialog: true, allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Normal'},
+      editSettings: { showDeleteConfirmDialog: true, allowEditing: false, allowAdding: true, allowDeleting: true, mode: 'Normal'},
       
        
       footerSum: function () {
@@ -499,7 +490,7 @@ export default {
     };
   },
   provide: {
-    grid: [Page, Toolbar, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder]
+    grid: [Page, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder]
   },
   mounted() {
     this.getData()
@@ -511,7 +502,7 @@ export default {
    },
    computed: {
         formTitle(){
-            return this.editedIndex === -1 ? "Tambah Barang" : "Edit Gudang";
+            return this.editedIndex === -1 ? "Tambah Barang" : "Edit Barang";
         }
    },
   methods: {
@@ -644,6 +635,8 @@ export default {
         },
         err => {
             console.log(err)
+            this.$router.push('/')
+            this.localStorage.removeItem('token')
         })},
   },
 }

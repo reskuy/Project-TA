@@ -55,6 +55,9 @@ class BarangsController extends Controller
             "kdsupplier" => "required",
             "dimensi" => "required",
             "aktif" => "required",
+            "gudang" => "required",
+            "stokmin" => "required",
+            "stokmaks" => "required",
         ]);
         $barang = new Barangs;
         $barang->kode = $request->kode;
@@ -125,6 +128,12 @@ class BarangsController extends Controller
             "partnumber1" => "required",
             "partnumber2" => "required",
             "kendaraan" => "required",
+            "kdsupplier" => "required",
+            "dimensi" => "required",
+            "aktif" => "required",
+            "gudang" => "required",
+            "stokmin" => "required",
+            "stokmaks" => "required",
         ]);
         $barang = Barangs::find($id);
         $barang->kode = $request->kode;

@@ -106,24 +106,3 @@
   }
 
 </script>
-<style>
-/* width */
-::-webkit-scrollbar {
-  width: 1px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background:none; 
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #888; 
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555; 
-}
-</style>
