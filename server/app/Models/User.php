@@ -60,5 +60,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Gudangs::class,'created_by','id');
     }
+    public function purchase_orders()
+    {
+        return $this->hasMany(PurchaseOrders::class,'created_by','id');
+    }
 }
 

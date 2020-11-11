@@ -6,7 +6,7 @@
       </v-col>
 
       <v-col>
-        <h1 class="font-weight-bold mb-3">Welcome to Vuetify</h1>
+        <h1 class="font-weight-bold mb-3">Welcome to Project ERPTA</h1>
 
         <p class="subheading font-weight-regular">Please log in first</p>
       </v-col>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import api from '@/axios/http'
 export default {
   token: '',
   name:"login",
@@ -51,7 +51,7 @@ export default {
   mounted(){
     // this.token = localStorage.getItem('token')
     // if(localStorage.state.token !== ''){
-    //   this.$router.push('/customer')
+    // this.$router.push('/?#')
     // }
     // console.log(this.token)
   },
@@ -72,7 +72,7 @@ export default {
     //         // this.$router.replace({ name: 'home' });
     //     },
     login(){
-       axios.post('http://localhost:8000/api/login', this.credentials)
+       api.post('/login', this.credentials)
         .then(res=>{
           console.log(res.data.token)
           alert('ok')

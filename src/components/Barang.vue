@@ -1,5 +1,4 @@
 <template>
-  
         <v-col cols="12" md="12">
           <v-toolbar
             flat
@@ -165,52 +164,82 @@
                     </v-text-field>
                   </v-col>         
 
-                  
-                  <v-col cols="14"  md="6">
-                  <v-btn color="success" text >Load Part Order</v-btn>
-                  </v-col>
-                  <v-col cols="14"  md="6">
-                    
-                  </v-col>
                   <v-col cols="12">
                    <v-card>
-                 <!-- <ItemsPurchaseOrder/> -->
+                <v-tabs v-model="tab"
+      background-color="gray"
+      dark
+      dense
+    >
+      <v-tabs-slider></v-tabs-slider>
+
+      <v-tab href="#tab-1">
+        Satuan
+      </v-tab>
+
+      <v-tab href="#tab-2">
+        Harga Jual
+      </v-tab>
+
+      <v-tab href="#tab-3">
+        Harga Beli
+      </v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="tab">
+      <v-tab-item value="tab-1" >
+        <v-card flat>
+          <v-data-table
+    dense
+    :headers="headertabsatuan"
+    :items="itemtabsatuan"
+    item-key="rasio"
+    class="elevation-1"
+  ></v-data-table>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item value="tab-2" >
+        <v-card flat>
+          <v-card-text>2</v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item value="tab-3" >
+        <v-card flat>
+          <v-card-text>3</v-card-text>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
                   </v-card>
                   </v-col>
-                  <v-col cols="12"  md="8">
-                    <v-text-field 
-                    
-                       label="Keterangan"
-                       outlined
-                        dense
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="6" md="4">
-                    <v-text-field
-                     
-                      
-                       label="Keterangan"
-                       outlined
-                        dense
-                    ></v-text-field></v-col>
 
-                     <v-col cols="5" md="2" offset-md="8">
-                    <v-text-field
-                     
-                      
-                       label="Keterangan"
-                       outlined
-                        dense
-                    ></v-text-field></v-col>
-                  <v-col cols="5" md="2" offset-md="0">
-                    <v-text-field
-                     
-                      
-                       label="Keterangan"
-                       outlined
-                        dense
-                    ></v-text-field></v-col>
-                  
+                  <v-col cols="12">
+                   <v-card>
+                <v-tabs v-model="tab1"
+      background-color="gray"
+      dark
+      dense
+    >
+      <v-tabs-slider></v-tabs-slider>
+      <v-tab href="#tab-1">
+        Stok
+      </v-tab>
+    </v-tabs>
+
+    <v-tabs-items v-model="tab1">
+      <v-tab-item value="tab-1" >
+        <v-card flat>
+          <v-data-table
+    dense
+    :headers="headertabstok"
+    :items="itemtabstok"
+    item-key="gudang"
+    class="elevation-1"
+  ></v-data-table>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items>
+                  </v-card>
+                  </v-col>
                 </v-row>
               </v-container>
             </v-card-text>
@@ -386,7 +415,7 @@ loadCldr(require('../cldr/id/currencies.json'),
         require('../cldr/id/ca-gregorian.json'));  
 setCulture('id');
 setCurrencyCode('IDR');
-//import ItemsPurchaseOrder from '@/views/purchase_order/items'
+
 L10n.load({
     'id': {
        'datepicker': { placeholder: 'Tanggal', today: 'Hari ini' },
@@ -420,10 +449,11 @@ Vue.use(GridPlugin);
 
 export default {
   components: {
-   //   ItemsPurchaseOrder
     },
   data() {
     return {
+            tab:false,
+            tab1:false,
             editedIndex: -1,
             editedItem: {
             kode: "",
@@ -457,6 +487,27 @@ export default {
             stokmin: "",
             stokmaks: ""
         },
+        itemtabsatuan: [],
+      headertabsatuan: [
+        {
+          text: 'Rasio',
+          align: 'start',
+          sortable: false,
+          value: 'rasio',
+        },
+        { text: 'Nama', value: 'nama' },
+      ],
+      itemtabstok: [],
+      headertabstok: [
+        {
+          text: 'Gudang',
+          align: 'start',
+          sortable: false,
+          value: 'gudang',
+        },
+        { text: 'Nama', value: 'nama' },
+        { text: 'Stock On Hand', value: 'stockonhand' },
+      ],
         dialog: false,
         dataStateChange: false,
         token : localStorage.getItem('token'),

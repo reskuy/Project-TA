@@ -378,7 +378,7 @@
                 <ejs-grid 
                 
                 :dataSource="data" height='200' width='100%'
-                :allowReordering='true'
+                :allowReordering = true
                 :editSettings='editSettings'
                 :selectionSettings='selectionOptions'
                 :allowGrouping='true'
@@ -390,14 +390,14 @@
                 :allowResizing='true'
                 :allowPaging='true'
                 :pageSettings='pageSettings'
-                :toolbar='toolbarOptions'
+                :commandClick="commandClick"
                 >
                 <e-columns>
                 
                     <e-column 
                       :filter='filter'
                       fieldText=''
-                      field='kd_nota' 
+                      field='KodeNota' 
                       headerText='Kode Nota' 
                       textAlign='Left'
                       width=180
@@ -405,8 +405,7 @@
                     </e-column>
 
                       <e-column
-                      format='dd/MM/yyyy'
-                      field='tgl'
+                      field='Tanggal'
                       editType='datepickeredit'
                       type="date"
                       headerText='Tanggal'
@@ -418,21 +417,21 @@
 
                     <e-column
                       :filter='filter'
-                      field='nm_supplier'  
+                      field='NamaSupplier'  
                       headerText='Nama Supplier' 
                       width=170
                       >
                     </e-column>
 
                     <e-column
-                      field='referensi'
+                      field='Referensi'
                       headerText='Referensi'
                       width=170
                       >
                     </e-column>
 
                     <e-column
-                      field='total'
+                      field='Total'
                       headerText='Total'
                       textAlign='Right'
                       :format="{format:'C2', currency:'IDR' }"
@@ -441,7 +440,7 @@
                     </e-column>
 
                     <e-column
-                      field='diskon'
+                      field='Diskon'
                       headerText='Diskon'
                       textAlign='Right'
                       format='C2'
@@ -450,7 +449,7 @@
                     </e-column>
 
                     <e-column
-                      field='dpp'
+                      field='DPP'
                       headerText='DPP'
                       textAlign='Right'
                       format='C2'
@@ -459,7 +458,7 @@
                     </e-column>
 
                     <e-column
-                      field='ppn'
+                      field='PPn'
                       headerText='PPn'
                       textAlign='Right'
                       format='C2'
@@ -468,7 +467,7 @@
                     </e-column>
 
                     <e-column
-                      field='total_bayar'
+                      field='TotalBayar'
                       headerText='Total Bayar'
                       textAlign='Right'
                       format='C2'
@@ -477,7 +476,15 @@
                     </e-column>
 
                     <e-column
-                      field='keterangan'
+                      field='Keterangan'
+                      headerText='Keterangan'
+                      textAlign='Right'
+                      width=160
+                      >
+                    </e-column>
+
+                    <e-column
+                      field='NomorRangka'
                       headerText='Keterangan'
                       textAlign='Right'
                       width=160
@@ -486,7 +493,7 @@
 
                   <e-column
                     :filter='filter'
-                    field='nomor_polisi'
+                    field='NomorPolisi'
                     headerText='No. Polisi'
                     textAlign='Left'
                     width=160
@@ -495,7 +502,7 @@
 
                   <e-column
                     :filter='filter'
-                    field='nomor_wo'
+                    field='NomorWO'
                     headerText='No Work Order'
                     textAlign='Left'
                     width=160
@@ -525,6 +532,7 @@
 </template>
 <script>
 import Vue from "vue";
+import api from "@/axios/http";
 import { DatePickerPlugin } from "@syncfusion/ej2-vue-calendars"
 import { GridPlugin, Toolbar, Page, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder } from "@syncfusion/ej2-vue-grids";
 import { loadCldr,L10n, setCulture, setCurrencyCode } from '@syncfusion/ej2-base';
@@ -574,218 +582,8 @@ export default {
     },
   data() {
     return {
-      data: [
-          {
-            kd_nota:'0101/PO/2006/000055',
-            tgl:'06/06/2020',
-            nm_supplier:'LeonardoGordfrans',
-            total: 3500000,
-            diskon: '0.00',
-            dpp: 1500000,
-            ppn: '0.00',
-            total_bayar: 2500000,
-            keterangan: 'UP.OM',
-            referensi: '0101/OP/2006/000030',
-            nomor_polisi: 'KT5555DX',
-            nomor_wo: '0101/WO/2003/000140'
-          },
-          {
-            kd_nota:'0101/PO/2006/000055',
-            tgl:'06/06/2020',
-            nm_supplier:'Contoh2',
-            total: 1500000,
-            diskon: '0.00',
-            dpp: 1500000,
-            ppn: '0.00',
-            total_bayar: 1500000,
-            keterangan: 'UP.OM',
-            referensi: '0101/OP/2006/000030',
-            nomor_polisi: 'KT5555DX',
-            nomor_wo: '0101/WO/2003/000140'
-          },
-          {
-            kd_nota:'0101/PO/2006/000055',
-            tgl:'06/06/2020',
-            nm_supplier:'Contoh3',
-            total: 1500000,
-            diskon: '0.00',
-            dpp: 1500000,
-            ppn: '0.00',
-            total_bayar: 1500000,
-            keterangan: 'UP.OM',
-            referensi: '0101/OP/2006/000030',
-            nomor_polisi: 'KT5555DX',
-            nomor_wo: '0101/WO/2003/000140'
-          },
-          {
-            kd_nota:'0101/PO/2006/000055',
-            tgl:'06/06/2020',
-            nm_supplier:'LeonardoGordfrans',
-            total: 3500000,
-            diskon: '0.00',
-            dpp: 1500000,
-            ppn: '0.00',
-            total_bayar: 2500000,
-            keterangan: 'UP.OM',
-            referensi: '0101/OP/2006/000030',
-            nomor_polisi: 'KT5555DX',
-            nomor_wo: '0101/WO/2003/000140'
-          },
-          {
-            kd_nota:'0101/PO/2006/000055',
-            tgl:'06/06/2020',
-            nm_supplier:'Contoh2',
-            total: 1500000,
-            diskon: '0.00',
-            dpp: 1500000,
-            ppn: '0.00',
-            total_bayar: 1500000,
-            keterangan: 'UP.OM',
-            referensi: '0101/OP/2006/000030',
-            nomor_polisi: 'KT5555DX',
-            nomor_wo: '0101/WO/2003/000140'
-          },
-          {
-            kd_nota:'0101/PO/2006/000055',
-            tgl:'06/06/2020',
-            nm_supplier:'Contoh3',
-            total: 1500000,
-            diskon: '0.00',
-            dpp: 1500000,
-            ppn: '0.00',
-            total_bayar: 1500000,
-            keterangan: 'UP.OM',
-            referensi: '0101/OP/2006/000030',
-            nomor_polisi: 'KT5555DX',
-            nomor_wo: '0101/WO/2003/000140'
-          },
-          {
-            kd_nota:'0101/PO/2006/000055',
-            tgl:'06/06/2020',
-            nm_supplier:'LeonardoGordfrans',
-            total: 3500000,
-            diskon: '0.00',
-            dpp: 1500000,
-            ppn: '0.00',
-            total_bayar: 2500000,
-            keterangan: 'UP.OM',
-            referensi: '0101/OP/2006/000030',
-            nomor_polisi: 'KT5555DX',
-            nomor_wo: '0101/WO/2003/000140'
-          },
-          {
-            kd_nota:'0101/PO/2006/000055',
-            tgl:'06/06/2020',
-            nm_supplier:'Contoh2',
-            total: 1500000,
-            diskon: '0.00',
-            dpp: 1500000,
-            ppn: '0.00',
-            total_bayar: 1500000,
-            keterangan: 'UP.OM',
-            referensi: '0101/OP/2006/000030',
-            nomor_polisi: 'KT5555DX',
-            nomor_wo: '0101/WO/2003/000140'
-          },
-          {
-            kd_nota:'0101/PO/2006/000055',
-            tgl:'06/06/2020',
-            nm_supplier:'Contoh3',
-            total: 1500000,
-            diskon: '0.00',
-            dpp: 1500000,
-            ppn: '0.00',
-            total_bayar: 1500000,
-            keterangan: 'UP.OM',
-            referensi: '0101/OP/2006/000030',
-            nomor_polisi: 'KT5555DX',
-            nomor_wo: '0101/WO/2003/000140'
-          },
-          {
-            kd_nota:'0101/PO/2006/000055',
-            tgl:'06/06/2020',
-            nm_supplier:'LeonardoGordfrans',
-            total: 3500000,
-            diskon: '0.00',
-            dpp: 1500000,
-            ppn: '0.00',
-            total_bayar: 2500000,
-            keterangan: 'UP.OM',
-            referensi: '0101/OP/2006/000030',
-            nomor_polisi: 'KT5555DX',
-            nomor_wo: '0101/WO/2003/000140'
-          },
-          {
-            kd_nota:'0101/PO/2006/000055',
-            tgl:'06/06/2020',
-            nm_supplier:'Contoh2',
-            total: 1500000,
-            diskon: '0.00',
-            dpp: 1500000,
-            ppn: '0.00',
-            total_bayar: 1500000,
-            keterangan: 'UP.OM',
-            referensi: '0101/OP/2006/000030',
-            nomor_polisi: 'KT5555DX',
-            nomor_wo: '0101/WO/2003/000140'
-          },
-          {
-            kd_nota:'0101/PO/2006/000055',
-            tgl:'06/06/2020',
-            nm_supplier:'Contoh3',
-            total: 1500000,
-            diskon: '0.00',
-            dpp: 1500000,
-            ppn: '0.00',
-            total_bayar: 1500000,
-            keterangan: 'UP.OM',
-            referensi: '0101/OP/2006/000030',
-            nomor_polisi: 'KT5555DX',
-            nomor_wo: '0101/WO/2003/000140'
-          },
-          {
-            kd_nota:'0101/PO/2006/000055',
-            tgl:'06/06/2020',
-            nm_supplier:'LeonardoGordfrans',
-            total: 3500000,
-            diskon: '0.00',
-            dpp: 1500000,
-            ppn: '0.00',
-            total_bayar: 2500000,
-            keterangan: 'UP.OM',
-            referensi: '0101/OP/2006/000030',
-            nomor_polisi: 'KT5555DX',
-            nomor_wo: '0101/WO/2003/000140'
-          },
-          {
-            kd_nota:'0101/PO/2006/000055',
-            tgl:'06/06/2020',
-            nm_supplier:'Contoh2',
-            total: 1500000,
-            diskon: '0.00',
-            dpp: 1500000,
-            ppn: '0.00',
-            total_bayar: 1500000,
-            keterangan: 'UP.OM',
-            referensi: '0101/OP/2006/000030',
-            nomor_polisi: 'KT5555DX',
-            nomor_wo: '0101/WO/2003/000140'
-          },
-          {
-            kd_nota:'0101/PO/2006/000055',
-            tgl:'06/06/2020',
-            nm_supplier:'Contoh3',
-            total: 1500000,
-            diskon: '0.00',
-            dpp: 1500000,
-            ppn: '0.00',
-            total_bayar: 1500000,
-            keterangan: 'UP.OM',
-            referensi: '0101/OP/2006/000030',
-            nomor_polisi: 'KT5555DX',
-            nomor_wo: '0101/WO/2003/000140'
-          },
-        ],
+      data: [],
+      token : localStorage.getItem('token'),
       groupSettings: { allowReordering: true },
       selectionOptions: { type: 'Multiple' },
       toolbarOptions: ['Search', 'Add', 'Edit', 'Delete', 'Update', 'Cancel'],
@@ -814,7 +612,154 @@ export default {
   },
   provide: {
     grid: [Page, Toolbar, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder]
-  }
+  },
+  mounted() {
+    this.getData()
+  },
+  watch: {
+     dialog(val){
+       val || this.close();
+     },
+   },
+   computed: {
+        formTitle(){
+            return this.editedIndex === -1 ? "Tambah Barang" : "Edit Barang";
+        }
+   },
+  methods: {
+    save(){
+            if(this.formTitle === "Tambah Barang"){
+                this.TambahData()
+            }else{
+                this.UpdateData()
+            }
+            this.close()
+            
+        },
+    TambahData(){
+            api.post('/barang?token='+this.token, {
+            kode: this.editedItem.kode,
+            nama: this.editedItem.nama,
+            merk: this.editedItem.merk,
+            kategori: this.editedItem.kategori,
+            partnumber1: this.editedItem.partnumber1,
+            partnumber2: this.editedItem.partnumber2,
+            kendaraan: this.editedItem.kendaraan,
+            kdsupplier: this.editedItem.kdsupplier,
+            dimensi: this.editedItem.dimensi,
+            aktif: this.editedItem.aktif,
+            gudang: this.editedItem.gudang,
+            memo: this.editedItem.memo,
+            stokmin: this.editedItem.stokmin,
+            stokmaks: this.editedItem.stokmaks
+        })
+        .then((res) => {
+            this.nama = ''
+            this.merk = ''
+            this.kategori=''
+            this.partnumber1=''
+            this.partnumber2=''
+            this.kendaraan=''
+            this.ksupplier=''
+            this.dimensi=''
+            this.aktif=''
+            this.gudang=''
+            this.memo=''
+            this.stokmin=''
+            this.stokmaks=''
+            console.log(res)
+            this.close()
+            this.getData()
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+        },
+        UpdateData(){
+        api.put('/barang/' + this.editedItem.id +'?token='+this.token, {
+            kode: this.editedItem.kode,
+            nama: this.editedItem.nama,
+            merk: this.editedItem.merk,
+            kategori: this.editedItem.kategori,
+            partnumber1: this.editedItem.partnumber1,
+            partnumber2: this.editedItem.partnumber2,
+            kendaraan: this.editedItem.kendaraan,
+            kdsupplier: this.editedItem.kdsupplier,
+            dimensi: this.editedItem.dimensi,
+            aktif: this.editedItem.aktif,
+            gudang: this.editedItem.gudang,
+            memo: this.editedItem.memo,
+            stokmin: this.editedItem.stokmin,
+            stokmaks: this.editedItem.stokmaks
+        })
+        .then((res)=>{
+            this.nama = ''
+            this.merk = ''
+            this.kategori=''
+            this.partnumber1=''
+            this.partnumber2=''
+            this.kendaraan=''
+            this.ksupplier=''
+            this.dimensi=''
+            this.aktif=''
+            this.gudang=''
+            this.memo=''
+            this.stokmin=''
+            this.stokmaks=''
+            console.log(res)
+            this.close()
+            this.getData()
+        })
+        .catch((err)=> {
+            console.log(err)
+        })
+        },
+
+        close() {
+        this.dialog = false;
+        this.editedItem = this.defaultItem
+        this.editedIndex = -1
+        },
+        commandClick: function(args) {
+        if (args.target.classList.contains("custombutton")) {
+            let data = JSON.stringify(args.rowData)
+            console.log(data)
+        } else if (args.target.classList.contains("Delete")) {
+            var r = confirm("Yakin Hapus Data?");
+            if (r == true) {
+                api.delete('/gudangs/'+args.rowData.id+'?token='+this.token)
+                .then((res)=> {
+                    // this.item.splice(index, 1)
+                    console.log(res)
+                    this.getData()
+                })
+                .catch((err)=> {
+                    console.log(err)
+                })
+            } 
+        } else if (args.target.classList.contains('Edit')) {
+            let data = args
+            this.editedIndex = 1;
+            console.log(data)
+            this.editedItem = data.rowData
+            this.dialog = true
+        }},
+
+        actionComplete(args) {
+        console.log(args)
+    },
+        getData(){
+            api.get('/po?token='+this.token).then(
+        res=>{
+            console.log(res)
+            this.data = res.data
+        },
+        err => {
+            console.log(err)
+            // this.$router.push('/')
+            // this.localStorage.removeItem('token')
+        })},
+  },
 }
 </script>
 

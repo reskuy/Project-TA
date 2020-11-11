@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\BarangsController;
 use App\Http\Controllers\GudangsController;
+use App\Http\Controllers\PurchaseOrdersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,7 @@ Route::group(["middleware"=>"auth.jwt"], function(){
     Route::resource("customers", CustomersController::class);
     Route::resource("barang", BarangsController::class);
     Route::resource("gudang", GudangsController::class);
+    Route::resource("po", PurchaseOrdersController::class);
     // Route::get("customers",[CustomersController::class, 'index']);
 });
 // Route::resource("customers", CustomersController::class);
