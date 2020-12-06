@@ -7,7 +7,10 @@ use App\Http\Controllers\CustomersController;
 use App\Http\Controllers\BarangsController;
 use App\Http\Controllers\GudangsController;
 use App\Http\Controllers\PurchaseOrdersController;
-
+use App\Http\Controllers\WorkOrdersController;
+use App\Http\Controllers\SuppliersController;
+use App\Http\Controllers\JenisPekerjaanController;
+use App\Http\Controllers\InternalPartOrderController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,6 +35,10 @@ Route::group(["middleware"=>"auth.jwt"], function(){
     Route::resource("barang", BarangsController::class);
     Route::resource("gudang", GudangsController::class);
     Route::resource("po", PurchaseOrdersController::class);
+    Route::resource("wo", WorkOrdersController::class);
+    Route::resource("supplier", SuppliersController::class);
+    Route::resource("jenispekerjaan", JenisPekerjaanController::class);
+    Route::resource("ipo", InternalPartOrderController::class);
     // Route::get("customers",[CustomersController::class, 'index']);
 });
 // Route::resource("customers", CustomersController::class);

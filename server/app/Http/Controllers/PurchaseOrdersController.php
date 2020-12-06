@@ -50,7 +50,7 @@ class PurchaseOrdersController extends Controller
         $po->Status = $request->Status;
         $po->Total = $request->Total;
         $po->Diskon = $request->Diskon;
-        $po->DPP = $request->DPP;
+        $po->DPp = $request->DPp;
         $po->PPn = $request->PPn;
         $po->TotalBayar = $request->TotalBayar;
         $po->Keterangan = $request->Keterangan;
@@ -118,7 +118,7 @@ class PurchaseOrdersController extends Controller
             "Status" => "required",
             "Total" => "required",
             "Diskon" => "required",
-            "DPP" => "required",
+            "DPp" => "required",
             "PPn" => "required",
             "TotalBayar" => "required",
             "Keterangan" => "required",
@@ -141,7 +141,7 @@ class PurchaseOrdersController extends Controller
         $po->Status = $request->Status;
         $po->Total = $request->Total;
         $po->Diskon = $request->Diskon;
-        $po->DPP = $request->DPP;
+        $po->DPp = $request->DPp;
         $po->PPn = $request->PPn;
         $po->TotalBayar = $request->TotalBayar;
         $po->Keterangan = $request->Keterangan;

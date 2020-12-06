@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGudangsTable extends Migration
+class CreateJenisPekerjaansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateGudangsTable extends Migration
      */
     public function up()
     {
-        Schema::create('gudangs', function (Blueprint $table) {
+        Schema::create('jenis_pekerjaans', function (Blueprint $table) {
             $table->id();
             $table->string('Kode');
             $table->string('Nama');
-            $table->string('Alamat');
-            $table->string('Kota');
-            $table->string('Aktif');
-            $table->string('Memo');
+            $table->string('GrupPekerjaan');
+            $table->string('GrupKendaraan');
+            $table->string('HargaJualDefault');
+            $table->string('HargaBeliDefault');
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ class CreateGudangsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('gudangs');
+        Schema::dropIfExists('jenis_pekerjaans');
     }
 }

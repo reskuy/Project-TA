@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 use JWTAuth;
-use App\Models\Gudangs;
+use App\Models\JenisPekerjaan;
 use Illuminate\Http\Request;
 
-class GudangsController extends Controller
+class JenisPekerjaanController extends Controller
 {
     protected $user;
 
@@ -13,7 +13,6 @@ class GudangsController extends Controller
     {
         $this->user = JWTAuth::parseToken()->authenticate();
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +20,7 @@ class GudangsController extends Controller
      */
     public function index()
     {
-        return Gudangs::all();
+        return JenisPekerjaan::all();
     }
 
     /**
@@ -42,26 +41,18 @@ class GudangsController extends Controller
      */
     public function store(Request $request)
     {
-        // $this->validate($request, [
-        //     "Nama" => "required",
-        //     "Alamat" => "required",
-        //     "Kota" => "required",
-        //     "Aktif" => "required",
-        //     "Memo" => "required",
-        // ]);
+        $jp = new JenisPekerjaan;
+        $jp->Kode = $request->Kode;
+        $jp->Nama = $request->Nama;
+        $jp->GrupPekerjaan = $request->GrupPekerjaan;
+        $jp->GrupKendaraan = $request->GrupKendaraan;
+        $jp->HargaJualDefault = $request->HargaJualDefault;
+        $jp->HargaBeliDefault = $request->HargaBeliDefault;
 
-        $gudang = new Gudangs;
-        $gudangs->Kode = $request->Kode;
-        $gudang->Nama = $request->Nama;
-        $gudang->Alamat = $request->Alamat;
-        $gudang->Kota = $request->Kota;
-        $gudang->Aktif = $request->Aktif;
-        $gudang->Memo = $request->Memo;
-
-        if ($this->user->gudangs()->save($gudang)){
+        if ($this->user->jenis_pekerjaan()->save($jp)){
             return response()->json([
                 "status" => true,
-                "gudang" => $gudang
+                "jenis perkerjaan" => $jp
             ]);
         }
 
@@ -72,27 +63,26 @@ class GudangsController extends Controller
             ], 500);
         };
     }
-    
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Gudangs  $gudangs
+     * @param  \App\Models\JenisPekerjaan  $jenisPekerjaan
      * @return \Illuminate\Http\Response
      */
-    public function show(Gudangs $gudangs, $id)
+    public function show(JenisPekerjaan $jenisPekerjaan, $id)
     {
-        $gudangs = Gudangs::find($id);
-        return $gudangs;
+        $jp = JenisPekerjaan::find($id);
+        return $jp;
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Gudangs  $gudangs
+     * @param  \App\Models\JenisPekerjaan  $jenisPekerjaan
      * @return \Illuminate\Http\Response
      */
-    public function edit(Gudangs $gudangs)
+    public function edit(JenisPekerjaan $jenisPekerjaan)
     {
         //
     }
@@ -101,31 +91,30 @@ class GudangsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Gudangs  $gudangs
+     * @param  \App\Models\JenisPekerjaan  $jenisPekerjaan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Gudangs $gudangs, $id)
+    public function update(Request $request, JenisPekerjaan $jenisPekerjaan,$id)
     {
         $this->validate($request, [
             "Kode" => "required",
             "Nama" => "required",
-            "Alamat" => "required",
-            "Kota" => "required",
-            "Aktif" => "required",
-            "Memo" => "required",
+            "GrupPekerjaan" => "required",
+            "GrupKendaraan" => "required",
+            "HargaBeliDefault" => "required",
         ]);
-        $gudangs = Gudangs::find($id);
-        $gudangs->Kode = $request->Kode;
-        $gudangs->Nama = $request->Nama;
-        $gudangs->Alamat = $request->Alamat;
-        $gudangs->Kota = $request->Kota;
-        $gudangs->Aktif = $request->Aktif;
-        $gudangs->Memo = $request->Memo;
+        $jp = JenisPekerjaan::find($id);
+        $jp->Kode = $request->Kode;
+        $jp->Nama = $request->Nama;
+        $jp->GrupPekerjaan = $request->GrupPekerjaan;
+        $jp->GrupKendaraan = $request->GrupKendaraan;
+        $jp->HargaJualDefault = $request->HargaJualDefault;
+        $jp->HargaBeliDefault = $request->HargaBeliDefault;
 
-        if($this->user->Gudangs()->save($gudangs)){
+        if($this->user->jenis_pekerjaan()->save($jp)){
             return response()->json([
                 "status"=>true,
-                "gudangs"=>$gudangs
+                "jenis pekerjaan"=>$jp
             ]);
         }
 
@@ -140,16 +129,16 @@ class GudangsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Gudangs  $gudangs
+     * @param  \App\Models\JenisPekerjaan  $jenisPekerjaan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Gudangs $gudangs, $id)
+    public function destroy(JenisPekerjaan $jenisPekerjaan,$id)
     {
-        $gudangs = Gudangs::find($id);
-        if ($gudangs->delete()){
+        $jp = JenisPekerjaan::find($id);
+        if ($jp->delete()){
             return response()->json([
                 "status"=> true,
-                "gudangs"=> $gudangs
+                "jenis pekerjaan"=> $jp
             ]);
         }
         

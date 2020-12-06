@@ -15,19 +15,28 @@ class CreateBarangsTable extends Migration
     {
         Schema::create('barangs', function (Blueprint $table) {
             $table->id();
-            $table->string('kode');
-            $table->string('nama');
-            $table->string('merk');
-            $table->string('kategori');
-            $table->string('partnumber1');
-            $table->string('partnumber2');
-            $table->string('kendaraan');
-            $table->string('kdsupplier');
-            $table->string('dimensi');
-            $table->string('aktif');
-            $table->string('gudang');
-            $table->string('stokmin');
-            $table->string('stokmaks');
+            $table->string('Kode');
+            $table->string('Nama');
+            $table->string('Merk');
+            $table->string('Kategori');
+            $table->string('PartNumber1');
+            $table->string('PartNumber2');
+            $table->string('Kendaraan');
+            $table->string('KdSupplier');
+            $table->string('Dimensi');
+            $table->string('Aktif');
+            $table->string('Gudang');
+            $table->string('StokMin');
+            $table->string('StokMaks');
+            $table->string('Memo');
+            $table->string('Rasio');
+            $table->string('MataUang');
+            $table->string('StockOnHand');
+            $table->string('TanggalHargaJual');
+            $table->string('HargaJual');
+            $table->string('TanggalHargaBeli');
+            $table->string('HargaBeli');
+            $table->string('DiskonHargaBeli');
             $table->timestamps();
         });
     }

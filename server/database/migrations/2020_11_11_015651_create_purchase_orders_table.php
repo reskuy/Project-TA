@@ -22,7 +22,7 @@ class CreatePurchaseOrdersTable extends Migration
             $table->string('Status');
             $table->string('Total');
             $table->string('Diskon');
-            $table->string('DPP');
+            $table->string('DPp');
             $table->string('PPn');
             $table->string('TotalBayar');
             $table->string('Keterangan');

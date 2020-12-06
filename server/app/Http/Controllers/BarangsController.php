@@ -45,35 +45,43 @@ class BarangsController extends Controller
     {
         //
         $this->validate($request, [
-            "kode" => "required",
-            "nama" => "required",
-            "merk" => "required",
-            "kategori" => "required",
-            "partnumber1" => "required",
-            "partnumber2" => "required",
-            "kendaraan" => "required",
-            "kdsupplier" => "required",
-            "dimensi" => "required",
-            "aktif" => "required",
-            "gudang" => "required",
-            "stokmin" => "required",
-            "stokmaks" => "required",
+            "Kode" => "required",
+            "Nama" => "required",
+            "Merk" => "required",
+            "Kategori" => "required",
+            "PartNumber1" => "required",
+            "PartNumber2" => "required",
+            "Kendaraan" => "required",
+            "KdSupplier" => "required",
+            "Dimensi" => "required",
+            "Aktif" => "required",
+            "Gudang" => "required",
+            "StokMin" => "required",
+            "StokMaks" => "required",
         ]);
         $barang = new Barangs;
-        $barang->kode = $request->kode;
-        $barang->nama = $request->nama;
-        $barang->merk= $request->merk;
-        $barang->kategori = $request->kategori;
-        $barang->partnumber1 = $request->partnumber1;
-        $barang->partnumber2 = $request->partnumber2;
-        $barang->kendaraan = $request->kendaraan;
-        $barang->kdsupplier = $request->kdsupplier;
-        $barang->dimensi = $request->dimensi;
-        $barang->aktif = $request->aktif;
-        $barang->gudang = $request->gudang;
-        $barang->stokmin = $request->stokmin;
-        $barang->stokmaks = $request->stokmaks;
-        
+        $barang->Kode = $request->Kode;
+        $barang->Nama = $request->Nama;
+        $barang->Merk= $request->Merk;
+        $barang->Kategori = $request->Kategori;
+        $barang->PartNumber1 = $request->PartNumber1;
+        $barang->PartNumber2 = $request->PartNumber2;
+        $barang->Kendaraan = $request->Kendaraan;
+        $barang->KdSupplier = $request->KdSupplier;
+        $barang->Dimensi = $request->Dimensi;
+        $barang->Aktif = $request->Aktif;
+        $barang->Gudang = $request->Gudang;
+        $barang->StokMin = $request->StokMin;
+        $barang->StokMaks = $request->StokMaks;
+        $barang->Memo = $request->Memo;
+        $barang->Rasio = $request->Rasio;
+        $barang->MataUang = $request->MataUang;
+        $barang->StockOnHand = $request->StockOnHand;
+        $barang->TanggalHargaJual = $request->TanggalHargaJual;
+        $barang->TanggalHargaBeli = $request->TanggalHargaBeli;
+        $barang->HargaJual = $request->HargaJual;
+        $barang->HargaBeli = $request->HargaBeli;
+        $barang->DiskonHargaBeli = $request->DiskonHargaBeli;
         if ($this->user->barangs()->save($barang)){
             return response()->json([
                 "status" =>true, 
@@ -121,34 +129,43 @@ class BarangsController extends Controller
     public function update(Request $request, Barangs $barangs, $id)
     {
         $this->validate($request, [
-            "kode" => "required",
-            "nama" => "required",
-            "merk" => "required",
-            "kategori" => "required",
-            "partnumber1" => "required",
-            "partnumber2" => "required",
-            "kendaraan" => "required",
-            "kdsupplier" => "required",
-            "dimensi" => "required",
-            "aktif" => "required",
-            "gudang" => "required",
-            "stokmin" => "required",
-            "stokmaks" => "required",
+            "Kode" => "required",
+            "Nama" => "required",
+            "Merk" => "required",
+            "Kategori" => "required",
+            "PartNumber1" => "required",
+            "PartNumber2" => "required",
+            "Kendaraan" => "required",
+            "KdSupplier" => "required",
+            "Dimensi" => "required",
+            "Aktif" => "required",
+            "Gudang" => "required",
+            "StokMin" => "required",
+            "StokMaks" => "required",
         ]);
         $barang = Barangs::find($id);
-        $barang->kode = $request->kode;
-        $barang->nama = $request->nama;
-        $barang->merk= $request->merk;
-        $barang->kategori = $request->kategori;
-        $barang->partnumber1 = $request->partnumber1;
-        $barang->partnumber2 = $request->partnumber2;
-        $barang->kendaraan = $request->kendaraan;
-        $barang->kdsupplier = $request->kdsupplier;
-        $barang->dimensi = $request->dimensi;
-        $barang->aktif = $request->aktif;
-        $barang->gudang = $request->gudang;
-        $barang->stokmin = $request->stokmin;
-        $barang->stokmaks = $request->stokmaks;
+        $barang->Kode = $request->Kode;
+        $barang->Nama = $request->Nama;
+        $barang->Merk= $request->Merk;
+        $barang->Kategori = $request->Kategori;
+        $barang->PartNumber1 = $request->PartNumber1;
+        $barang->PartNumber2 = $request->PartNumber2;
+        $barang->Kendaraan = $request->Kendaraan;
+        $barang->KdSupplier = $request->KdSupplier;
+        $barang->Dimensi = $request->Dimensi;
+        $barang->Aktif = $request->Aktif;
+        $barang->Gudang = $request->Gudang;
+        $barang->StokMin = $request->StokMin;
+        $barang->StokMaks = $request->StokMaks;
+        $barang->Memo = $request->Memo;
+        $barang->Rasio = $request->Rasio;
+        $barang->MataUang = $request->MataUang;
+        $barang->StockOnHand = $request->StockOnHand;
+        $barang->TanggalHargaJual = $request->TanggalHargaJual;
+        $barang->TanggalHargaBeli = $request->TanggalHargaBeli;
+        $barang->HargaJual = $request->HargaJual;
+        $barang->HargaBeli = $request->HargaBeli;
+        $barang->DiskonHargaBeli = $request->DiskonHargaBeli;
         
         if($this->user->Barangs()->save($barang)){
             return response()->json([
