@@ -1,9 +1,9 @@
 <template>
-<v-card>
-               <v-toolbar
+<v-card class="pa-2">
+    <v-toolbar
         flat
       >
-        <v-toolbar-title>Items</v-toolbar-title>
+        <v-toolbar-title>Barang</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -22,7 +22,7 @@
               v-bind="attrs"
               v-on="on"
             >
-              Add Items
+              Cari Barang
             </v-btn>
           </template>
           <v-card>
@@ -30,30 +30,31 @@
       color="primary"
       dark
       dense 
-    >           <span class="headline">Items</span>
+    >           <span class="headline">Barang</span>
                    </v-app-bar>
             <v-card-text>
               <v-container>
+           
                 <ejs-grid 
                 id="Grid"
+                :toolbar='toolbarOptionsSelect'
                 :dataSource="itembaranglist" height='200' width='100%'
                 :allowReordering = true
-                :editSettings='editSettings'
-                :selectionSettings='selectionOptions'
+                :selectionSettings='selectionOptionsSatuan'
                 :allowSorting='true'
+                :selectionOptions='selectionOptionsSatuan'
                 :allowMultiSorting='true'
                 :allowFiltering='true'
                 :filterSettings='filterOptions'
                 :allowResizing='true'
                 :allowPaging='true'
                 :pageSettings='pageSettings'
-    
-                :rowSelected="rowSelectedBarang"
+                :rowSelected="rowSelectedBarangIPO" 
                 >
                 <e-columns>
-                
+                 
                     <e-column 
-                      :filter='filter'
+                  
                       fieldText=''
                       field='Kode' 
                       headerText='Kode' 
@@ -70,7 +71,7 @@
                     </e-column>
 
                     <e-column
-                      :filter='filter'
+                      
                       field='Merk'  
                       headerText='Merk' 
                       width=130
@@ -92,20 +93,23 @@
                 <v-spacer></v-spacer>
                 <v-btn
                   dark
-                  color="blue darken-4"
-                  @click="accbarang">
-                  <v-icon class="mr-1">mdi-content-save</v-icon>Simpan
+                  color="success"
+                  @click="close">
+                  <v-icon class="mr-1">mdi-close-circle</v-icon>Tutup
                 </v-btn>
               </v-card-actions>
           </v-card>
         </v-dialog>
         </v-toolbar>
         <ejs-grid 
-                
-                :dataSource="itembarangpo" height='200' width='100%'
+                ref="gridBarangList"
+                id="gridBarangList"
+                :toolbar='toolbarOptions'
+                :dataSource="itembarangipo" height='200' width='100%'
                 :allowReordering = true
                 :editSettings='editSettings'
                 :selectionSettings='selectionOptions'
+                :selectionOptions='selectionOptions'
                 :allowGrouping='true'
                 :groupSettings='groupSettings'
                 :allowSorting='true'
@@ -115,39 +119,42 @@
                 :allowResizing='true'
                 :allowPaging='true'
                 :pageSettings='pageSettings'
-          
+                @actionComplete="onActionComplete"
                 >
                 <e-columns>
                 
                     <e-column 
-                      :filter='filter'
-                      fieldText=''
-                      field='Gudang' 
-                      headerText='Gudang' 
+                    
+                      field='id' 
+                      headerText='ID' 
                       textAlign='Left'
-                      width=160
+                      width=65
+                      :isPrimaryKey="true"
                       >
                     </e-column>
 
-                      <e-column
-                      field='Kode'
-                      headerText='Barang'
+                    <e-column 
+                 
+                      fieldText=''
+                      field='Kode' 
+                      headerText='Barang' 
+                      textAlign='Left'
                       width=120
                       >
                     </e-column>
 
-                    <e-column
-                      :filter='filter'
-                      field='Nama'  
-                      headerText='Nama' 
-                      width=280
+                      <e-column
+                      field='Nama'
+                      headerText='Nama'
+                      width=270
                       >
                     </e-column>
 
                     <e-column
-                      field='PartNumber1'
-                      headerText='Part Number 1'
-                      width=170
+                   
+                      field='PartNumber1'  
+                      headerText='Part Number 1' 
+                      width=280
                       >
                     </e-column>
 
@@ -157,21 +164,23 @@
                       width=170
                       >
                     </e-column>
+
                     <e-column
                       field='Kendaraan'
                       headerText='Kendaraan'
                       width=170
                       >
                     </e-column>
+
                     <e-column
-                      field='Keterangan'
-                      headerText='Keterangan'
+                      field='KdSupplier'
+                      headerText='Kode Supplier'
                       width=170
                       >
                     </e-column>
                     <e-column
-                      field='ETA'
-                      headerText='ETA'
+                      field='Keterangan'
+                      headerText='Keterangan'
                       width=170
                       >
                     </e-column>
@@ -187,27 +196,9 @@
                       width=170
                       >
                     </e-column>
-                    <e-column
-                      field='HargaJual'
-                      headerText='Harga'
-                      width=170
-                      >
-                    </e-column>
-                    <e-column
-                      field='Diskon'
-                      headerText='Diskon'
-                      width=170
-                      >
-                    </e-column>
-                    <e-column
-                      field='SubTotal'
-                      headerText='SubTotal'
-                      width=170
-                      >
-                    </e-column>
                   </e-columns>
                 </ejs-grid>
-                </v-card>
+             </v-card>
 </template>
 <script>
 import Vue from 'vue'
@@ -215,51 +206,84 @@ import api from '@/axios/http'
 import { GridPlugin, Toolbar, Page, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder } from "@syncfusion/ej2-vue-grids";
 
 Vue.use(GridPlugin);
-export default {
-  data() {
-    return {
-          dialogbarang: false,
-          itembaranglist: [],
-          storeSelect: [],
-          itembarangpo: [],
-          token : localStorage.getItem('token'),
-          groupSettings: { allowReordering: true },
-       selectionOptions: { type: 'Multiple'},
-      //  selectionOptions: { type: 'Multiple', persistSelection: true, enableSimpleMultiRowSelection: true},
-      selectionOptionsSatuan: { type: 'Single'},
-      toolbarOptions: ['Search','Delete', 'Update', 'Cancel'],
-      pageSettings: {pageSizes: ['2','10','All']},
-      filterOptions: { type: 'Menu' },
-      filter: { type : 'CheckBox' },
 
-      editSettings: { showDeleteConfirmDialog: true, allowEditing: false, allowAdding: true, allowDeleting: true, mode: 'Normal'},
+export default {
+    data() {
+        return {
+      dialogbarang:false,
+      itembarangipo: [],
+      itembaranglist: [],
+      itembarangipostorage: [],
+      token : localStorage.getItem('token'),
+      groupSettings: { allowReordering: true },
+      selectionOptions: { type: 'Multiple'},
+      // selectionOptionsCheck: { checkboxMode: 'resetOnClick', persistSelection: false },
+      selectionOptionsSatuan: { type: 'Single' },
+      toolbarOptions: ['Search', 'Update', 'Cancel'],
+      toolbarOptionsSelect: ['Search'],
+      pageSettings: {pageSizes: ['5','10','All']},
+      filterOptions: { type: 'Menu' },
+      // filter: { type : 'CheckBox' },
       
-    }
-  },
-  provide:{
+      editSettings: { showDeleteConfirmDialog: true, allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Batch'},
+      
+        }
+    },
+    provide:{
         grid: [Page, Toolbar, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder]
   },
   mounted() {
     this.getDataBarang()
+    // if (localStorage.getItem("storage")) {
+    //   this.itembarangipo = JSON.parse(localStorage.getItem("storage"));
+    // }
   },
-  methods: {
-    //pilih barang
-    rowSelectedBarang: function() {
-       let grid = document.getElementById("Grid").ej2_instances[0];
-       this.storeSelect = grid.getSelectedRecords();
-       console.log(this.storeSelect)
+  watch: {
+     dialog(val){
+       val || this.close();
+     },
+    //  itembarangipo: {
+    //     handler() {
+    //     // console.log('Todos changed!');
+    //     localStorage.setItem("storage", JSON.stringify(this.itembarangipo));
+    //   },
+    //   deep: true
+    // }
+   },
+    methods: {
+        close(){
+            this.dialogbarang = false
+            console.log(this.itembarangipo)
+        },
+        onActionComplete(args) {
+      //console.log("actionComplete", args);
+      if (args.requestType === "batchsave" || args.requestType === "save") {
+       
+        console.log(
+          "Updated " 
+        );
+        console.log("data: " + JSON.stringify(this.itembarangipo));
+      }
     },
-    //simpan barang dari list
-    accbarang(){
-      this.dialogbarang= false
-      if ( this.storeSelect.length > 1 ) {
-         for (let i = 0; i < this.storeSelect.length; i++) {
-           const element = this.storeSelect[i];
+        resetBarangIPO(){
+          this.itembarangipo = []
+        },
+        rowSelectedBarangIPO: function() {
+        let grid = document.getElementById("Grid").ej2_instances[0];
+         let a = grid.getSelectedRecords();
+      // let a = args.data
+      //  console.log(args.data)
+      //  this.itembarangipo = a;
+        //  var itembarang = [];
+       if ( a.length > 1 ) {
+         for (let i = 0; i < a.length; i++) {
+           const element = a[i];
            delete element.Dimensi
            delete element.PartNumber2
            delete element.updated_at
            delete element.created_at
            delete element.Aktif
+           delete element.Gudang
            delete element.created_by
            delete element.StokMin
            delete element.StokMaks
@@ -267,22 +291,23 @@ export default {
            element.Jumlah = '1',
            element.Satuan = 'PCS'
           //  itembarang.push(element);
-           this.itembarangpo.push(element)
-           this.itembarangpo=[...this.itembarangpo]
-           console.log(this.itembarangpo)
+           this.itembarangipo.push(element)
+           this.itembarangipo=[...this.itembarangipo]
+           console.log(this.itembarangipo)
           //  this.itembarangipo.push(this.itembarang);
             // this.itembarangipo = itembarang;
           //  localStorage.setItem("storage",JSON.stringify(itembarang));
          }
-         this.$emit('SyncItemBarangPO', this.itembarangpo)
+         this.$emit('SyncItemBarangIPO', this.itembarangipo)
        }else{
-         for (let i = 0; i < this.storeSelect.length; i++) {
-           const element = this.storeSelect[i];
+         for (let i = 0; i < a.length; i++) {
+           const element = a[i];
            delete element.Dimensi
            delete element.PartNumber2
            delete element.updated_at
            delete element.created_at
            delete element.Aktif
+           delete element.Gudang
            delete element.created_by
            delete element.StokMin
            delete element.StokMaks
@@ -290,21 +315,20 @@ export default {
            element.Jumlah = '1',
            element.Satuan = 'PCS'
           //  itembarang.push(element);
-          this.itembarangpo=[...this.itembarangpo]
-           this.itembarangpo.push(element)
+          this.itembarangipo=[...this.itembarangipo]
+           this.itembarangipo.push(element)
           //  this.itembarangipo.push(a)
           //  this.itembarangipo.push(this.itembarang);
             // this.itembarangipo = itembarang;
           //  localStorage.setItem("storage",JSON.stringify(itembarang));
          }
-         this.$emit('SyncItemBarangPO', this.itembarangpo)
+         this.$emit('SyncItemBarangIPO', this.itembarangipo)
        }
     },
-    //ambil data Barang
         getDataBarang(){
           api.get('/barang?token='+this.token).then(
             res=>{
-              console.log(res)
+              //console.log(res)
               this.itembaranglist = res.data
             },
             err => {
@@ -313,7 +337,7 @@ export default {
               this.localStorage.removeItem('token')
             }
           )
-        },
-  },
+        }
+    },
 }
 </script>

@@ -23,6 +23,7 @@
             <v-spacer></v-spacer>
       <v-dialog
               v-model="dialog"
+              scrollable
               max-width="1200px"
             >
 
@@ -49,7 +50,6 @@
               >
               <v-toolbar-title dark>
                 <v-icon>mdi-cart-plus</v-icon>
-                Tambah Pembelian
               </v-toolbar-title>
               <span class="headline">{{ formTitle }}</span>
             </v-toolbar>
@@ -59,14 +59,14 @@
                   <v-row dense>
                     <v-col cols="14"  md="6">
                       <v-text-field outlined dense
-
+                        v-model="editedItem.KodeNota"
                         label="Kode Nota">
                       </v-text-field>
                     </v-col>
 
                   <v-col cols="14"  md="2">
                    <v-menu
-    
+          v-model="menutanggalpo"
         :close-on-content-click="false"
         :nudge-right="40"
         transition="scale-transition"
@@ -75,7 +75,7 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <v-text-field outlined dense
-           
+           v-model="editedItem.Tanggal"
             label="Tanggal"
             prepend-icon="mdi-calendar"
             readonly
@@ -85,16 +85,17 @@
         </template>
         <v-date-picker
         locale="id"
-          
-          
+        v-model="editedItem.Tanggal"
+          @input="menutanggalpo = false"
+          :min="HariIni"
         ></v-date-picker>
       </v-menu>
                   </v-col>
 
                   <v-col cols="14"  md="3">
                     <v-menu
-        
-        :close-on-content-click="false"
+        v-model="menutanggalkirimpo"
+        :close-on-content-cl4ick="false"
         :nudge-right="40"
         transition="scale-transition"
         offset-y
@@ -102,7 +103,7 @@
       >
         <template v-slot:activator="{ on, attrs }">
           <v-text-field outlined dense
-           
+          v-model="editedItem.TanggalKirim"
             label="Tanggal Kirim"
             prepend-icon="mdi-calendar"
             readonly
@@ -112,35 +113,53 @@
         </template>
         <v-date-picker
         locale="id"
-          :min="tanggal"
-          
-         
+        v-model="editedItem.TanggalKirim"
+        @input="menutanggalkirimpo = false"
+         :min="HariIni"
         ></v-date-picker>
       </v-menu>
                   </v-col>
 
                   <v-col cols="14"  md="1">
                     <v-text-field outlined dense
-                      
+                      v-model="editedItem.Kurs"
                       label="Kurs">
                     </v-text-field>
                   </v-col>
 
-                  <v-col cols="14"  md="6">
-                    <v-menu
-                   
-                  :close-on-content-click="false"
-                   :nudge-width="200"
-                   offset-x
-                   ><template v-slot:activator="{ on, attrs }">
+                  <v-col cols="14"  md="5">
                    <v-text-field outlined dense
-                      
-                      label="Supplier"
-                      v-on="on"
-                      v-bind="attrs">
+                      v-model="editedItem.NamaSupplier"
+                      label="Supplier">
                     </v-text-field>
-                    </template>
-                    <v-card>
+      <!-- <v-autocomplete
+      outlined dense
+      v-model="editedItem.NamaSupplier"
+        :items="supplier"
+        item-text="Nama"
+        item-value="Nama"
+        label="Supplier"
+        return-object
+      ></v-autocomplete>
+      {{editedItem.NamaSupplier.BillFrom}} -->
+                  </v-col>
+                  <v-col cols="2"  md="1">
+                    <v-dialog
+          v-model="dialogsupplier"
+          max-width="1200px"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+         
+              dark
+              class="mb-2"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>mdi-dots-horizontal</v-icon>
+            </v-btn>
+          </template>
+          <v-card>
              <v-app-bar
       color="primary"
       dark
@@ -149,24 +168,55 @@
                    </v-app-bar>
             <v-card-text>
               <v-container>
-                <v-card-title>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table
-    item-key="id"
-    
-     single-select
-      :headers="headerssup"
-      :items="data_supplier"
-      :search="search"
-    >
-    </v-data-table>
+    <ejs-grid 
+                :dataSource="supplier" height='200' width='100%'
+                :allowReordering = true
+                :editSettings='editSettings'
+                :selectionSettings='selectionOptionsSatuan'
+                :allowSorting='true'
+                :allowFiltering='true'
+                :filterSettings='filterOptions'
+                :allowResizing='true'
+                :allowPaging='true'
+                :pageSettings='pageSettings'
+                :commandClick="commandClick"
+                :rowSelected="rowSelectedSupplier" 
+                >
+                <e-columns>
+                
+                    <e-column 
+                      :filter='filter'
+                      fieldText=''
+                      field='id' 
+                      headerText='ID' 
+                      textAlign='Left'
+                      width=180
+                      >
+                    </e-column>
+
+                      <e-column
+                      field='Nama'
+                      headerText='Nama'
+                      width=250
+                      >
+                    </e-column>
+
+                    <e-column
+                      :filter='filter'
+                      field='SellFrom' 
+                      headerText='Sell From' 
+                      width=170
+                      >
+                    </e-column>
+
+                    <e-column
+                      field='BillFrom'
+                      headerText='Bill From'
+                      width=170
+                      >
+                    </e-column>
+                  </e-columns>
+                </ejs-grid>
               </v-container>
             </v-card-text>
 
@@ -188,11 +238,12 @@
               </v-btn>
             </v-card-actions>
           </v-card>
-    </v-menu>
-
+        </v-dialog>
                   </v-col>
+
                   <v-col cols="14"  md="6">
                     <v-text-field outlined dense
+                     v-model="editedItem.BillFrom"
                      
                       label="Bill From" required>
                     </v-text-field>
@@ -200,24 +251,22 @@
 
                   <v-col cols="14"  md="6">
                     <v-text-field outlined dense
-                      
+                      v-model="editedItem.SellFrom"
                       label="Sell From">
                     </v-text-field>
                   </v-col>
 
                   <v-col cols="14"  md="6">
                     <v-text-field outlined dense
-                      
+                      v-model="editedItem.PaymentTerm"
                       label="Payment Term">
                     </v-text-field>
-                  </v-col>
-
-                  
+                  </v-col>  
 
                   <v-col cols="14"  md="6">
          <v-combobox
           
-          
+          v-model="editedItem.MataUang"
           label="Mata uang"
           outlined
           dense
@@ -226,16 +275,16 @@
 
                   <v-col cols="14"  md="6">
                     <v-text-field outlined dense
-                       
+                       v-model="editedItem.Referensi"
                       label="Refrensi">
                     </v-text-field>
                   </v-col>
-                  <v-col cols="12"  md="5">
+                  <v-col cols="10"  md="5">
         
                     <v-text-field
                      
-                      
-                       label="Nomor WO"
+                      v-model="editedItem.NomorWO"
+                       label="Nomor Work Order"
                        outlined
                         dense
                     ></v-text-field>
@@ -265,24 +314,70 @@
                    </v-app-bar>
             <v-card-text>
               <v-container>
-                <v-card-title>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table
-    
-     single-select
-      :headers="headerswo"
-      :items="itemspo"
-      :search="search"
+    <ejs-grid 
+                
+                :dataSource="itemswo" height='200' width='100%'
+                :allowReordering = true
+                :editSettings='editSettings'
+                :selectionSettings='selectionOptionsSatuan'
+                :allowSorting='true'
+                :allowMultiSorting='true'
+                :allowFiltering='true'
+                :filterSettings='filterOptions'
+                :allowResizing='true'
+                :allowPaging='true'
+                :pageSettings='pageSettings'
+                :commandClick="commandClick"
+                :rowSelected="rowSelectedWorkOrder" 
+                >
+                <e-columns>
+                
+                    <e-column 
+                      :filter='filter'
+                      fieldText=''
+                      field='KodeNota' 
+                      headerText='Kode Nota' 
+                      textAlign='Left'
+                      width=180
+                      >
+                    </e-column>
 
-    >
-    </v-data-table>
+                      <e-column
+                      field='Tanggal'
+                      headerText='Tanggal'
+                      width=150
+                      >
+                    </e-column>
+
+                    <e-column
+                      :filter='filter'
+                      field='NomorRangka'  
+                      headerText='Nomor Rangka' 
+                      width=170
+                      >
+                    </e-column>
+
+                    <e-column
+                      field='JenisWorkOrder'
+                      headerText='Jenis Work Order'
+                      width=170
+                      >
+                    </e-column>
+
+                    <e-column
+                      field='NomorPolisi'
+                      headerText='Nomor Polisi'
+                      width=170
+                      >
+                    </e-column>
+                    <e-column
+                      field='MataUang'
+                      headerText='Mata Uang'
+                      width=170
+                      >
+                    </e-column>
+                  </e-columns>
+                </ejs-grid>
               </v-container>
             </v-card-text>
 
@@ -307,9 +402,9 @@
         </v-dialog>
                   </v-col>
 
-                  <v-col cols="12"  md="6">
+                  <v-col cols="7" md="6" offset-md="0">
                     <v-text-field outlined dense
-                      
+                      v-model="editedItem.NomorRangka"
                       label="Nomor Rangka">
                     </v-text-field>
                   </v-col>           
@@ -321,13 +416,10 @@
                     
                   </v-col>
                   <v-col cols="12">
-                   <v-card>
-                 <!-- <ItemsPurchaseOrder/> -->
-                  </v-card>
+                   <ItemsPurchaseOrder/>
                   </v-col>
                   <v-col cols="12"  md="8">
                     <v-text-field 
-                    
                        label="Keterangan"
                        outlined
                         dense
@@ -335,8 +427,6 @@
                   </v-col>
                   <v-col cols="6" md="4">
                     <v-text-field
-                     
-                      
                        label="Keterangan"
                        outlined
                         dense
@@ -362,7 +452,8 @@
                 </v-row>
               </v-container>
             </v-card-text>
-   
+
+    <v-divider></v-divider>
  
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -376,7 +467,6 @@
 
             <div id="app">
                 <ejs-grid 
-                
                 :dataSource="data" height='200' width='100%'
                 :allowReordering = true
                 :editSettings='editSettings'
@@ -412,8 +502,6 @@
                       width=150
                       >
                     </e-column>
-                    <!-- <ejs-datepicker field='tgl' headerText='Tanggal' width='150' id="datepicker" locale='id' ></ejs-datepicker> -->
-                    
 
                     <e-column
                       :filter='filter'
@@ -449,8 +537,8 @@
                     </e-column>
 
                     <e-column
-                      field='DPP'
-                      headerText='DPP'
+                      field='DPp'
+                      headerText='DPp'
                       textAlign='Right'
                       format='C2'
                       width=160
@@ -544,7 +632,7 @@ loadCldr(require('../cldr/id/currencies.json'),
         require('../cldr/id/ca-gregorian.json'));  
 setCulture('id');
 setCurrencyCode('IDR');
-//import ItemsPurchaseOrder from '@/views/purchase_order/items'
+import ItemsPurchaseOrder from '@/views/purchaseorder/items'
 L10n.load({
     'id': {
        'datepicker': { placeholder: 'Tanggal', today: 'Hari ini' },
@@ -578,20 +666,81 @@ Vue.use(GridPlugin);
 
 export default {
   components: {
-   //   ItemsPurchaseOrder
+      ItemsPurchaseOrder
     },
   data() {
     return {
+      HariIni: new Date().toISOString().substr(0,10),
+      editedItem: {
+            KodeNota: "",
+            Tanggal: "",
+            NamaSupplier: "",
+            TanggalKirim: "",
+            Status: "",
+            Total: "",
+            Diskon: "",
+            DPp: "",
+            PPn: "",
+            TotalBayar: "",
+            Keterangan: "",
+            Referensi: "",
+            NomorRangka: "",
+            NomorPolisi: "",
+            NomorWO: "",
+            BillFrom: "",
+            SellFrom: "",
+            PaymentTerm: "",
+            MataUang: "",
+            Kurs: "",
+            Apply: ""
+        },
+        defaultItem: {
+            KodeNota: "",
+            Tanggal: "",
+            NamaSupplier: "",
+            TanggalKirim: "",
+            Status: "",
+            Total: "",
+            Diskon: "",
+            DPp: "",
+            PPn: "",
+            TotalBayar: "",
+            Keterangan: "",
+            Referensi: "",
+            NomorRangka: "",
+            NomorPolisi: "",
+            NomorWO: "",
+            BillFrom: "",
+            SellFrom: "",
+            PaymentTerm: "",
+            MataUang: "",
+            Kurs: "",
+            Apply: ""
+        },
       data: [],
+      supplier: [],
+      search: '',
+      dialog: false,
+      dialog2: false,
+      dialogDelete:false,
+      dialogsupplier:false,
+      menutanggalkirimpo: false,
+      menutanggalpo:false,
+      editedIndex: -1,
+      itembaranglist:[],
+      itembarangpo:[],
+      itemswo: [],
       token : localStorage.getItem('token'),
       groupSettings: { allowReordering: true },
-      selectionOptions: { type: 'Multiple' },
-      toolbarOptions: ['Search', 'Add', 'Edit', 'Delete', 'Update', 'Cancel'],
+       selectionOptions: { type: 'Multiple'},
+      //  selectionOptions: { type: 'Multiple', persistSelection: true, enableSimpleMultiRowSelection: true},
+      selectionOptionsSatuan: { type: 'Single'},
+      toolbarOptions: ['Search','Delete', 'Update', 'Cancel'],
       pageSettings: {pageSizes: ['5','10','All']},
       filterOptions: { type: 'Menu' },
       filter: { type : 'CheckBox' },
-      
-      editSettings: { showDeleteConfirmDialog: true, allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Normal'},
+
+      editSettings: { showDeleteConfirmDialog: true, allowEditing: false, allowAdding: true, allowDeleting: true, mode: 'Normal'},
       
        
       footerSum: function () {
@@ -614,7 +763,9 @@ export default {
     grid: [Page, Toolbar, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder]
   },
   mounted() {
-    this.getData()
+    this.getData(),
+    this.getDataSupplier(),
+    this.getDataWo()
   },
   watch: {
      dialog(val){
@@ -623,12 +774,12 @@ export default {
    },
    computed: {
         formTitle(){
-            return this.editedIndex === -1 ? "Tambah Barang" : "Edit Barang";
+            return this.editedIndex === -1 ? "Tambah Purchase Order" : "Edit Purchase Order";
         }
    },
   methods: {
     save(){
-            if(this.formTitle === "Tambah Barang"){
+            if(this.formTitle === "Tambah Purchase Order"){
                 this.TambahData()
             }else{
                 this.UpdateData()
@@ -637,36 +788,51 @@ export default {
             
         },
     TambahData(){
-            api.post('/barang?token='+this.token, {
-            kode: this.editedItem.kode,
-            nama: this.editedItem.nama,
-            merk: this.editedItem.merk,
-            kategori: this.editedItem.kategori,
-            partnumber1: this.editedItem.partnumber1,
-            partnumber2: this.editedItem.partnumber2,
-            kendaraan: this.editedItem.kendaraan,
-            kdsupplier: this.editedItem.kdsupplier,
-            dimensi: this.editedItem.dimensi,
-            aktif: this.editedItem.aktif,
-            gudang: this.editedItem.gudang,
-            memo: this.editedItem.memo,
-            stokmin: this.editedItem.stokmin,
-            stokmaks: this.editedItem.stokmaks
+            api.post('/po?token='+this.token, {
+            KodeNota: this.editedItem.KodeNota,
+            Tanggal: this.editedItem.Tanggal,
+            NamaSupplier: this.editedItem.NamaSupplier,
+            TanggalKirim: this.editedItem.TanggalKirim,
+            Status: this.editedItem.Status,
+            Total: this.editedItem.Total,
+            Diskon: this.editedItem.Diskon,
+            DPp: this.editedItem.DPp,
+            PPn: this.editedItem.PPn,
+            TotalBayar: this.editedItem.TotalBayar,
+            Keterangan: this.editedItem.Keterangan,
+            Referensi: this.editedItem.Referensi,
+            NomorRangka: this.editedItem.NomorRangka,
+            NomorPolisi: this.editedItem.NomorPolisi,
+            NomorWO: this.editedItem.NomorWO,
+            BillFrom: this.editedItem.BillFrom,
+            SellFrom: this.editedItem.SellFrom,
+            PaymentTerm: this.editedItem.PaymentTerm,
+            MataUang: this.editedItem.MataUang,
+            Kurs: this.editedItem.Kurs,
+            Apply: this.editedItem.Apply
         })
         .then((res) => {
-            this.nama = ''
-            this.merk = ''
-            this.kategori=''
-            this.partnumber1=''
-            this.partnumber2=''
-            this.kendaraan=''
-            this.ksupplier=''
-            this.dimensi=''
-            this.aktif=''
-            this.gudang=''
-            this.memo=''
-            this.stokmin=''
-            this.stokmaks=''
+            this.KodeNota = ''
+            this.Tanggal = ''
+            this.NamaSupplier=''
+            this.TanggalKirim=''
+            this.Status=''
+            this.Total=''
+            this.Diskon=''
+            this.DPp=''
+            this.PPn=''
+            this.TotalBayar=''
+            this.Keterangan=''
+            this.Referensi=''
+            this.NomorRangka=''
+            this.NomorPolisi=''
+            this.NomorWO=''
+            this.BillFrom=''
+            this.SellFrom=''
+            this.PaymentTerm=''
+            this.MataUang=''
+            this.Kurs=''
+            this.Apply=''
             console.log(res)
             this.close()
             this.getData()
@@ -676,36 +842,51 @@ export default {
         })
         },
         UpdateData(){
-        api.put('/barang/' + this.editedItem.id +'?token='+this.token, {
-            kode: this.editedItem.kode,
-            nama: this.editedItem.nama,
-            merk: this.editedItem.merk,
-            kategori: this.editedItem.kategori,
-            partnumber1: this.editedItem.partnumber1,
-            partnumber2: this.editedItem.partnumber2,
-            kendaraan: this.editedItem.kendaraan,
-            kdsupplier: this.editedItem.kdsupplier,
-            dimensi: this.editedItem.dimensi,
-            aktif: this.editedItem.aktif,
-            gudang: this.editedItem.gudang,
-            memo: this.editedItem.memo,
-            stokmin: this.editedItem.stokmin,
-            stokmaks: this.editedItem.stokmaks
+        api.put('/po/' + this.editedItem.id +'?token='+this.token, {
+            KodeNota: this.editedItem.KodeNota,
+            Tanggal: this.editedItem.Tanggal,
+            NamaSupplier: this.editedItem.NamaSupplier,
+            TanggalKirim: this.editedItem.TanggalKirim,
+            Status: this.editedItem.Status,
+            Total: this.editedItem.Total,
+            Diskon: this.editedItem.Diskon,
+            DPp: this.editedItem.DPp,
+            PPn: this.editedItem.PPn,
+            TotalBayar: this.editedItem.TotalBayar,
+            Keterangan: this.editedItem.Keterangan,
+            Referensi: this.editedItem.Referensi,
+            NomorRangka: this.editedItem.NomorRangka,
+            NomorPolisi: this.editedItem.NomorPolisi,
+            NomorWO: this.editedItem.NomorWO,
+            BillFrom: this.editedItem.BillFrom,
+            SellFrom: this.editedItem.SellFrom,
+            PaymentTerm: this.editedItem.PaymentTerm,
+            MataUang: this.editedItem.MataUang,
+            Kurs: this.editedItem.Kurs,
+            Apply: this.editedItem.Apply
         })
         .then((res)=>{
-            this.nama = ''
-            this.merk = ''
-            this.kategori=''
-            this.partnumber1=''
-            this.partnumber2=''
-            this.kendaraan=''
-            this.ksupplier=''
-            this.dimensi=''
-            this.aktif=''
-            this.gudang=''
-            this.memo=''
-            this.stokmin=''
-            this.stokmaks=''
+            this.KodeNota = ''
+            this.Tanggal = ''
+            this.NamaSupplier=''
+            this.TanggalKirim=''
+            this.Status=''
+            this.Total=''
+            this.Diskon=''
+            this.DPp=''
+            this.PPn=''
+            this.TotalBayar=''
+            this.Keterangan=''
+            this.Referensi=''
+            this.NomorRangka=''
+            this.NomorPolisi=''
+            this.NomorWO=''
+            this.BillFrom=''
+            this.SellFrom=''
+            this.PaymentTerm=''
+            this.MataUang=''
+            this.Kurs=''
+            this.Apply=''
             console.log(res)
             this.close()
             this.getData()
@@ -716,18 +897,26 @@ export default {
         },
 
         close() {
-        this.dialog = false;
+        this.dialog = false
+        this.dialog2 = false
+        this.menutanggalkirimpo= false
+        this.menutanggalpo= false
         this.editedItem = this.defaultItem
         this.editedIndex = -1
+        this.itembarangpo = []
+        },
+        accbarang(){
+          this.dialogbarang = false
         },
         commandClick: function(args) {
         if (args.target.classList.contains("custombutton")) {
-            let data = JSON.stringify(args.rowData)
-            console.log(data)
+            // let data = JSON.stringify(args.rowData)
+            // console.log(data)
+            console.log()
         } else if (args.target.classList.contains("Delete")) {
             var r = confirm("Yakin Hapus Data?");
             if (r == true) {
-                api.delete('/gudangs/'+args.rowData.id+'?token='+this.token)
+                api.delete('/po/'+args.rowData.id+'?token='+this.token)
                 .then((res)=> {
                     // this.item.splice(index, 1)
                     console.log(res)
@@ -748,6 +937,36 @@ export default {
         actionComplete(args) {
         console.log(args)
     },
+    //fungsi pilihan WO
+    rowSelectedWorkOrder: function(args) { 
+      this.editedItem.NomorWO = args.data.KodeNota
+      this.editedItem.MataUang = args.data.MataUang
+      this.editedItem.NomorRangka = args.data.NomorRangka
+      this.editedItem.PaymentTerm = args.data.PaymentTerm
+      this.editedItem.Kurs = args.data.Kurs
+    },
+    //fungsi pilihan Supplier
+    rowSelectedSupplier: function(args) { 
+      this.editedItem.NamaSupplier = args.data.Nama
+      this.editedItem.BillFrom = args.data.BillFrom
+      this.editedItem.SellFrom = args.data.SellFrom
+    },
+    //fungsi pilihan Barang
+    rowSelectedBarang: function() {
+       let grid = document.getElementById("Grid").ej2_instances[0];
+       this.itembarangpo = grid.getSelectedRecords();
+    },
+    //fungsi pilihan Work Order Vuetify
+    // pilihWorkOrder: function(item, row){
+    //   row.select(true);
+    //   this.editedItem.NomorWO = item.KodeNota
+    //   this.editedItem.NomorRangka = item.NomorRangka
+    //   this.editedItem.MataUang = item.MataUang
+    //   this.editedItem.PaymentTerm = item.PaymentTerm
+    //   this.editedItem.Kurs = item.Kurs
+
+    // },
+    //ambil data PO
         getData(){
             api.get('/po?token='+this.token).then(
         res=>{
@@ -756,9 +975,38 @@ export default {
         },
         err => {
             console.log(err)
-            // this.$router.push('/')
-            // this.localStorage.removeItem('token')
+            this.$router.push('/')
+            this.localStorage.removeItem('token')
         })},
+    //ambil data Supplier
+        getDataSupplier(){
+          api.get('/supplier?token='+this.token).then(
+            res=>{
+              console.log(res)
+              this.supplier = res.data
+            },
+            err => {
+              console.log(err)
+              this.$router.push('/')
+              this.localStorage.removeItem('token')
+            }
+          )
+        },
+    //ambil data WO
+        getDataWo(){
+          api.get('/wo?token='+this.token).then(
+            res=>{
+              console.log(res)
+              this.itemswo = res.data
+            },
+            err => {
+              console.log(err)
+              this.$router.push('/')
+              this.localStorage.removeItem('token')
+            }
+          )
+        }
+    
   },
 }
 </script>

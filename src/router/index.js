@@ -10,6 +10,8 @@ import PurchaseOrder from "@/components/PurchaseOrder";
 import Grid from "@/components/Grid";
 import Dashboard from "@/components/Dashboard";
 import Login from "@/components/login";
+import Estimasi from "@/components/Estimasi";
+import InternalPartOrder from "@/components/InternalPartOrder";
 
 
 
@@ -27,7 +29,9 @@ export default new VueRouter({
     {path:'/Pelanggan',name:'Pelanggan',component: Customer},
     {path:'/PurchaseOrder',name:'PurchaseOrder',component: PurchaseOrder},
     {path:'/Grid',name:'Grid',component: Grid},
-    {path:'/hakAkses',name:'HakAkses',component: HakAkses}
+    {path:'/hakAkses',name:'HakAkses',component: HakAkses},
+    {path:'/estimasi',name:'Estimasi',component: Estimasi},
+    {path:'/InternalPartOrder', name:'InternalPartOrder',component: InternalPartOrder}
   ]
 });
 

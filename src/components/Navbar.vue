@@ -1,22 +1,23 @@
 <template>
-<v-container
+<div
       class="overflow-hidden"
     >
     <!-- NavBar Atas -->
-    <Appbar/>
+    <Appbar />
   <!--NAV kiri -->
-   <Navdrawer/>   
-</v-container>
+   <!-- <Navdrawer/>    -->
+</div>
 </template>
 
 <script>
 import Appbar from '@/views/Appbar'
-import Navdrawer from '@/views/Navdrawer'
+// import Navdrawer from '@/views/Navdrawer'
 export default {
   components: {
     Appbar,
-    Navdrawer
-  },data() {
+    // Navdrawer
+  },data() {  
+
     return {
       
     }

@@ -5,26 +5,25 @@
         flat
         dark
         dense
-        color="primary"
+        color="blue darken-4"
         class="elevation-1"
       >
         <v-toolbar-title dark>
-          <v-icon>mdi-warehouse</v-icon>Gudang
+        Gudang
         </v-toolbar-title>
 
         <v-divider class="mx-4" inset vertical></v-divider>
-
+        
         <v-spacer></v-spacer>
 
-        <v-dialog v-model="dialog" scrollable max-width="800px">
+        <v-dialog v-model="dialog" scrollable max-width="700px">
           <template v-slot:activator="{on, attrs}">
             <v-btn
               dark
-              color="primary"
+              color="blue darken-4"
               v-bind="attrs"
               v-on="on" >
-              <v-icon>mdi-plus</v-icon>
-              Tambah Gudang 
+              <v-icon>mdi-plus</v-icon>Tambah
             </v-btn>
           </template>
 
@@ -33,81 +32,105 @@
               dark
               dense
               outline
-              color="primary"
+              color="blue darken-4"
               class="elevation-1"
               >
             <v-card-title>
               <v-icon>mdi-cart-plus</v-icon>
               <span class="headline">{{ formTitle }}</span>
-                            <!-- <h3>Tambah data</h3> -->
             </v-card-title>
+            <v-spacer></v-spacer>
+                <v-btn
+                  dark
+                  text
+                  fab
+                  small
+                  @click="close">
+                  <v-icon class="mx-1">mdi-window-close</v-icon>
+                </v-btn>
             </v-toolbar>
 
             <v-card-text>
-              <v-container>
+              <v-container class="my-10">
                 <v-row>
-                  <v-col cols="12" sm="6" md="6">
+                  <v-col cols="12" sm="6" md="6" class="mt-n8">
                     <v-text-field
                       dense
-                      v-model="editedItem.id"
+                      outlined
+                      clearable
+                      v-model="editedItem.Kode"
                       label="Kode">
                     </v-text-field>
                   </v-col>
 
-                  <v-col cols="12" sm="6" md="6">
+                  <v-col cols="12" sm="6" md="6" class="mt-n8">
                     <v-text-field
                       dense
+                      outlined
+                      clearable
                       v-model="editedItem.Nama"
                       label="Nama">
                     </v-text-field>
                   </v-col>
 
-                  <v-col cols="12" sm="6" md="12">
+                  <v-col cols="12" sm="6" md="12" class="mt-n8">
                     <v-text-field
                       dense
+                      outlined
+                      clearable
                       v-model="editedItem.Alamat"
                       label="Alamat">
                     </v-text-field>
                   </v-col>
 
-                  <v-col cols="12" sm="6" md="6">
+                  <v-col cols="12" sm="6" md="6" class="mt-n8">
                     <v-text-field
                       dense
+                      outlined
+                      clearable
                       v-model="editedItem.Kota"
                       label="Kota">
                     </v-text-field>
                   </v-col>
-
-                  <v-col cols="12" sm="6" md="6">
-                                    <!-- <v-switch
-                                        v-model="editedItem.Aktif"
-                                        color="primary"
-                                        label="Aktif"
-                                    ></v-switch> -->
-                    <v-text-field 
+                  
+                  <v-col cols="12" sm="6" md="6" class="mt-n8">
+                    <v-text-field
                       dense
-                      v-model="editedItem.Aktif"
-                      label="Aktif"></v-text-field>
-                    </v-col>
+                      outlined
+                      clearable
+                      v-model="editedItem.Memo"
+                      label="Memo">
+                    </v-text-field>
+                  </v-col>
 
-                    <v-col cols="12" sm="6" md="6">
-                      <v-text-field
-                        dense
-                        v-model="editedItem.Memo"
-                        label="Memo">
-                      </v-text-field>
-                    </v-col>
+                  <v-col cols="12" sm="6" md="6" class="mt-n8">
+                    <v-switch outlined dense
+                      v-model="editedItem.Aktif"
+                      label="Aktif"
+                      true-value="True"
+                      false-value="False"
+                    >
+                    </v-switch>
+                  </v-col>
                   </v-row>
                 </v-container>
               </v-card-text>
 
+              <v-divider></v-divider>
+
               <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="close">
-                        <v-icon>mdi-arrow-left</v-icon>Cancel
-                    </v-btn>
-                    <v-btn color="success" @click="save">
-                        <v-icon class="mr-4">fas fa-save</v-icon>Save
+                      <v-btn
+                        dark
+                        color="error"
+                        @click="close">
+                        <v-icon class="mr-1">mdi-close-circle</v-icon>Batal
+                      </v-btn>
+                      <v-btn
+                        dark
+                        color="blue darken-4"
+                        @click="save">
+                        <v-icon class="mr-1">mdi-content-save</v-icon>Simpan
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -116,7 +139,7 @@
 
     <div id="app">
         <ejs-grid
-            :dataSource="data" height="240" width="100%" gridLines='Both'
+            :dataSource="data" height="100%" width="100%" gridLines='Both'
             :allowReordering = true
             :editSettings='editSettings'
             :selectionSettings='selectionOptions'
@@ -144,7 +167,7 @@
               
                 <e-column
                     :filter='filter'
-                    field='id'
+                    field='Kode'
                     headerText='Kode'
                     textAlign='Left'
                     width=180
@@ -193,14 +216,9 @@
 </template>
 
 <script>
-
-// import  OrderService  from "../services/order-service";
 import Vue from "vue";
-// import { DataManager, UrlAdaptor} from "@syncfusion/ej2-data";
 import { GridPlugin, Toolbar, Page, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder,   } from "@syncfusion/ej2-vue-grids";
-// const baseUrl = "http://localhost:8000/api";
-import api from '../axios/http'
-// const [data, setData] = useState()
+import api from '@/axios/http'
 Vue.use(GridPlugin);
 
 export default {
@@ -208,6 +226,7 @@ export default {
         return {
             editedIndex: -1,
             defaultItem: {
+            kode: "",
             name: "",
             alamat: "",
             kota: "",
@@ -216,6 +235,7 @@ export default {
           },
 
             editedItem: {
+            kode: "",
             name: "",
             alamat: "",
             kota: "",
@@ -226,61 +246,9 @@ export default {
         token : localStorage.getItem('token'),
         data: [],
         commands: [
-            // {
-            //     buttonOption: { content: "aa", cssClass: "e-flat custombutton" }
-            // },
             {  buttonOption: { cssClass: 'e-flat Edit', iconCss: 'e-edit e-icons' } },
         { buttonOption: { cssClass: 'e-flat Delete', iconCss: 'e-delete e-icons' } },
-        // { type: 'Save', buttonOption: { cssClass: 'e-flat', iconCss: 'e-update e-icons' } },
-        // { type: 'Cancel', buttonOption: { cssClass: 'e-flat', iconCss: 'e-cancel-icon e-icons' } }
-        ],
-            // orderService: new OrderService(),
-            // data: [
-            //     {
-            //         id: "Test",
-            //         Nama: "Test",
-            //         BadanHukum: "Test",
-            //         Alamat: "Test",
-            //         Kota: "Test",
-            //         KodePos: "Test",
-            //         Negara: "Test",
-            //         Telp: "Test",
-            //         Fax: "Test",
-            //         Email: "Test",
-            //         ContactPerson: "Test",
-            //         SalesPerson: "Test",
-            //         GrupPelanggan: "Test",
-            //         Aktif: "Test",
-            //         KreditLimit: "Test",
-            //         LamaKredit: "Test",
-            //         CustSince: "Test",
-            //         Memo: "Test",
-            //         Asuransi: "Test",
-            //     },
-                
-            //     {
-            //         id: "Test1",
-            //         Nama: "Test1",
-            //         BadanHukum: "Test1",
-            //         Alamat: "Test",
-            //         Kota: "Test",
-            //         KodePos: "Test",
-            //         Negara: "Test",
-            //         Telp: "Test",
-            //         Fax: "Test",
-            //         Email: "Test",
-            //         ContactPerson: "Test",
-            //         SalesPerson: "Test",
-            //         GrupPelanggan: "Test",
-            //         Aktif: "Test",
-            //         KreditLimit: "Test",
-            //         LamaKredit: "Test",
-            //         CustSince: "Test",
-            //         Memo: "Test",
-            //         Asuransi: "Test",
-            //     },
-            // ],
-            
+        ],    
             groupSettings: { allowReordering: true },
             selectionOptions: { type: 'Multiple' },
             toolbarOptions: ['Search'],
@@ -288,20 +256,6 @@ export default {
             filterOptions: { type: 'Menu' },
             filter: { type : 'CheckBox' },
             editSettings: { showDeleteConfirmDialog: true, allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Normal' },
-            // toolbar: ['Add', 'Edit', 'Delete', 'Update', 'Cancel'],
-            // data: new DataManager({ 
-            //     url: 'http://localhost:8000/api/customers?token='+this.token,
-            //     adaptor: new WebApiAdaptor(), 
-            //     crossDomain: true 
-            // }) 
-            // data: new DataManager({ 
-            //     url: 'http://localhost:8000/api/customers?token='+localStorage.getItem('token') + {method:'get'}, 
-                
-            //     updateUrl: 'customers?token='+this.token,
-            //     insertUrl: 'customers?token='+this.token, 
-            //     removeUrl: 'customers?token='+this.token, 
-            //     adaptor: new UrlAdaptor() 
-            // }), 
         }
     },
 
@@ -311,62 +265,22 @@ export default {
 
     mounted(){
         this.getData()
-        // let state = any;
-        // this.dataStateChange();
-        // this.dataStateChange(state);
-
-
     },
 
-    
-    // dataStateChange(state){
-    //     console.log(state)
-    // },
-    // watch: {
-    // dialog(val) {
-    //     val || this.close();
-    //     },
-    // },
+     watch: {
+     dialog(val) {
+         val || this.close();
+        },
+     },
     computed: {
         formTitle(){
             return this.editedIndex === -1 ? "Tambah Gudang" : "Edit Gudang";
         }
     },
-    // computed: {
-    //     formTitle(){
-    //         if(this.editedItem.id == ""){
-    //             return "Edit Data"
-    //         } else if(this.editedItem.id != "") {
-    //             return "Add Data"
-    //         } else {
-    //             return ""
-    //         }
-    //     }
-    // },
+    
     methods: {
-        // dataStateChange: function () {
-        //     // this.orderService.execute(state).then(( gridData ) => this.data = gridData );
-        //     this.getData()
-        // },
-        // dataSourceChanged: function (state) {
-        //     if (state.action === 'add') {
-        //     this.orderService.add(state).subscribe(() => state.endEdit());
-        //     } else if (state.action === 'edit') {
-        //     this.orderService.update(state).subscribe(() => state.endEdit());
-        //     } else if (state.requestType === 'delete') {
-        //     this.orderService.hapus(state).subscribe(() => state.endEdit());
-        //     }
-        // },
-        title(){
-            // let formTitle = ''
-            // if(this.editedItem.Nama == null){
-            //     formTitle = "Add New Customers"
-            // } else {
-            //     formTitle = "Edit Item"
-            // }
-        },
         save(){
-            if(this.formTitle === "Tambah Baru Gudang"){
+            if(this.formTitle === "Tambah Gudang"){
                 this.TambahData()
             }else{
                 this.UpdateData()
@@ -377,15 +291,15 @@ export default {
 
         UpdateData(){
         api.put('/gudang/' + this.editedItem.id +'?token='+this.token, {
+            Kode: this.editedItem.Kode,
             Nama: this.editedItem.Nama,
             Alamat: this.editedItem.Alamat,
             Kota: this.editedItem.Kota,
             Aktif: this.editedItem.Aktif,
             Memo: this.editedItem.Memo,
         })
-        .then((res)=>{
+        .then(()=>{
             this.id = ''
-            console.log(res)
             this.getData()
         })
         .catch((err)=> {
@@ -395,19 +309,20 @@ export default {
 
         TambahData(){
             api.post('/gudang?token='+this.token, {
+            Kode: this.editedItem.Kode,
             Nama: this.editedItem.Nama,
             Alamat: this.editedItem.Alamat,
             Kota: this.editedItem.Kota,
             Aktif: this.editedItem.Aktif,
             Memo: this.editedItem.Memo,
         })
-        .then((res) => {
+        .then(() => {
+            this.Kode = ''
             this.Nama = ''                                                            
             this.Alamat=''
             this.Kota=''
             this.Aktif=''
             this.Memo=''
-            console.log(res)
             this.getData()
             this.close()
         })
@@ -424,76 +339,38 @@ export default {
 
         commandClick: function(args) {
         if (args.target.classList.contains("custombutton")) {
-            // let tampung = []
             let data = JSON.stringify(args.rowData)
-            // console.log(args);
-            // alert(JSON.stringify(args.rowData));
-            // console.log(JSON.stringify(args.rowData))
-            // tampung.push(args.rowData)
-            // this.editedItem = Object.assign({},data)
             console.log(data)
         } else if (args.target.classList.contains("Delete")) {
             var r = confirm("Yakin Hapus Data?");
             if (r == true) {
                 api.delete('/gudang/'+args.rowData.id+'?token='+this.token)
-                .then((res)=> {
-                    // this.item.splice(index, 1)
-                    console.log(res)
+                .then(()=> {
                     this.getData()
                 })
                 .catch((err)=> {
                     console.log(err)
                 })
             } 
-            // let data = JSON.stringify(args.rowData)
-            // console.log(data)
-            // console.log(args)
-            
+
         } else if (args.target.classList.contains('Edit')) {
             let data = args
             this.editedIndex = 1;
-            console.log(data)
             this.editedItem = data.rowData
             this.dialog = true
         }},
 
-        actionComplete(args) {
-        // if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
-        //     let dialog = args.dialog;
-        //     dialog.height = 400;
-        //     // change the header of the dialog
-        //     dialog.header = args.requestType === 'beginEdit' ? 'Edit Record' : 'New Record';
-        // }
-        console.log(args)
-    },
-
         getData(){
             api.get('/gudang?token='+this.token).then(
         res=>{
-            console.log(res)
             this.data = res.data
         },
         err => {
             console.log(err)
-            // this.$router.push('/')
-            // localStorage.removeItem('token')
+            this.$router.push('/')
+             localStorage.removeItem('token')
         })},
 
-        // TambahData(order){
-        //     // api.post('/customers?token='+this.token, {
-        //     //     body
-        //     // })
-        //     return fetch(baseUrl+'/customers?token='+this.token,{
-        //         method: "post",
-        //         headers: {"Content-type": "application/json"},
-        //         body: JSON.stringify({
-        //             value: order
-        //         })
-        //     }).then(data => {
-        //         return data;
-            
-        //     })
-        // }
     }
 }
 </script>
@@ -505,4 +382,4 @@ export default {
     .e-grid .e-groupheadercell { 
         background-color: rgb(29, 79, 129) ; 
     } 
-</style>
+</style> 
