@@ -12,6 +12,8 @@ import Dashboard from "@/components/Dashboard";
 import Login from "@/components/login";
 import Estimasi from "@/components/Estimasi";
 import InternalPartOrder from "@/components/InternalPartOrder";
+import NotaGudang from "@/components/NotaGudang";
+
 
 
 
@@ -31,7 +33,8 @@ export default new VueRouter({
     {path:'/Grid',name:'Grid',component: Grid},
     {path:'/hakAkses',name:'HakAkses',component: HakAkses},
     {path:'/estimasi',name:'Estimasi',component: Estimasi},
-    {path:'/InternalPartOrder', name:'InternalPartOrder',component: InternalPartOrder}
+    {path:'/InternalPartOrder', name:'InternalPartOrder',component: InternalPartOrder},
+    {path:'/NotaGudang',name:'NotaGudang',component: NotaGudang}
   ]
 });
 

@@ -57,7 +57,7 @@
                 <v-container>
                 <v-card class="pa-2" max-width="1200">
                   <v-row dense>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="4">
                     <v-text-field
                      v-model="editedItem.NoPartOrder"
                        label="Kode Nota"
@@ -65,28 +65,19 @@
                         dense
                     ></v-text-field>
                     </v-col>
-                    <v-col cols="12" md="6">
+                    <v-col cols="12" md="5">
                    <v-text-field outlined dense
                       v-model="editedItem.NomorWO"
-                      label="Nomor Work Order">
+                      label="Nomor Work Order"
+                      append-icon="mdi-dots-horizontal"
+                      @click:append="dialogwo = !dialogwo">
                     </v-text-field>
                 </v-col>
-                <v-col cols="12" md="2">
+  
                     <v-dialog
           v-model="dialogwo"
           max-width="1200px"
         >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-         
-              dark
-              class="mb-2"
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-icon>mdi-dots-horizontal</v-icon>
-            </v-btn>
-          </template>
           <v-card>
              <v-app-bar
       color="primary"
@@ -102,6 +93,7 @@
                 :editSettings='editSettings'
                 :selectionSettings='selectionOptionsSatuan'
                 :allowSorting='true'
+                :toolbar='toolbarOptions'
                 :allowFiltering='true'
                 :filterSettings='filterOptions'
                 :allowResizing='true'
@@ -178,8 +170,8 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-      </v-col>
-      <v-col cols="12" md="6">
+    
+      <v-col cols="12" md="3">
                     <v-menu
                     v-model="menutanggal"
                     :close-on-content-click="false"
@@ -193,7 +185,7 @@
                        label="Tanggal"
                        outlined
                         dense
-                        prepend-icon="mdi-calendar"
+                        append-icon="mdi-calendar"
                         v-bind="attrs"
                         v-on="on"
                     ></v-text-field>
@@ -239,6 +231,7 @@
                 :groupSettings='groupSettings'
                 :allowSorting='true'
                 :allowMultiSorting='true'
+                :toolbar='toolbarOptions'
                 :allowFiltering='true'
                 :filterSettings='filterOptions'
                 :allowResizing='true'
@@ -493,7 +486,7 @@ export default {
       groupSettings: { allowReordering: true },
       selectionOptions: { type: 'Multiple' },
       selectionOptionsSatuan: { type: 'Single' },
-      toolbarOptions: ['Search','Delete', 'Update', 'Cancel'],
+      toolbarOptions: ['Search'],
       pageSettings: {pageSizes: ['5','10','All']},
       filterOptions: { type: 'Menu' },
       filter: { type : 'CheckBox' },

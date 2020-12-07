@@ -77,7 +77,7 @@
           <v-text-field outlined dense
            v-model="editedItem.Tanggal"
             label="Tanggal"
-            prepend-icon="mdi-calendar"
+            append-icon="mdi-calendar"
             readonly
             v-bind="attrs"
             v-on="on"
@@ -105,7 +105,7 @@
           <v-text-field outlined dense
           v-model="editedItem.TanggalKirim"
             label="Tanggal Kirim"
-            prepend-icon="mdi-calendar"
+            append-icon="mdi-calendar"
             readonly
             v-bind="attrs"
             v-on="on"
@@ -127,38 +127,18 @@
                     </v-text-field>
                   </v-col>
 
-                  <v-col cols="14"  md="5">
+                  <v-col cols="14"  md="6">
                    <v-text-field outlined dense
                       v-model="editedItem.NamaSupplier"
-                      label="Supplier">
+                      label="Supplier"
+                      append-icon="mdi-dots-horizontal"
+                      @click:append="dialogsupplier = !dialogsupplier">
                     </v-text-field>
-      <!-- <v-autocomplete
-      outlined dense
-      v-model="editedItem.NamaSupplier"
-        :items="supplier"
-        item-text="Nama"
-        item-value="Nama"
-        label="Supplier"
-        return-object
-      ></v-autocomplete>
-      {{editedItem.NamaSupplier.BillFrom}} -->
                   </v-col>
-                  <v-col cols="2"  md="1">
                     <v-dialog
           v-model="dialogsupplier"
           max-width="1200px"
         >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-         
-              dark
-              class="mb-2"
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-icon>mdi-dots-horizontal</v-icon>
-            </v-btn>
-          </template>
           <v-card>
              <v-app-bar
       color="primary"
@@ -172,6 +152,7 @@
                 :dataSource="supplier" height='200' width='100%'
                 :allowReordering = true
                 :editSettings='editSettings'
+                :toolbar='toolbarOptions'
                 :selectionSettings='selectionOptionsSatuan'
                 :allowSorting='true'
                 :allowFiltering='true'
@@ -239,7 +220,6 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-                  </v-col>
 
                   <v-col cols="14"  md="6">
                     <v-text-field outlined dense
@@ -279,7 +259,7 @@
                       label="Refrensi">
                     </v-text-field>
                   </v-col>
-                  <v-col cols="10"  md="5">
+                  <v-col cols="14"  md="6">
         
                     <v-text-field
                      
@@ -287,24 +267,14 @@
                        label="Nomor Work Order"
                        outlined
                         dense
+                        append-icon="mdi-dots-horizontal"
+                        @click:append="dialog2 = !dialog2"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="2"  md="1">
                     <v-dialog
           v-model="dialog2"
           max-width="1200px"
         >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-         
-              dark
-              class="mb-2"
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-icon>mdi-dots-horizontal</v-icon>
-            </v-btn>
-          </template>
           <v-card>
              <v-app-bar
       color="primary"
@@ -318,6 +288,7 @@
                 
                 :dataSource="itemswo" height='200' width='100%'
                 :allowReordering = true
+                :toolbar='toolbarOptions'
                 :editSettings='editSettings'
                 :selectionSettings='selectionOptionsSatuan'
                 :allowSorting='true'
@@ -400,9 +371,8 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-                  </v-col>
-
-                  <v-col cols="7" md="6" offset-md="0">
+ 
+                  <v-col cols="14" md="6" offset-md="0">
                     <v-text-field outlined dense
                       v-model="editedItem.NomorRangka"
                       label="Nomor Rangka">
@@ -469,6 +439,7 @@
                 <ejs-grid 
                 :dataSource="data" height='200' width='100%'
                 :allowReordering = true
+                :toolbar='toolbarOptions'
                 :editSettings='editSettings'
                 :selectionSettings='selectionOptions'
                 :allowGrouping='true'
@@ -735,7 +706,7 @@ export default {
        selectionOptions: { type: 'Multiple'},
       //  selectionOptions: { type: 'Multiple', persistSelection: true, enableSimpleMultiRowSelection: true},
       selectionOptionsSatuan: { type: 'Single'},
-      toolbarOptions: ['Search','Delete', 'Update', 'Cancel'],
+      toolbarOptions: ['Search'],
       pageSettings: {pageSizes: ['5','10','All']},
       filterOptions: { type: 'Menu' },
       filter: { type : 'CheckBox' },

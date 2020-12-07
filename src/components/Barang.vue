@@ -264,6 +264,7 @@
         </v-toolbar>
         <ejs-grid 
                 :dataSource="itemtabsatuan" height='200' width='100%'
+                :toolbar='toolbarOptionsSelect'
                 :allowReordering = true
                 :editSettings='editSettings'
                 :selectionSettings='selectionOptions'
@@ -399,6 +400,7 @@
         </v-toolbar>
         <ejs-grid 
                 :dataSource="itemtabhargajual" height='200' width='100%'
+                :toolbar='toolbarOptionsSelect'
                 :allowReordering = true
                 :editSettings='editSettings'
                 :selectionSettings='selectionOptions'
@@ -569,6 +571,7 @@
         </v-toolbar>
         <ejs-grid 
                 :dataSource="itemtabhargabeli" height='200' width='100%'
+                :toolbar='toolbarOptionsSelect'
                 :allowReordering = true
                 :editSettings='editSettings'
                 :selectionSettings='selectionOptions'
@@ -728,6 +731,7 @@
         </v-toolbar>
         <ejs-grid 
                 :dataSource="itemtabstok" height='200' width='100%'
+                :toolbar='toolbarOptionsSelect'
                 :allowReordering = true
                 :editSettings='editSettings'
                 :selectionSettings='selectionOptions'
@@ -788,6 +792,7 @@
             <div id="app">
                 <ejs-grid 
                 :dataSource="data"
+                :toolbar='toolbarOptions'
             height="300"
             width="100%"
             :allowReordering = true
@@ -960,7 +965,7 @@
 import Vue from "vue";
 import api from "@/axios/http";
 import { DatePickerPlugin } from "@syncfusion/ej2-vue-calendars"
-import { GridPlugin, Page, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder } from "@syncfusion/ej2-vue-grids";
+import { GridPlugin, Toolbar ,Page, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder } from "@syncfusion/ej2-vue-grids";
 import { loadCldr,L10n, setCulture, setCurrencyCode } from '@syncfusion/ej2-base';
 loadCldr(require('../cldr/id/currencies.json'),                 
         require('../cldr/id/numbers.json'),  
@@ -1069,6 +1074,8 @@ export default {
         dialoghargajual: false,
         dialoghargabeli: false,
         dialogstok: false,
+        toolbarOptions: ['Search', 'Update', 'Cancel'],
+        toolbarOptionsSelect: ['Search'],
         dataStateChange: false,
         token : localStorage.getItem('token'),
         data: [],
@@ -1102,7 +1109,7 @@ export default {
     };
   },
   provide: {
-    grid: [Page, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder]
+    grid: [Page, Toolbar,Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder]
   },
   mounted() {
     this.getData()
@@ -1121,6 +1128,7 @@ export default {
     save(){
             if(this.formTitle === "Tambah Barang"){
                 this.TambahData()
+                this.editedItem = this.defaultItem
             }else{
                 this.UpdateData()
             }
@@ -1240,10 +1248,12 @@ export default {
         close() {
         this.dialog = false;
         this.editedItem = this.defaultItem
+        this.editedItem = []
         this.editedIndex = -1
         this.itemtabsatuan = []
         this.itemtabhargabeli = []
         this.itemtabhargajual = []
+        this.itemtabstok = []
         },
         commandClick: function(args) {
         if (args.target.classList.contains("custombutton")) {
@@ -1271,6 +1281,7 @@ export default {
           this.saveSatuan()
           this.saveHargaJual()
           this.saveHargaBeli()
+          this.saveStok()
         }},
         // actionComplete(args) {
         // console.log(args)

@@ -320,6 +320,7 @@
             { title: 'Chart of Account', link: 'ChartOfAccount' },
             { title: 'Periode', link: 'Periode' },
             { title: 'Purchase Order (PO)', link: 'PurchaseOrder' },
+            { title: 'Internal Part Order', link: '/InternalPartOrder', icon: 'mdi-account'},
             { title: 'Pembelian', link: 'Pembelian2' },
             { title: 'Retur Pembelian', link: 'ReturPembelian' },
             { title: 'Work Order', link: 'WorkOrder' },

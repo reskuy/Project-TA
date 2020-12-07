@@ -377,15 +377,15 @@
 <script>
 
 import Vue from "vue";
-import api from '../services/http';
-import ItemsBarang from '@/views/NotaGudang/itemsbarang';
+import api from '@/axios/http';
+// import ItemsBarang from '@/views/NotaGudang/itemsbarang';
 import { GridPlugin, Toolbar, Page, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder,   } from "@syncfusion/ej2-vue-grids";
 
 Vue.use(GridPlugin);
 
 export default {
   components: {
-            ItemsBarang,
+            // ItemsBarang,
           },
     data() {
         return {
