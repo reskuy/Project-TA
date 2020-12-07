@@ -1,5 +1,5 @@
 <template> 
-  <v-div>
+  <div>
   <v-app-bar
     color="blue darken-4"
     clipped-left
@@ -277,7 +277,7 @@
     <!-- ------------------------------data-end------------------------------ -->
     </v-navigation-drawer>
     <!-- ------------------------navigation-drawer-end----------------------- -->
-  </v-div>
+  </div>
 
   
 </template>
@@ -314,7 +314,7 @@
         {
           action: 'mdi-folder',
           items: [
-            { title: 'Daftar Harga Jual Beli', link: '/DaftarHargaBeliJual' },
+            { title: 'Daftar Harga Jual Beli', link: '/DaftarHarga' },
             { title: 'Jenis Pekerjaan', link: 'JenisPekerjaan' },
             { title: 'Invoice', link: 'Invoice' },
             { title: 'Chart of Account', link: 'ChartOfAccount' },
@@ -359,7 +359,7 @@
       ],
       
       data: [
-        { title: 'Daftar Harga Beli Jual', link: '/DaftarHargaBeliJual', icon: 'mdi-account'},
+        { title: 'Daftar Harga Beli Jual', link: '/DaftarHarga', icon: 'mdi-account'},
         { title: 'Jenis Pekerjaan', link: '/JenisPekerjaan', icon: 'mdi-account'},
         { title: 'Invoice', link: '/Invoice', icon: 'mdi-account'},
         { title: 'Chart of Account (COA)', link: '/ChartOfAccount', icon: 'mdi-account'},

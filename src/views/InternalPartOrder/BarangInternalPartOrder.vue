@@ -40,9 +40,9 @@
                 :toolbar='toolbarOptionsSelect'
                 :dataSource="itembaranglist" height='200' width='100%'
                 :allowReordering = true
-                :selectionSettings='selectionOptionsSatuan'
+                :selectionSettings='selectionOptions'
                 :allowSorting='true'
-                :selectionOptions='selectionOptionsSatuan'
+                :selectionOptions='selectionOptions'
                 :allowMultiSorting='true'
                 :allowFiltering='true'
                 :filterSettings='filterOptions'
@@ -94,8 +94,8 @@
                 <v-btn
                   dark
                   color="success"
-                  @click="close">
-                  <v-icon class="mr-1">mdi-close-circle</v-icon>Tutup
+                  @click="accbarang">
+                  <v-icon class="mr-1">mdi-save-outlined</v-icon>Simpan
                 </v-btn>
               </v-card-actions>
           </v-card>
@@ -122,19 +122,9 @@
                 @actionComplete="onActionComplete"
                 >
                 <e-columns>
-                
-                    <e-column 
-                    
-                      field='id' 
-                      headerText='ID' 
-                      textAlign='Left'
-                      width=65
-                      :isPrimaryKey="true"
-                      >
-                    </e-column>
 
                     <e-column 
-                 
+                 :isPrimaryKey="true"
                       fieldText=''
                       field='Kode' 
                       headerText='Barang' 
@@ -214,6 +204,7 @@ export default {
       itembarangipo: [],
       itembaranglist: [],
       itembarangipostorage: [],
+      storeSelect:[],
       token : localStorage.getItem('token'),
       groupSettings: { allowReordering: true },
       selectionOptions: { type: 'Multiple'},
@@ -270,20 +261,21 @@ export default {
         },
         rowSelectedBarangIPO: function() {
         let grid = document.getElementById("Grid").ej2_instances[0];
-         let a = grid.getSelectedRecords();
-      // let a = args.data
-      //  console.log(args.data)
-      //  this.itembarangipo = a;
-        //  var itembarang = [];
-       if ( a.length > 1 ) {
-         for (let i = 0; i < a.length; i++) {
-           const element = a[i];
+         this.storeSelect = grid.getSelectedRecords();
+     
+    },
+    //simpan barang dari list
+    accbarang(){
+      this.dialogbarang= false
+      if ( this.storeSelect.length > 1 ) {
+         for (let i = 0; i < this.storeSelect.length; i++) {
+           const element = this.storeSelect[i];
            delete element.Dimensi
+           delete element.id
            delete element.PartNumber2
            delete element.updated_at
            delete element.created_at
            delete element.Aktif
-           delete element.Gudang
            delete element.created_by
            delete element.StokMin
            delete element.StokMaks
@@ -300,14 +292,13 @@ export default {
          }
          this.$emit('SyncItemBarangIPO', this.itembarangipo)
        }else{
-         for (let i = 0; i < a.length; i++) {
-           const element = a[i];
+         for (let i = 0; i < this.storeSelect.length; i++) {
+           const element = this.storeSelect[i];
            delete element.Dimensi
            delete element.PartNumber2
            delete element.updated_at
            delete element.created_at
            delete element.Aktif
-           delete element.Gudang
            delete element.created_by
            delete element.StokMin
            delete element.StokMaks

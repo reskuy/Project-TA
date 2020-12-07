@@ -13,7 +13,7 @@ import Login from "@/components/login";
 import Estimasi from "@/components/Estimasi";
 import InternalPartOrder from "@/components/InternalPartOrder";
 import NotaGudang from "@/components/NotaGudang";
-
+import DaftarHarga from "@/components/DaftarHarga";
 
 
 
@@ -34,7 +34,8 @@ export default new VueRouter({
     {path:'/hakAkses',name:'HakAkses',component: HakAkses},
     {path:'/estimasi',name:'Estimasi',component: Estimasi},
     {path:'/InternalPartOrder', name:'InternalPartOrder',component: InternalPartOrder},
-    {path:'/NotaGudang',name:'NotaGudang',component: NotaGudang}
+    {path:'/NotaGudang',name:'NotaGudang',component: NotaGudang},
+    {path:'/DaftarHarga',name:'DaftarHarga',component: DaftarHarga},
   ]
 });
 

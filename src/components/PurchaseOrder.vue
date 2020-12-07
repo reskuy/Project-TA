@@ -206,16 +206,9 @@
               <v-btn
                 color="blue darken-1"
                 text
-                @click="close"
+                @click="closeSupplier"
               >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="save"
-              >
-                Save
+                Simpan
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -357,16 +350,9 @@
               <v-btn
                 color="blue darken-1"
                 text
-                @click="close"
+                @click="closewodialog"
               >
-                Cancel
-              </v-btn>
-              <v-btn
-                color="blue darken-1"
-                text
-                @click="save"
-              >
-                Save
+                Simpan
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -878,6 +864,12 @@ export default {
         },
         accbarang(){
           this.dialogbarang = false
+        },
+        closewodialog(){
+          this.dialog2 = false
+        },
+        closeSupplier(){
+          this.dialogsupplier = false
         },
         commandClick: function(args) {
         if (args.target.classList.contains("custombutton")) {

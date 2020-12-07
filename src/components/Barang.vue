@@ -355,13 +355,31 @@
                   </v-col>
 
                   <v-col cols="12" sm="6" md="6" class="mt-n8">
-                    <v-text-field
-                      dense
-                      outlined
-                      clearable
-                      v-model="editedItem.TanggalHargaJual"
-                      label="Tanggal">
-                    </v-text-field>
+                    <v-menu
+          v-model="menutanggalhargajual"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        transition="scale-transition"
+        offset-y
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field outlined dense
+           v-model="editedItem.TanggalHargaJual"
+            label="Tanggal"
+            append-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+        locale="id"
+        v-model="editedItem.TanggalHargaJual"
+          @input="menutanggalhargajual = false"
+          :min="HariIni"
+        ></v-date-picker>
+      </v-menu>
                   </v-col>
 
                   <v-col cols="12" sm="6" md="6" class="mt-n8">
@@ -515,13 +533,31 @@
                   </v-col>
 
                   <v-col cols="12" sm="4" md="4" class="mt-n8">
-                    <v-text-field
-                      dense
-                      outlined
-                      clearable
-                      v-model="editedItem.TanggalHargaBeli"
-                      label="Tanggal">
-                    </v-text-field>
+                    <v-menu
+          v-model="menutanggalhargabeli"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        transition="scale-transition"
+        offset-y
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field outlined dense
+           v-model="editedItem.TanggalHargaBeli"
+            label="Tanggal"
+            append-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+        locale="id"
+        v-model="editedItem.TanggalHargaBeli"
+          @input="menutanggalhargabeli = false"
+          :min="HariIni"
+        ></v-date-picker>
+      </v-menu>
                   </v-col>
                   
                   <v-col cols="12" sm="4" md="4" class="mt-n8">
@@ -1012,6 +1048,9 @@ export default {
     },
   data() {
     return {
+      HariIni: new Date().toISOString().substr(0,10),
+      menutanggalhargabeli: false,
+      menutanggalhargajual: false,
             tab:false,
             tab1:false,
             editedIndex: -1,
