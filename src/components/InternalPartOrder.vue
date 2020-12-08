@@ -5,7 +5,7 @@
             flat
             dark
             dense
-            color='primary'
+            color='blue darken-4'
             class="elevation-1"
             >
             <v-toolbar-title 
@@ -31,7 +31,7 @@
                 dark
                 small
                 rounded
-                color="primary"
+                color="blue darken-4"
                 class="mb-2"
                 v-bind="attrs"
                 v-on="on"
@@ -44,7 +44,7 @@
               <v-toolbar
                 dark
                 dense
-                color= 'primary'
+                color= 'blue darken-4'
                 class="elevation-1"
               >
               <v-toolbar-title dark>
@@ -80,7 +80,7 @@
         >
           <v-card>
              <v-app-bar
-      color="primary"
+      color="blue darken-4"
       dark
       dense 
     >           <span class="headline">Nomor Work Order</span>

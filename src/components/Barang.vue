@@ -4,7 +4,7 @@
             flat
             dark
             dense
-            color='primary'
+            color='blue darken-4'
             class="elevation-1"
             >
             <v-toolbar-title 
@@ -30,7 +30,7 @@
                 dark
                 small
                 rounded
-                color="primary"
+                color="blue darken-4"
                 class="mb-2"
                 v-bind="attrs"
                 v-on="on"
@@ -43,7 +43,7 @@
               <v-toolbar
                 dark
                 dense
-                color= 'primary'
+                color= 'blue darken-4'
                 class="elevation-1"
               >
               <v-toolbar-title dark>

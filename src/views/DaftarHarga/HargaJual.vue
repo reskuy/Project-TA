@@ -82,7 +82,7 @@
 <script>
 import Vue from "vue";
 import { GridPlugin, Toolbar, Page, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder,   } from "@syncfusion/ej2-vue-grids";
-import api from '@/axios/http'
+// import api from '@/axios/http'
 Vue.use(GridPlugin);
 export default {
     data() {
@@ -145,16 +145,9 @@ export default {
     
     methods: {
         getData(){
-            api.get('/barang?token='+this.token).then(
-        res=>{
-            console.log(res)
-            this.data = res.data
-        },
-        err => {
-            console.log(err)
-            // this.$router.push('/')
-            // localStorage.removeItem('token')
-        })},
+          let HargaJual = localStorage.getItem('temp')
+          this.data = JSON.parse(HargaJual)
+        }
     }
 }
 </script>

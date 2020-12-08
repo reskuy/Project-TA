@@ -20,19 +20,19 @@
 
         <v-spacer></v-spacer>
          <template v-if="posisi === false">
-            <v-btn  @click="posisi = !posisi">Harga beli</v-btn>
+            <v-btn color="blue darken-4" @click="posisi = !posisi"><v-icon>mdi-swap-horizontal</v-icon></v-btn>
               </template>
         <template v-if="posisi === true">
-            <v-btn  @click="posisi = !posisi">Harga Jual</v-btn>
+            <v-btn color="blue darken-4" @click="posisi = !posisi"><v-icon>mdi-swap-horizontal</v-icon></v-btn>
               </template>
       </v-toolbar>
 
       <div id="app">
           <template v-if="posisi === true">
-            <HargaBeli/>
+            <HargaBeli ref="HargaBeli"/>
               </template>
           <template v-if="posisi === false">
-            <HargaJual/>
+            <HargaJual refs="HargaJual"/>
           </template>
     </div>
 
@@ -79,10 +79,11 @@ components:{
     
     methods: {
         getData(){
-            api.get('/supplier?token='+this.token).then(
+            api.get('/barang?token='+this.token).then(
         res=>{
             console.log(res)
             this.data = res.data
+            localStorage.setItem("temp", JSON.stringify(this.data))
         },
         err => {
             console.log(err)
