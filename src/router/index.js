@@ -14,6 +14,8 @@ import Estimasi from "@/components/Estimasi";
 import InternalPartOrder from "@/components/InternalPartOrder";
 import NotaGudang from "@/components/NotaGudang";
 import DaftarHarga from "@/components/DaftarHarga";
+import ChartOfAccount from "@/components/ChartOfAccount";
+import ReturPembelian from "@/components/ReturPembelian";
 
 
 
@@ -36,6 +38,8 @@ export default new VueRouter({
     {path:'/InternalPartOrder', name:'InternalPartOrder',component: InternalPartOrder},
     {path:'/NotaGudang',name:'NotaGudang',component: NotaGudang},
     {path:'/DaftarHarga',name:'DaftarHarga',component: DaftarHarga},
+    {path:'/ChartOfAccount',name:'ChartOfAccount',component: ChartOfAccount},
+    {path:'/ReturPembelian',name:'ReturPembelian',component: ReturPembelian}
   ]
 });
 

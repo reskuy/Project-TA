@@ -2,20 +2,20 @@
 <v-col cols="12" md="12">
     <v-toolbar flat dark dense color="danger" class="elevation-1">
         <v-toolbar-title dark>
-            <v-icon>mdi-cart</v-icon>
             Customers
         </v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
-        <v-dialog v-model="dialog" max-width="1000px">
-            <template v-slot:activator="{ on, attrs }">
-                <v-btn color="primary" dark v-bind="attrs" v-on="on">
-                    <v-icon>mdi-plus</v-icon>TAMBAH
+        <v-spacer></v-spacer>
+        <v-dialog v-model="dialog" max-width="700px">
+            <template v-slot:activator="{on, attrs}">
+                <v-btn color="blue darken-4" dark v-bind="attrs" v-on="on" class="mx-2"  medium>
+                    <v-icon>mdi-plus</v-icon>
                 </v-btn>
             </template>
             <v-card>
                 <v-card-title>
-                <!-- <span class="headline">{{ formTitle }}</span> -->
-                    <h3>Tambah data</h3>
+                <span class="headline">{{ formTitle }}</span>
+                    <!-- <h3>Tambah data</h3> -->
                 </v-card-title>
 
                 <v-card-text>
@@ -27,17 +27,18 @@
                                 label="Kode"
                             ></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="6" md="8">
+                            <v-col cols="12" sm="6" md="7">
                             <v-text-field
                                 v-model="editedItem.Nama"
                                 label="Nama"
                             ></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="6" md="2">
-                            <v-text-field
-                                v-model="editedItem.BadanHukum"
-                                label="Badan Hukum"
-                            ></v-text-field>
+                            <v-col cols="12" sm="6" md="3">
+                            <v-combobox
+                            v-model="editedItem.BadanHukum"
+                            label="Badan Hukum"
+                            :items="itemsBadanHukum"
+                            ></v-combobox>
                             </v-col>
                             <v-col cols="12" sm="6" md="12">
                             <v-text-field
@@ -45,19 +46,19 @@
                                 label="Alamat"
                             ></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="6" md="6">
+                            <v-col cols="12" sm="6" md="4">
                             <v-text-field
                                 v-model="editedItem.Kota"
                                 label="Kota"
                             ></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="6" md="6">
+                            <v-col cols="12" sm="6" md="4">
                             <v-text-field
                                 v-model="editedItem.KodePos"
                                 label="Kode Pos"
                             ></v-text-field>
                             </v-col>
-                            <v-col cols="12" sm="6" md="6">
+                            <v-col cols="12" sm="6" md="4">
                             <v-text-field
                                 v-model="editedItem.Negara"
                                 label="Negara"
@@ -100,12 +101,14 @@
                             ></v-text-field>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                            <!-- <v-switch
+                            <v-switch
                                 v-model="editedItem.Aktif"
-                                color="primary"
+                                color="blue darken-4"
                                 label="Aktif"
-                            ></v-switch> -->
-                            <v-text-field v-model="editedItem.Aktif" label="Aktif"></v-text-field>
+                                true-value="True"
+                                false-value="False"
+                            ></v-switch>
+                            <!-- <v-text-field v-model="editedItem.Aktif" label="Aktif"></v-text-field> -->
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
                             <v-text-field
@@ -142,17 +145,14 @@
                 </v-card-text>
 
                 <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
-                  <v-icon>mdi-arrow-left</v-icon>Cancel
-                </v-btn>
-                <v-btn color="success" @click="save">
-                  <v-icon class="mr-4">fas fa-save</v-icon>Save
-                </v-btn>
-                <v-btn color="success" @click="UpdateData">
-                  <v-icon class="mr-4">fas fa-save</v-icon>update
-                </v-btn>
-              </v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="close">
+                        <v-icon>mdi-arrow-left</v-icon>Cancel
+                    </v-btn>
+                    <v-btn color="success" @click="save">
+                        <v-icon class="mr-4">fas fa-save</v-icon>Save
+                    </v-btn>
+                </v-card-actions>
             </v-card>
         </v-dialog>
     </v-toolbar>
@@ -160,9 +160,8 @@
     <div id="app">
         <ejs-grid
             :dataSource="data"
-            :dataStateChange = 'dataStateChange'
-            :dataSourceChanged={dataSourceChanged}
-            height="200%"
+            
+            height="200"
             width="100%"
             :allowReordering = true
             :editSettings='editSettings'
@@ -182,11 +181,11 @@
             <e-columns>
                 <e-column field="Commands" headerText="Action" width="150" :commands="commands">
                     <div class="btn-group">
-                              <button type="button" class="btn btn-default" (click)='prediemRowEdit($event)'>
-                                <i class="fa fa-pencil"></i></button>
-                              <button type="button" class="btn btn-default" (click)='prediemRowDelete($event)'>
-                                <i class="fa fa-trash"></i></button>
-                            </div>
+                        <button type="button" class="btn btn-default" (click)='prediemRowEdit($event)'>
+                            <i class="fa fa-pencil"></i></button>
+                        <button type="button" class="btn btn-default" (click)='prediemRowDelete($event)'>
+                            <i class="fa fa-trash"></i></button>
+                    </div>
                 </e-column>
                 <e-column
                     :filter='filter'
@@ -334,13 +333,35 @@ import Vue from "vue";
 // import { DataManager, UrlAdaptor} from "@syncfusion/ej2-data";
 import { GridPlugin, Toolbar, Page, Aggregate, Resize, Filter, Sort, Group, Edit, CommandColumn, Reorder,   } from "@syncfusion/ej2-vue-grids";
 // const baseUrl = "http://localhost:8000/api";
-import api from '../axios/http'
+import api from '@/axios/http'
 // const [data, setData] = useState()
 Vue.use(GridPlugin);
 
 export default {
     data() {
         return {
+        itemsBadanHukum:["PT","CV","UD","-"],
+            editedIndex: -1,
+            defaultItem: {
+            name: "",
+            badanHukum: "",
+            alamat: "",
+            kota: "",
+            kodePos: "",
+            negara: "",
+            telp: "",
+            fax: "",
+            email: "",
+            cp: "",
+            sales: "",
+            groupPelanggan: "",
+            aktif: "",
+            kreditLimit: "",
+            lamaKredit: "",
+            CustSince: "",
+            memo: "",
+            asuransi: "",
+            },
             editedItem: {
             name: "",
             badanHukum: "",
@@ -422,12 +443,12 @@ export default {
             
             groupSettings: { allowReordering: true },
             selectionOptions: { type: 'Multiple' },
-            toolbarOptions: ['Search', 'Add', 'Edit', 'Delete', 'Update', 'Cancel'],
+            toolbarOptions: ['Search'],
             pageSettings: {pageSize: 5, pageSizes :['5','10','15','20','50','All']},
             filterOptions: { type: 'Menu' },
             filter: { type : 'CheckBox' },
             editSettings: { showDeleteConfirmDialog: true, allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Dialog' },
-            toolbar: ['Add', 'Edit', 'Delete', 'Update', 'Cancel'],
+            // toolbar: ['Add', 'Edit', 'Delete', 'Update', 'Cancel'],
             // data: new DataManager({ 
             //     url: 'http://localhost:8000/api/customers?token='+this.token,
             //     adaptor: new WebApiAdaptor(), 
@@ -453,8 +474,11 @@ export default {
         // let state = any;
         // this.dataStateChange();
         // this.dataStateChange(state);
+
+
     },
 
+    
     // dataStateChange(state){
     //     console.log(state)
     // },
@@ -463,6 +487,22 @@ export default {
         val || this.close();
         },
     },
+    computed: {
+        formTitle(){
+            return this.editedIndex === -1 ? "Add New Customer" : "Edit Customer";
+        }
+    },
+    // computed: {
+    //     formTitle(){
+    //         if(this.editedItem.id == ""){
+    //             return "Edit Data"
+    //         } else if(this.editedItem.id != "") {
+    //             return "Add Data"
+    //         } else {
+    //             return ""
+    //         }
+    //     }
+    // },
     methods: {
         // dataStateChange: function () {
         //     // this.orderService.execute(state).then(( gridData ) => this.data = gridData );
@@ -477,7 +517,55 @@ export default {
         //     this.orderService.hapus(state).subscribe(() => state.endEdit());
         //     }
         // },
+        title(){
+            // let formTitle = ''
+            // if(this.editedItem.Nama == null){
+            //     formTitle = "Add New Customers"
+            // } else {
+            //     formTitle = "Edit Item"
+            // }
+        },
         save(){
+            if(this.formTitle === "Add New Customer"){
+                this.TambahData()
+            }else{
+                this.UpdateData()
+            }
+            this.close()
+            
+        },
+
+        UpdateData(){
+        api.put('/customers/' + this.editedItem.id +'?token='+this.token, {
+            Nama: this.editedItem.Nama,
+            BadanHukum: this.editedItem.BadanHukum,
+            Alamat: this.editedItem.Alamat,
+            Kota: this.editedItem.Kota,
+            KodePos: this.editedItem.KodePos,
+            Negara: this.editedItem.Negara,
+            Telp: this.editedItem.Telp,
+            Fax: this.editedItem.Fax,
+            Email: this.editedItem.Email,
+            ContactPerson: this.editedItem.ContactPerson,
+            SalesPerson: this.editedItem.SalesPerson,
+            GrupPelanggan: this.editedItem.GrupPelanggan,
+            Aktif: this.editedItem.Aktif,
+            KreditLimit: this.editedItem.KreditLimit,
+            CustSince: this.editedItem.CustSince,
+            Memo: this.editedItem.Memo,
+            Asuransi: this.editedItem.Asuransi
+        })
+        .then((res)=>{
+            this.id = ''
+            console.log(res)
+            this.getData()
+        })
+        .catch((err)=> {
+            console.log(err)
+        })
+        },
+
+        TambahData(){
             api.post('/customers?token='+this.token, {
             Nama: this.editedItem.Nama,
             BadanHukum: this.editedItem.BadanHukum,
@@ -526,6 +614,8 @@ export default {
 
         close() {
         this.dialog = false;
+        this.editedItem = this.defaultItem
+        this.editedIndex = -1
         },
 
         commandClick: function(args) {
@@ -539,20 +629,28 @@ export default {
             // this.editedItem = Object.assign({},data)
             console.log(data)
         } else if (args.target.classList.contains("Delete")) {
+            var r = confirm("Yakin Hapus Data?");
+            if (r == true) {
+                api.delete('/customers/'+args.rowData.id+'?token='+this.token)
+                .then((res)=> {
+                    // this.item.splice(index, 1)
+                    console.log(res)
+                    this.getData()
+                })
+                .catch((err)=> {
+                    console.log(err)
+                })
+            } 
             // let data = JSON.stringify(args.rowData)
             // console.log(data)
             // console.log(args)
-            api.delete('/customers/'+args.rowData.id+'?token='+this.token)
-            .then((res)=> {
-                // this.item.splice(index, 1)
-                console.log(res)
-            })
-            .catch((err)=> {
-                console.log(err)
-            })
+            
         } else if (args.target.classList.contains('Edit')) {
             let data = args
+            this.editedIndex = 1;
             console.log(data)
+            this.editedItem = data.rowData
+            this.dialog = true
         }},
 
         actionComplete(args) {
@@ -573,6 +671,8 @@ export default {
         },
         err => {
             console.log(err)
+            this.$router.push('/')
+            localStorage.removeItem('token')
         })},
 
         // TambahData(order){
@@ -595,5 +695,10 @@ export default {
 </script>
 
 <style>
-
+    .e-grid .e-groupdroparea.e-grouped { 
+        background-color: rgb(25, 118, 210) ; 
+    } 
+    .e-grid .e-groupheadercell { 
+        background-color: rgb(29, 79, 129) ; 
+    } 
 </style>

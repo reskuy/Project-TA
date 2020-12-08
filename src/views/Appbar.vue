@@ -293,7 +293,7 @@
       // masterdata: [
       //   { text: 'User', link: '/User', icon: 'mdi-account' },
       //   { text: 'Barang', link: '/Barang', icon: 'mdi-package-variant-closed' },
-      //   { text: 'Pelanggan', link: '/CustomerSync', icon: 'mdi-account-group' },
+      //   { text: 'Pelanggan', link: '/Pelanggan', icon: 'mdi-account-group' },
       //   { text: 'Supplier', link: '/Supplier', icon: 'mdi-truck-fast' },
       //   { text: 'Gudang', link: '/Gudang', icon: 'mdi-warehouse' },
       // ],
@@ -304,7 +304,7 @@
           items: [
             { title: 'User', link: '/User' },
             { title: 'Barang', link: '/Barang' },
-            { title: 'Pelanggan', link: '/CustomerSync' },
+            { title: 'Pelanggan', link: '/Pelanggan' },
             { title: 'Supplier', link: '/Supplier' },
             { title: 'Gudang', link: '/Gudang' },
           ],
@@ -353,7 +353,7 @@
       master: [
         { title: 'User', link: '/User', icon: 'mdi-account' },
         { title: 'Barang', link: '/Barang', icon: 'mdi-package-variant-closed' },
-        { title: 'Pelanggan', link: '/CustomerSync', icon: 'mdi-account-group' },
+        { title: 'Pelanggan', link: '/Pelanggan', icon: 'mdi-account-group' },
         { title: 'Supplier', link: '/Supplier', icon: 'mdi-truck-fast' },
         { title: 'Gudang', link: '/Gudang', icon: 'mdi-warehouse' },
       ],
