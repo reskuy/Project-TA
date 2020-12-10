@@ -956,11 +956,42 @@ export default {
         total += harga
       }
       this.totalPekr =  total
+      // this.totaldpp =+ total
+      // this.editedItem.dpp =+ total 
       console.log('total PEKERJAAN : ', total)
       // console.log(this.totaldpp)
     },
+    // dataTampung:{
+    //   handler(){
+    //     // console.log('new value : ', newValue)
+    //   // console.log('old value : ', oldValue)
+    //     let total =0
+    //     for (let j = 0; j < this.dataTampung.length; j++) {
+    //       const harga = this.dataTampung[j]['subtotal'];
+    //       total += harga
+    //     }
+    //     this.totaldpp = this.totaldpp + total /2
+    //     this.editedItem.dpp =+ total 
+    //     console.log('total PEKERJAAN : ', total)
+    //     console.log('total dpp:',this.totaldpp)
+    //   }
+    // },
+    // dataTampungBrg:{
+    //   handler(){
+    //     let total = 0
+    //   for (let k = 0; k < this.dataTampungBrg.length; k++) {
+    //     const subtotal = this.dataTampungBrg[k]['subtotal'];
+    //     total += subtotal
+    //   }
+    //   this.totaldpp = this.totaldpp + total
+    //   this.editedItem.dpp =+ total 
+    //   console.log('total BARANG : ',total)
+    //   console.log('total dpp:',this.totaldpp)
+    //   }
+    // },
     dataTampungBrg(newVal){
       console.log('new value brg : ', newVal)
+      // console.log('old value brg : ', old)
       let total = 0
       for (let k = 0; k < newVal.length; k++) {
         const subtotal = this.dataTampungBrg[k]['subtotal'];
@@ -990,7 +1021,9 @@ export default {
     EventBus.$on("lempar",Input =>{
             this.dataTampung=Input
         });
-
+    // EventBusBrg.$on("lempar",Input =>{
+    //         this.dataTampungBrg=Input
+    //     });
     bis.$on('lempar', a =>{
         this.dataTampungBrg = a
     })
@@ -1089,6 +1122,14 @@ export default {
     },
     commandClick: function(args) {
         if (args.target.classList.contains("custombutton")) {
+            // let tampung = []
+            // let data = JSON.stringify(args.rowData)
+            // console.log(args);
+            // alert(JSON.stringify(args.rowData));
+            // console.log(JSON.stringify(args.rowData))
+            // tampung.push(args.rowData)
+            // this.editedItem = Object.assign({},data)
+            // console.log(data)
         } else if (args.target.classList.contains("Delete")) {
             var r = confirm("Yakin Hapus Data?");
             if (r == true) {
@@ -1102,7 +1143,10 @@ export default {
                     console.log(err)
                 })
             } 
-
+            // let data = JSON.stringify(args.rowData)
+            // console.log(data)
+            // console.log(args)
+            
         } else if (args.target.classList.contains('Edit')) {
             let data = args
             this.editedIndex = 1;
@@ -1112,6 +1156,13 @@ export default {
             api.get('/invoice/'+data.rowData.id+'?token='+this.token).then(
               res=>{
                   console.log(res)
+                  // bis.$emit('lempar',clean)
+                  // EventBus.$emit('lempar',clean)
+                  // this.data = res.data
+                  // this.invoice = res.data
+                  // this.dataTampung.push(res.data[1]['PEKERJAAN'])
+                  // this.dataTampung = res.data[2]['PEKERJAAN']
+                  // this.dataTampungBrg = res.data[1]['BARANG']
                   bis.$emit('lempar',res.data[1]['BARANG'])
                   EventBus.$emit('lempar',res.data[2]['PEKERJAAN'])
                   
@@ -1130,6 +1181,14 @@ export default {
     },
     updateWo: function(updateWo){
       this.selected = updateWo
+      // this.editItem.NomorWo.push(this.selected[0]["NomorWo"])
+      // return{
+      // NomorWo : `updateWo[0]["NomorWo"]`,
+
+      //   NamaPelanggan : updateWo[0]["NamaPelanggan"]
+      // }
+      // this.parsing
+      // this.parsing();
       this.editedItem.no_wo = this.selected[0]["kode"]
       this.editedItem.pelanggan= this.selected[0]["nama_pelanggan"]
       this.editedItem.no_rangka = this.selected[0]["no_rangka"]
