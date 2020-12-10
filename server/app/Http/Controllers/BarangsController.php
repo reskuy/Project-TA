@@ -23,6 +23,7 @@ class BarangsController extends Controller
     {
         //
         return Barangs::all();
+        // return Barangs::with('User')->get();
     }
 
     /**

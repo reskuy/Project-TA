@@ -16,6 +16,7 @@ import NotaGudang from "@/components/NotaGudang";
 import DaftarHarga from "@/components/DaftarHarga";
 import ChartOfAccount from "@/components/ChartOfAccount";
 import ReturPembelian from "@/components/ReturPembelian";
+import Invoice from "@/components/Invoice";
 
 
 
@@ -39,7 +40,9 @@ export default new VueRouter({
     {path:'/NotaGudang',name:'NotaGudang',component: NotaGudang},
     {path:'/DaftarHarga',name:'DaftarHarga',component: DaftarHarga},
     {path:'/ChartOfAccount',name:'ChartOfAccount',component: ChartOfAccount},
-    {path:'/ReturPembelian',name:'ReturPembelian',component: ReturPembelian}
+    {path:'/ReturPembelian',name:'ReturPembelian',component: ReturPembelian},
+    {path:'/Invoice',name:'Invoice',component: Invoice}
+
   ]
 });
 

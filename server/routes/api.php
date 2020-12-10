@@ -11,6 +11,7 @@ use App\Http\Controllers\WorkOrdersController;
 use App\Http\Controllers\SuppliersController;
 use App\Http\Controllers\JenisPekerjaanController;
 use App\Http\Controllers\InternalPartOrderController;
+use App\Http\Controllers\InvoiceController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,6 +40,7 @@ Route::group(["middleware"=>"auth.jwt"], function(){
     Route::resource("supplier", SuppliersController::class);
     Route::resource("jenispekerjaan", JenisPekerjaanController::class);
     Route::resource("ipo", InternalPartOrderController::class);
+    Route::resource("invoice", InvoiceController::class);
     // Route::get("customers",[CustomersController::class, 'index']);
 });
 // Route::resource("customers", CustomersController::class);

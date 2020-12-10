@@ -70,7 +70,7 @@
 
                 <e-column
                   :filter='filter'
-                  field='created_by'
+                  field='created_by.nama'
                   headerText='Dibuat Oleh'
                   width=180
                 ></e-column>

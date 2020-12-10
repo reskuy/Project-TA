@@ -213,7 +213,6 @@
  
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="error" text @click="close">Batal</v-btn>
               <v-btn color="success" text @click="save">Simpan</v-btn>
             </v-card-actions>
           </v-card>

@@ -51,14 +51,21 @@ class GudangsController extends Controller
         // ]);
 
         $gudang = new Gudangs;
-        $gudangs->Kode = $request->Kode;
+        $gudang->Kode = $request->Kode;
         $gudang->Nama = $request->Nama;
         $gudang->Alamat = $request->Alamat;
         $gudang->Kota = $request->Kota;
         $gudang->Aktif = $request->Aktif;
         $gudang->Memo = $request->Memo;
+        
+    // $gudangModels = [];
+    // loop through all gudangs
+    // foreach ($request->gudang as $gudang) {
+    //     $gudangModels[] = new Gudangs($gudang);
 
-        if ($this->user->gudangs()->save($gudang)){
+    // }
+         if ($this->user->gudangs()->save($gudang)){
+            // if ($this->user->gudangs()->saveMany($gudangModels)){
             return response()->json([
                 "status" => true,
                 "gudang" => $gudang

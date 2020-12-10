@@ -80,5 +80,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(InternalPartOrder::class,'created_by','id');
     }
+    public function invoice()
+    {
+        return $this->hasMany(invoice::class,'created_by','id');
+    }
 }
 
